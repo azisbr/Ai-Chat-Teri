@@ -1,10 +1,11 @@
-const CACHE_NAME = "ai-chat-cache-v2";
+const CACHE_NAME = "ai-chat-cache-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.json",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./background.jpg"
 ];
 
 self.addEventListener("install", (event) => {
