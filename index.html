@@ -394,15 +394,44 @@
             color: rgba(255, 255, 255, 0.4);
         }
         
-        .gen-option select {
-            padding: 7px 8px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
+        .gen-option select,
+        .manga-toolbar select,
+        .key-select {
+            padding: 7px 28px 7px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
             background: rgba(255, 255, 255, 0.07);
-            color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            backdrop-filter: blur(12px) saturate(160%);
+            color: rgba(255, 255, 255, 0.88);
+            border-radius: 10px;
             font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.45)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 9px center;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+            transition: border-color 0.18s, background-color 0.18s;
+            outline: none;
         }
+
+        .gen-option select:focus,
+        .manga-toolbar select:focus,
+        .key-select:focus {
+            border-color: rgba(255, 255, 255, 0.32);
+            background-color: rgba(255, 255, 255, 0.11);
+        }
+
+        /* Native option styling — limited by browser but at least dark bg */
+        .gen-option select option,
+        .manga-toolbar select option,
+        .key-select option {
+            background: #1a1a22;
+            color: rgba(255,255,255,0.88);
+        }
+        
         
         .input-area {
             display: flex;
@@ -564,25 +593,13 @@
         
         .key-select {
             flex: 1;
-            padding: 9px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.85);
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
         
         .key-select:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.11);
+            border-color: rgba(255, 255, 255, 0.28);
         }
         
-        .key-select:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.5);
-        }
         
         .random-btn {
             width: 38px;
@@ -688,13 +705,14 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            margin: 0 16px 12px;
-            padding: 8px 12px;
-            border-radius: 10px;
+            padding: 6px 10px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.07);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: rgba(255, 255, 255, 0.8);
             font-size: 12px;
+            flex-shrink: 0;
+            max-width: 130px;
         }
         
         .attached-file span {
@@ -723,6 +741,260 @@
             color: rgba(255, 255, 255, 0.95);
         }
         
+        /* === Manga Card List === */
+        .manga-list-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 0 !important;
+            overflow: hidden;
+            width: 85%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+        }
+
+        .manga-list-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            padding: 10px 12px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            position: sticky;
+            top: 0;
+            background: rgba(20,20,28,0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1;
+        }
+
+        .manga-list-scroll {
+            max-height: 420px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        .manga-list-scroll::-webkit-scrollbar {
+            width: 3px;
+        }
+        .manga-list-scroll::-webkit-scrollbar-track { background: transparent; }
+        .manga-list-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+        }
+
+        .manga-card {
+            display: flex;
+            gap: 10px;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            align-items: center;
+            transition: background 0.15s;
+        }
+
+        .manga-card:last-child { border-bottom: none; }
+        .manga-card:active { background: rgba(255,255,255,0.05); }
+
+        .manga-card-thumb {
+            width: 44px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .manga-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .manga-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.92);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .manga-card-chapter {
+            font-size: 11px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .manga-card-link {
+            font-size: 11px;
+            color: rgba(130,190,255,0.85);
+            text-decoration: none;
+            width: fit-content;
+            margin-top: 2px;
+        }
+
+        /* === Manga Detail === */
+        .manga-detail-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 0 !important;
+            width: 85%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            overflow: hidden;
+        }
+
+        .manga-detail-hero {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .manga-detail-cover {
+            width: 72px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .manga-detail-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+
+        .manga-detail-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .manga-detail-row {
+            font-size: 11px;
+            color: rgba(255,255,255,0.55);
+            display: flex;
+            gap: 5px;
+        }
+
+        .manga-detail-label {
+            color: rgba(255,255,255,0.35);
+            min-width: 44px;
+        }
+
+        .manga-detail-synopsis {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .manga-detail-ch-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            padding: 8px 12px 6px;
+        }
+
+        .manga-detail-ch-list {
+            display: flex;
+            flex-direction: column;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .manga-detail-ch-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 12px;
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.12s;
+        }
+
+        .manga-detail-ch-row:last-child { border-bottom: none; }
+        .manga-detail-ch-row:active { background: rgba(255,255,255,0.06); }
+
+        .manga-detail-ch-arrow {
+            color: rgba(255,255,255,0.25);
+            font-size: 11px;
+        }
+
+        /* === Manga Reader (download) === */
+        .manga-reader-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0 !important;
+            width: 85%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            overflow: hidden;
+        }
+
+        .manga-reader-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            padding: 10px 12px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .manga-reader-page {
+            width: 100%;
+            display: block;
+            cursor: zoom-in;
+        }
+
+        /* === Manga Mode UI === */
+        .manga-toolbar {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 12px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .manga-toolbar .gen-option {
+            flex-shrink: 0;
+        }
+
+        .manga-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .manga-images-grid img {
+            width: 100%;
+            border-radius: 8px;
+            cursor: zoom-in;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
         @media (max-width: 600px) {
             .container {
                 max-width: 100%;
@@ -765,6 +1037,50 @@
         <div class="messages" id="messages"></div>
         
         <div class="gen-options" id="genOptions" style="display:none;"></div>
+        <div class="manga-toolbar" id="mangaToolbar" style="display:none;">
+            <div class="gen-option">
+                <label>Mode</label>
+                <select id="mangaModeSelect" onchange="onMangaModeChange(this.value)">
+                    <option value="latest">Latest</option>
+                    <option value="alphabet">Alphabet</option>
+                    <option value="search">Search</option>
+                    <option value="detail">Detail (URL)</option>
+                    <option value="download">Download (URL)</option>
+                </select>
+            </div>
+            <div class="gen-option" id="mangaAlphabetWrap" style="display:none;">
+                <label>Huruf / Angka</label>
+                <select id="mangaAlphabetSelect">
+                    <option value="0-9">0-9</option>
+                    <option value="A" selected>A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
+                    <option value="K">K</option>
+                    <option value="L">L</option>
+                    <option value="M">M</option>
+                    <option value="N">N</option>
+                    <option value="O">O</option>
+                    <option value="P">P</option>
+                    <option value="Q">Q</option>
+                    <option value="R">R</option>
+                    <option value="S">S</option>
+                    <option value="T">T</option>
+                    <option value="U">U</option>
+                    <option value="V">V</option>
+                    <option value="W">W</option>
+                    <option value="X">X</option>
+                    <option value="Y">Y</option>
+                    <option value="Z">Z</option>
+                </select>
+            </div>
+        </div>
         
         <div class="input-area">
             <div class="switcher" id="switcher">
@@ -813,15 +1129,6 @@
                 onkeypress="handleKeyPress(event)"
             >
             <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
-        </div>
-        <div class="attached-file" id="attachedFile" style="display:none;">
-            <span id="attachedFileName"></span>
-            <button onclick="clearAttachedImage()" title="Hapus lampiran">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="5" x2="19" y2="19"></line>
-                    <line x1="19" y1="5" x2="5" y2="19"></line>
-                </svg>
-            </button>
         </div>
     </div>
 
@@ -1047,6 +1354,15 @@
                 selectedKey: "key1",
                 useChatId: false,
                 type: "image-only"
+            },
+            mangasusuku: {
+                name: "MangaSusuku",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "manga",
+                mangaMode: "latest",
+                placeholder: "Tekan Send untuk ambil manga terbaru..."
             }
         };
 
@@ -1134,7 +1450,9 @@
             const model = MODELS[currentModel];
             const attachBtn = document.getElementById("attachBtn");
             const genOptions = document.getElementById("genOptions");
+            const mangaToolbar = document.getElementById("mangaToolbar");
             const needsImage = model.type === "image-edit" || model.type === "image-only";
+            const isManga = model.type === "manga";
             attachBtn.style.display = needsImage ? "flex" : "none";
 
             if (model.configurable && model.extraParams) {
@@ -1142,6 +1460,15 @@
                 populateGenOptions(model);
             } else {
                 genOptions.style.display = "none";
+            }
+
+            if (isManga) {
+                mangaToolbar.style.display = "flex";
+                const modeSelect = document.getElementById("mangaModeSelect");
+                modeSelect.value = model.mangaMode || "latest";
+                onMangaModeChange(modeSelect.value);
+            } else {
+                mangaToolbar.style.display = "none";
             }
 
             if (model.placeholder) {
@@ -1159,6 +1486,22 @@
             if (!needsImage) {
                 clearAttachedImage();
             }
+        }
+
+        function onMangaModeChange(mode) {
+            const model = MODELS[currentModel];
+            if (model.type === "manga") model.mangaMode = mode;
+            const alphabetWrap = document.getElementById("mangaAlphabetWrap");
+            alphabetWrap.style.display = mode === "alphabet" ? "flex" : "none";
+
+            const placeholders = {
+                latest: "Tekan Send untuk ambil manga terbaru...",
+                alphabet: "Tekan Send untuk list manga...",
+                search: "Ketik judul manga, lalu kirim...",
+                detail: "Tempel URL manga (mangasusuku.com/...), lalu kirim...",
+                download: "Tempel URL chapter manga, lalu kirim..."
+            };
+            inputEl.placeholder = placeholders[mode] || "Ketik pesan...";
         }
 
         function handleImageSelect(event) {
@@ -1239,13 +1582,35 @@
             const isImageEdit = model.type === "image-edit";
             const isImageOnly = model.type === "image-only";
             const needsImage = isImageEdit || isImageOnly;
+            const isManga = model.type === "manga";
 
             if (needsImage && !selectedImageFile) {
                 addMessage("Lampirkan gambar dulu sebelum kirim.", "info");
                 return;
             }
-            if (!needsImage && !text) return;
+            if (!needsImage && !isManga && !text) return;
             if (isImageEdit && !text) return;
+
+            // For manga modes that need text input
+            if (isManga) {
+                const mangaMode = model.mangaMode || "latest";
+                const needsText = ["search", "detail", "download"].includes(mangaMode);
+                if (needsText && !text) {
+                    addMessage("Masukkan " + (mangaMode === "search" ? "judul manga" : "URL") + " dulu.", "info");
+                    return;
+                }
+                sendBtn.disabled = true;
+                inputEl.disabled = true;
+                if (text) addMessage(text, "user");
+                else addMessage("📚 Ambil manga " + mangaMode + "...", "user");
+                inputEl.value = "";
+                showTypingIndicator();
+                await sendMangaRequest(mangaMode, text, model);
+                sendBtn.disabled = false;
+                inputEl.disabled = false;
+                inputEl.focus();
+                return;
+            }
 
             sendBtn.disabled = true;
             inputEl.disabled = true;
@@ -1320,6 +1685,249 @@
             sendBtn.disabled = false;
             inputEl.disabled = false;
             inputEl.focus();
+        }
+
+        async function sendMangaRequest(mode, text, model) {
+            const selectedApiKey = API_KEYS[model.selectedKey];
+            const BASE = "https://api.theresav.biz.id/manga/mangasusuku";
+            let url;
+
+            try {
+                if (mode === "latest") {
+                    url = `${BASE}/latest?apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "alphabet") {
+                    const letter = document.getElementById("mangaAlphabetSelect").value;
+                    url = `${BASE}/alphabet?letter=${encodeURIComponent(letter)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "search") {
+                    url = `${BASE}/search?q=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "detail") {
+                    url = `${BASE}/detail?url=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "download") {
+                    url = `${BASE}/download?url=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                }
+
+                const response = await fetch(url);
+                const rawText = await response.text();
+                let data;
+                try { data = JSON.parse(rawText); } catch(e) {
+                    hideTypingIndicator();
+                    addMessage("Respons tidak valid dari server.", "ai");
+                    return;
+                }
+
+                hideTypingIndicator();
+
+                if (mode === "download") {
+                    renderMangaImages(data);
+                } else if (mode === "detail") {
+                    renderMangaDetail(data);
+                } else {
+                    // latest / alphabet / search — list of manga cards
+                    renderMangaList(data, mode);
+                }
+            } catch (err) {
+                hideTypingIndicator();
+                addMessage("Error: " + err.message, "ai");
+            }
+        }
+
+        // ── helpers ──────────────────────────────────────────────
+        function extractList(data) {
+            if (Array.isArray(data)) return data;
+            if (data && Array.isArray(data.data)) return data.data;
+            if (data && Array.isArray(data.result)) return data.result;
+            if (data && Array.isArray(data.manga)) return data.manga;
+            if (data && Array.isArray(data.mangas)) return data.mangas;
+            // sometimes it's an object with numeric keys
+            const vals = data ? Object.values(data) : [];
+            const arr = vals.find(v => Array.isArray(v) && v.length && v[0].title);
+            return arr || null;
+        }
+
+        function renderMangaList(data, mode) {
+            // Cek total: 0 dari API langsung
+            if (data && (data.total === 0 || data.total === "0")) {
+                addMessage("❌ Tidak ditemukan.", "ai");
+                return;
+            }
+
+            const list = extractList(data);
+            if (!list || list.length === 0) {
+                addMessage("❌ Tidak ditemukan.", "ai");
+                return;
+            }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-list-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            const modeLabel = { latest: "Terbaru", alphabet: "Alphabet", search: "Hasil Cari" }[mode] || mode;
+            hdr.textContent = `📚 ${modeLabel} — ${list.length} manga`;
+            wrap.appendChild(hdr);
+
+            const scroll = document.createElement("div");
+            scroll.className = "manga-list-scroll";
+
+            list.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "manga-card";
+
+                if (item.thumbnail || item.cover || item.image) {
+                    const img = document.createElement("img");
+                    img.src = item.thumbnail || item.cover || item.image;
+                    img.alt = item.title || "";
+                    img.className = "manga-card-thumb";
+                    img.loading = "lazy";
+                    card.appendChild(img);
+                }
+
+                const info = document.createElement("div");
+                info.className = "manga-card-info";
+
+                const title = document.createElement("div");
+                title.className = "manga-card-title";
+                title.textContent = item.title || "—";
+                info.appendChild(title);
+
+                if (item.latestChapter || item.chapter || item.lastChapter) {
+                    const chap = document.createElement("div");
+                    chap.className = "manga-card-chapter";
+                    chap.textContent = item.latestChapter || item.chapter || item.lastChapter;
+                    info.appendChild(chap);
+                }
+
+                if (item.link || item.url) {
+                    const link = document.createElement("a");
+                    link.className = "manga-card-link";
+                    link.href = item.link || item.url;
+                    link.target = "_blank";
+                    link.textContent = "Buka →";
+                    info.appendChild(link);
+                }
+
+                card.appendChild(info);
+                scroll.appendChild(card);
+            });
+
+            wrap.appendChild(scroll);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderMangaDetail(data) {
+            // Unwrap common wrappers, skip API metadata keys
+            const d = data.result || data.data || data.detail || data;
+
+            // If there's nothing meaningful (no title, no chapters)
+            if (!d || (!d.title && !(d.chapters || d.chapterList || d.chapter_list))) {
+                addMessage("❌ Tidak ditemukan.", "ai");
+                return;
+            }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            // Header row: cover + meta
+            const hero = document.createElement("div");
+            hero.className = "manga-detail-hero";
+
+            if (d.thumbnail || d.cover || d.image) {
+                const img = document.createElement("img");
+                img.src = d.thumbnail || d.cover || d.image;
+                img.className = "manga-detail-cover";
+                img.loading = "lazy";
+                hero.appendChild(img);
+            }
+
+            const meta = document.createElement("div");
+            meta.className = "manga-detail-meta";
+
+            if (d.title) {
+                const t = document.createElement("div");
+                t.className = "manga-detail-title";
+                t.textContent = d.title;
+                meta.appendChild(t);
+            }
+            const mangaStatus = typeof d.status === "string" ? d.status : (d.mangaStatus || d.publication_status || null);
+            [["Genre", d.genre || d.genres], ["Status", mangaStatus], ["Author", d.author]].forEach(([label, val]) => {
+                if (!val) return;
+                const row = document.createElement("div");
+                row.className = "manga-detail-row";
+                row.innerHTML = `<span class="manga-detail-label">${label}</span><span>${Array.isArray(val) ? val.join(", ") : val}</span>`;
+                meta.appendChild(row);
+            });
+            hero.appendChild(meta);
+            wrap.appendChild(hero);
+
+            if (d.synopsis || d.description || d.sinopsis) {
+                const syn = document.createElement("div");
+                syn.className = "manga-detail-synopsis";
+                syn.textContent = d.synopsis || d.description || d.sinopsis;
+                wrap.appendChild(syn);
+            }
+
+            // Chapter list
+            const chapters = d.chapters || d.chapterList || d.chapter_list || [];
+            if (chapters.length) {
+                const chHdr = document.createElement("div");
+                chHdr.className = "manga-detail-ch-header";
+                chHdr.textContent = `📖 ${chapters.length} Chapter`;
+                wrap.appendChild(chHdr);
+
+                const chList = document.createElement("div");
+                chList.className = "manga-detail-ch-list";
+                chapters.forEach(ch => {
+                    const row = document.createElement("a");
+                    row.className = "manga-detail-ch-row";
+                    row.href = ch.url || ch.link || "#";
+                    row.target = "_blank";
+                    row.innerHTML = `<span>${ch.title || ch.name || ch.chapter || "Chapter"}</span><span class="manga-detail-ch-arrow">→</span>`;
+                    chList.appendChild(row);
+                });
+                wrap.appendChild(chList);
+            }
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderMangaImages(data) {
+            let images = null, totalImages = null;
+            if (data && data.chapter && Array.isArray(data.chapter.images)) {
+                images = data.chapter.images;
+                totalImages = data.chapter.totalImages || data.totalImages;
+            } else if (data && Array.isArray(data.images)) {
+                images = data.images; totalImages = data.totalImages;
+            } else if (data && data.result && Array.isArray(data.result.images)) {
+                images = data.result.images; totalImages = data.result.totalImages;
+            }
+
+            if (!images || images.length === 0) {
+                addMessage(JSON.stringify(data, null, 2), "ai");
+                return;
+            }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-reader-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-reader-header";
+            hdr.textContent = `📖 ${images.length} halaman — tap untuk zoom`;
+            wrap.appendChild(hdr);
+
+            images.forEach((imgUrl, idx) => {
+                const img = document.createElement("img");
+                img.src = imgUrl;
+                img.alt = `Halaman ${idx + 1}`;
+                img.className = "manga-reader-page";
+                img.loading = "lazy";
+                img.addEventListener("click", () => openLightbox(imgUrl));
+                wrap.appendChild(img);
+            });
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
         function showTypingIndicator() {
