@@ -50,6 +50,9 @@
         #particles {
             position: fixed;
             inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
             z-index: 1;
             pointer-events: none;
         }
@@ -59,11 +62,7 @@
             max-width: 100%;
             height: 100vh;
             height: 100dvh;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(22px) saturate(150%);
-            -webkit-backdrop-filter: blur(22px) saturate(150%);
-            border: none;
-            border-radius: 0;
+            background: transparent;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -73,7 +72,9 @@
         }
         
         .header {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             padding: 16px;
             display: flex;
@@ -173,9 +174,9 @@
         }
         
         .message.ai {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(20, 20, 24, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.9);
             align-self: flex-start;
             white-space: normal;
         }
@@ -372,7 +373,9 @@
             gap: 10px;
             padding: 16px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
             position: relative;
             align-items: center;
         }
@@ -1241,7 +1244,11 @@
             }
 
             if (data.status === false) {
-                addMessage("Error: " + (data.message || "Unknown error"), "ai");
+                const errMsg = data.message
+                    || data.error
+                    || (typeof data.result === "string" ? data.result : null)
+                    || JSON.stringify(data);
+                addMessage("Error: " + errMsg, "ai");
                 return;
             }
 
