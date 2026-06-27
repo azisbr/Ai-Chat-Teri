@@ -268,6 +268,14 @@
             background: rgba(255, 255, 255, 0.05);
         }
         
+        .media-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: rgba(255, 255, 255, 0.55);
+            padding: 4px 6px 2px;
+        }
+        
         .message.media video,
         .message.media img {
             display: block;
@@ -283,6 +291,34 @@
             border-radius: 10px;
             margin-bottom: 6px;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: zoom-in;
+        }
+        
+        .message.media img {
+            cursor: zoom-in;
+        }
+        
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            z-index: 100;
+            cursor: zoom-out;
+        }
+        
+        .lightbox.open {
+            display: flex;
+        }
+        
+        .lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
         }
         
         .message.typing {
@@ -711,6 +747,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
 <body>
     <canvas id="particles"></canvas>
+    <div id="imageLightbox" class="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Pratinjau gambar">
+    </div>
     <div class="container">
         <div class="header">
             <div class="header-title">AI Chat</div>
@@ -725,20 +764,7 @@
         
         <div class="messages" id="messages"></div>
         
-        <div class="gen-options" id="genOptions" style="display:none;">
-            <div class="gen-option">
-                <label for="genWidth">Width</label>
-                <select id="genWidth" onchange="saveGenOption('width', this.value)"></select>
-            </div>
-            <div class="gen-option">
-                <label for="genHeight">Height</label>
-                <select id="genHeight" onchange="saveGenOption('height', this.value)"></select>
-            </div>
-            <div class="gen-option">
-                <label for="genSteps">Steps</label>
-                <select id="genSteps" onchange="saveGenOption('steps', this.value)"></select>
-            </div>
-        </div>
+        <div class="gen-options" id="genOptions" style="display:none;"></div>
         
         <div class="input-area">
             <div class="switcher" id="switcher">
@@ -812,14 +838,14 @@
             }
 
             function createParticles() {
-                const count = Math.min(70, Math.max(28, Math.floor((canvas.width * canvas.height) / 16000)));
+                const count = Math.min(90, Math.max(40, Math.floor((canvas.width * canvas.height) / 13000)));
                 particles = Array.from({ length: count }, () => ({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    r: Math.random() * 1.5 + 0.6,
+                    r: Math.random() * 2 + 1,
                     color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                    speedY: Math.random() * 0.18 + 0.04,
-                    speedX: (Math.random() - 0.5) * 0.1,
+                    speedY: Math.random() * 0.22 + 0.05,
+                    speedX: (Math.random() - 0.5) * 0.12,
                     phase: Math.random() * Math.PI * 2,
                     twinkleSpeed: Math.random() * 0.02 + 0.008
                 }));
@@ -829,7 +855,7 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach((p) => {
                     p.phase += p.twinkleSpeed;
-                    const opacity = 0.3 + Math.abs(Math.sin(p.phase)) * 0.55;
+                    const opacity = 0.5 + Math.abs(Math.sin(p.phase)) * 0.5;
                     p.y -= p.speedY;
                     p.x += p.speedX;
                     if (p.y < -5) p.y = canvas.height + 5;
@@ -838,7 +864,7 @@
 
                     ctx.globalAlpha = opacity;
                     ctx.fillStyle = p.color;
-                    ctx.shadowBlur = p.r * 4;
+                    ctx.shadowBlur = p.r * 7;
                     ctx.shadowColor = p.color;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -927,9 +953,9 @@
             },
             recolor: {
                 name: "Recolor Image",
-                url: "https://api.theresav.biz.id/image/recolor?",
+                url: "https://api.theresav.biz.id/image/recolor",
                 usesKeys: ["key1", "key2", "key3", "key4"],
-                selectedKey: "key4",
+                selectedKey: "key1",
                 useChatId: false,
                 type: "image-only"
             },
@@ -937,7 +963,7 @@
                 name: "To Pixel Art",
                 url: "https://api.theresav.biz.id/image/topixel",
                 usesKeys: ["key1", "key2", "key3", "key4"],
-                selectedKey: "key2",
+                selectedKey: "key1",
                 useChatId: false,
                 type: "image-only"
             },
@@ -945,7 +971,7 @@
                 name: "To Hitam",
                 url: "https://api.theresav.biz.id/image/tohitam",
                 usesKeys: ["key1", "key2", "key3", "key4"],
-                selectedKey: "key3",
+                selectedKey: "key1",
                 useChatId: false,
                 type: "image-only"
             },
@@ -976,6 +1002,51 @@
                 useChatId: false,
                 type: "text2img",
                 paramName: "prompt"
+            },
+            upscale: {
+                name: "Image Upscaler",
+                url: "https://api.theresav.biz.id/tools/hd",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only",
+                configurable: true,
+                extraParams: { scale: 4 }
+            },
+            bypass: {
+                name: "Universal Bypass",
+                url: "https://api.theresav.biz.id/bypass/universal",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                paramName: "url",
+                placeholder: "Tempel link yang mau di-bypass..."
+            },
+            toportrait: {
+                name: "To Portrait",
+                url: "https://api.theresav.biz.id/image/toportrait",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only",
+                textFieldName: "style",
+                placeholder: "Gaya potret (opsional), lalu kirim"
+            },
+            tomanwha: {
+                name: "To Manwha",
+                url: "https://api.theresav.biz.id/image/tomanwha",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            toreal: {
+                name: "To Real",
+                url: "https://api.theresav.biz.id/image/toreal",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
             }
         };
 
@@ -1011,25 +1082,44 @@
         const GEN_OPTIONS = {
             width: [512, 576, 640, 768, 896, 1024, 1152, 1280, 1536],
             height: [512, 576, 640, 768, 896, 1024, 1152, 1280, 1536],
-            steps: [4, 6, 8, 9, 10, 12, 16, 20, 25, 30]
+            steps: [4, 6, 8, 9, 10, 12, 16, 20, 25, 30],
+            scale: [2, 4]
+        };
+
+        const GEN_LABELS = {
+            width: "Width",
+            height: "Height",
+            steps: "Steps",
+            scale: "Scale"
         };
 
         function populateGenOptions(model) {
-            const fields = [
-                { id: "genWidth", values: GEN_OPTIONS.width, current: model.extraParams.width },
-                { id: "genHeight", values: GEN_OPTIONS.height, current: model.extraParams.height },
-                { id: "genSteps", values: GEN_OPTIONS.steps, current: model.extraParams.steps }
-            ];
-            fields.forEach(({ id, values, current }) => {
-                const select = document.getElementById(id);
-                select.innerHTML = "";
-                values.forEach(v => {
+            const container = document.getElementById("genOptions");
+            container.innerHTML = "";
+
+            Object.keys(model.extraParams).forEach((key) => {
+                const values = GEN_OPTIONS[key];
+                if (!values) return;
+
+                const wrapper = document.createElement("div");
+                wrapper.className = "gen-option";
+
+                const label = document.createElement("label");
+                label.textContent = GEN_LABELS[key] || key;
+
+                const select = document.createElement("select");
+                values.forEach((v) => {
                     const opt = document.createElement("option");
                     opt.value = v;
-                    opt.textContent = v;
-                    if (v === current) opt.selected = true;
+                    opt.textContent = key === "scale" ? `${v}x` : v;
+                    if (v === model.extraParams[key]) opt.selected = true;
                     select.appendChild(opt);
                 });
+                select.addEventListener("change", () => saveGenOption(key, select.value));
+
+                wrapper.appendChild(label);
+                wrapper.appendChild(select);
+                container.appendChild(wrapper);
             });
         }
 
@@ -1054,7 +1144,9 @@
                 genOptions.style.display = "none";
             }
 
-            if (model.type === "image-edit") {
+            if (model.placeholder) {
+                inputEl.placeholder = model.placeholder;
+            } else if (model.type === "image-edit") {
                 inputEl.placeholder = "Tulis instruksi edit gambar...";
             } else if (model.type === "image-only") {
                 inputEl.placeholder = "Lampirkan gambar, lalu kirim";
@@ -1163,46 +1255,71 @@
             inputEl.value = "";
             showTypingIndicator();
 
-            try {
-                const selectedApiKey = API_KEYS[model.selectedKey];
-                let response;
+            const selectedApiKey = API_KEYS[model.selectedKey];
+            const maxAttempts = 2;
+            let lastErrorMessage = null;
+            let succeeded = false;
 
-                if (needsImage) {
-                    const formData = new FormData();
-                    if (isImageEdit) {
-                        formData.append("prompt", text);
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    let response;
+
+                    if (needsImage) {
+                        const formData = new FormData();
+                        if (isImageEdit) {
+                            formData.append("prompt", text);
+                        } else if (model.textFieldName) {
+                            formData.append(model.textFieldName, text || "");
+                        }
+                        if (model.extraParams) {
+                            Object.entries(model.extraParams).forEach(([k, v]) => formData.append(k, v));
+                        }
+                        formData.append("apikey", selectedApiKey);
+                        formData.append("image", selectedImageFile);
+                        const urlWithKey = `${model.url}?apikey=${encodeURIComponent(selectedApiKey)}`;
+                        response = await fetch(urlWithKey, { method: "POST", body: formData });
+                    } else {
+                        const paramName = model.paramName || "text";
+                        const params = new URLSearchParams({
+                            [paramName]: text,
+                            apikey: selectedApiKey
+                        });
+                        if (model.extraParams) {
+                            Object.entries(model.extraParams).forEach(([k, v]) => params.append(k, v));
+                        }
+                        if (model.useChatId && chatIds[currentModel]) {
+                            params.append(model.sessionParam || "chatId", chatIds[currentModel]);
+                        }
+                        response = await fetch(`${model.url}?${params}`);
                     }
-                    formData.append("apikey", selectedApiKey);
-                    formData.append("image", selectedImageFile);
-                    response = await fetch(model.url, { method: "POST", body: formData });
-                } else {
-                    const paramName = model.paramName || "text";
-                    const params = new URLSearchParams({
-                        [paramName]: text,
-                        apikey: selectedApiKey
-                    });
-                    if (model.extraParams) {
-                        Object.entries(model.extraParams).forEach(([k, v]) => params.append(k, v));
+
+                    const outcome = await handleApiResponse(response, model);
+                    if (outcome.ok) {
+                        succeeded = true;
+                        lastErrorMessage = null;
+                        break;
                     }
-                    if (model.useChatId && chatIds[currentModel]) {
-                        params.append("chatId", chatIds[currentModel]);
-                    }
-                    response = await fetch(`${model.url}?${params}`);
+                    lastErrorMessage = outcome.error;
+                } catch (error) {
+                    lastErrorMessage = error.message;
                 }
 
-                await handleApiResponse(response, model);
-
-                if (needsImage) {
-                    clearAttachedImage();
+                if (attempt < maxAttempts) {
+                    await new Promise((resolve) => setTimeout(resolve, 1200));
                 }
-            } catch (error) {
-                hideTypingIndicator();
-                addMessage("Error: " + error.message, "ai");
-            } finally {
-                sendBtn.disabled = false;
-                inputEl.disabled = false;
-                inputEl.focus();
             }
+
+            hideTypingIndicator();
+
+            if (succeeded) {
+                if (needsImage) clearAttachedImage();
+            } else {
+                addMessage("Error: " + (lastErrorMessage || "Unknown error"), "ai");
+            }
+
+            sendBtn.disabled = false;
+            inputEl.disabled = false;
+            inputEl.focus();
         }
 
         function showTypingIndicator() {
@@ -1221,35 +1338,37 @@
         }
 
         async function handleApiResponse(response, model) {
-            hideTypingIndicator();
             const contentType = response.headers.get("content-type") || "";
 
             if (contentType.includes("image/")) {
                 const blob = await response.blob();
-                addImageMessage(URL.createObjectURL(blob), "ai");
-                return;
+                addImageMessage(URL.createObjectURL(blob), "ai", model.name);
+                return { ok: true };
             }
             if (contentType.includes("video/")) {
                 const blob = await response.blob();
-                addVideoMessage(URL.createObjectURL(blob), "ai");
-                return;
+                addVideoMessage(URL.createObjectURL(blob), "ai", model.name);
+                return { ok: true };
             }
 
+            let rawText = "";
             let data;
             try {
-                data = await response.json();
+                rawText = await response.text();
+                data = JSON.parse(rawText);
             } catch (e) {
-                addMessage("Error: respons tidak dikenali dari server", "ai");
-                return;
+                return {
+                    ok: false,
+                    error: `Respons tidak dikenali dari server (HTTP ${response.status})${rawText ? ": " + rawText.slice(0, 150) : ""}`
+                };
             }
 
-            if (data.status === false) {
+            if (!response.ok || data.status === false) {
                 const errMsg = data.message
                     || data.error
                     || (typeof data.result === "string" ? data.result : null)
-                    || JSON.stringify(data);
-                addMessage("Error: " + errMsg, "ai");
-                return;
+                    || `HTTP ${response.status}: ${JSON.stringify(data).slice(0, 150)}`;
+                return { ok: false, error: errMsg };
             }
 
             if (model.useChatId && data.chatId) {
@@ -1263,15 +1382,44 @@
             } else if (result && typeof result === "object") {
                 const mediaUrl = result.video_url || result.image_url || result.url;
                 if (mediaUrl && /\.(mp4|webm|mov)(\?|$)/i.test(mediaUrl)) {
-                    addVideoMessage(mediaUrl, "ai");
+                    addVideoMessage(mediaUrl, "ai", model.name);
                 } else if (mediaUrl) {
-                    addImageMessage(mediaUrl, "ai");
+                    addImageMessage(mediaUrl, "ai", model.name);
                 } else {
                     addMessage(JSON.stringify(result, null, 2), "ai");
                 }
             } else {
                 addMessage(String(result), "ai");
             }
+
+            return { ok: true };
+        }
+
+        function fixSquishedNumberedList(text) {
+            const regex = /(\d{1,2})\./g;
+            const matches = [];
+            let m;
+            while ((m = regex.exec(text)) !== null) {
+                matches.push({ num: parseInt(m[1], 10), index: m.index, length: m[0].length });
+            }
+
+            const isSequential = matches.length >= 2
+                && matches[0].num === 1
+                && matches.every((mt, i) => i === 0 || mt.num === matches[i - 1].num + 1);
+
+            if (!isSequential) return text;
+
+            let result = "";
+            let lastIndex = 0;
+            matches.forEach((mt, i) => {
+                const before = text.slice(lastIndex, mt.index);
+                result += i === 0 ? before : before + "\n\n";
+                result += `${mt.num}. `;
+                lastIndex = mt.index + mt.length;
+                if (text[lastIndex] === " ") lastIndex += 1;
+            });
+            result += text.slice(lastIndex);
+            return result;
         }
 
         function addMessage(text, sender, thumbnailUrl) {
@@ -1282,13 +1430,14 @@
                 const thumb = document.createElement("img");
                 thumb.src = thumbnailUrl;
                 thumb.className = "msg-thumbnail";
+                thumb.addEventListener("click", () => openLightbox(thumbnailUrl));
                 msgEl.appendChild(thumb);
             }
 
             if (text) {
                 const textEl = document.createElement("div");
                 if (sender === "ai" && window.marked) {
-                    const safeText = text.replace(/~/g, "\\~");
+                    const safeText = fixSquishedNumberedList(text).replace(/~/g, "\\~");
                     const rawHtml = marked.parse(safeText);
                     textEl.innerHTML = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
                 } else {
@@ -1301,9 +1450,15 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        function addVideoMessage(url, sender) {
+        function addVideoMessage(url, sender, label) {
             const msgEl = document.createElement("div");
             msgEl.className = `message ${sender} media`;
+            if (label) {
+                const labelEl = document.createElement("div");
+                labelEl.className = "media-label";
+                labelEl.textContent = label;
+                msgEl.appendChild(labelEl);
+            }
             const video = document.createElement("video");
             video.src = url;
             video.controls = true;
@@ -1313,15 +1468,31 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        function addImageMessage(url, sender) {
+        function addImageMessage(url, sender, label) {
             const msgEl = document.createElement("div");
             msgEl.className = `message ${sender} media`;
+            if (label) {
+                const labelEl = document.createElement("div");
+                labelEl.className = "media-label";
+                labelEl.textContent = label;
+                msgEl.appendChild(labelEl);
+            }
             const img = document.createElement("img");
             img.src = url;
             img.alt = "Hasil gambar";
+            img.addEventListener("click", () => openLightbox(url));
             msgEl.appendChild(img);
             messagesDiv.appendChild(msgEl);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function openLightbox(url) {
+            document.getElementById("lightboxImg").src = url;
+            document.getElementById("imageLightbox").classList.add("open");
+        }
+
+        function closeLightbox() {
+            document.getElementById("imageLightbox").classList.remove("open");
         }
 
         function handleKeyPress(event) {
