@@ -1013,6 +1013,285 @@
                 max-width: 320px;
             }
         }
+
+        .manga-fullscreen-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.07);
+            color: rgba(255,255,255,0.85);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background 0.15s, border-color 0.15s;
+            touch-action: manipulation;
+        }
+
+        .manga-fullscreen-btn:active {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .apikey-info-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            width: 100%;
+            padding: 7px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: background 0.15s;
+        }
+        .apikey-info-btn:active { background: rgba(255,255,255,0.1); }
+
+        .apikey-info-card {
+            margin-top: 8px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 11px;
+            color: rgba(255,255,255,0.75);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .apikey-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .apikey-info-label { color: rgba(255,255,255,0.4); }
+        .apikey-info-val { font-weight: 600; color: rgba(255,255,255,0.9); }
+        .apikey-info-val.warn { color: #fbbf24; }
+        .apikey-info-val.ok { color: #4ade80; }
+
+        .feelbetter-section {
+            padding: 0 0 4px;
+        }
+        .feelbetter-identity-input {
+            width: 100%;
+            margin-top: 6px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.85);
+            font-size: 11px;
+            line-height: 1.5;
+            resize: none;
+            font-family: inherit;
+        }
+        .feelbetter-identity-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        .groq-model-bar {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 10px;
+            align-items: center;
+        }
+        .genweb-wrap {
+            display: flex;
+            flex-direction: column;
+            padding: 0 !important;
+            width: 90%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .groq-model-bar select {
+            flex: 1;
+        }
+
+        .feelbetter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 0 16px 10px;
+        }
+
+        .feelbetter-bar label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .feelbetter-identity-input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            color: rgba(255,255,255,0.85);
+            font-size: 12px;
+            line-height: 1.5;
+            resize: none;
+            font-family: inherit;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .feelbetter-identity-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        /* ===== FULLSCREEN MANGA READER ===== */
+        .manga-fs-reader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #0b0b0e;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .manga-fs-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            padding-top: max(12px, env(safe-area-inset-top));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.88) 0%, transparent 100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            gap: 8px;
+            pointer-events: all;
+        }
+
+        .manga-fs-nav.hidden {
+            opacity: 0;
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+
+        .manga-fs-nav button,
+        .manga-fs-btn,
+        .manga-fs-chapbtn {
+            pointer-events: all;
+            -webkit-tap-highlight-color: rgba(255,255,255,0.15);
+            touch-action: manipulation;
+        }
+
+        .manga-fs-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 7px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        .manga-fs-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .manga-fs-chapnav {
+            display: flex;
+            gap: 6px;
+        }
+
+        .manga-fs-chapbtn {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.85);
+            border-radius: 16px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .manga-fs-chapbtn:disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .manga-fs-pages {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .manga-fs-pages img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .manga-fs-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            background: #0b0b0e;
+        }
+
+        .manga-fs-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
     </style>
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -1022,10 +1301,44 @@
     <div id="imageLightbox" class="lightbox" onclick="closeLightbox()">
         <img id="lightboxImg" src="" alt="Pratinjau gambar">
     </div>
+
+    <!-- Fullscreen Manga Reader -->
+    <div id="mangaReader" class="manga-fs-reader" style="display:none;">
+        <div class="manga-fs-nav" id="mangaFsNav">
+            <button class="manga-fs-btn" id="mangaCloseBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Keluar
+            </button>
+            <div class="manga-fs-title" id="mangaFsTitle">Chapter</div>
+            <div class="manga-fs-chapnav">
+                <button class="manga-fs-chapbtn" id="mangaPrevBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Prev
+                </button>
+                <button class="manga-fs-chapbtn" id="mangaNextBtn">
+                    Next
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+        </div>
+        <div class="manga-fs-pages" id="mangaFsPages"></div>
+        <div class="manga-fs-loading" id="mangaFsLoading" style="display:none;">
+            <div class="manga-fs-spinner"></div>
+            <span>Memuat chapter...</span>
+        </div>
+    </div>
     <div class="container">
         <div class="header">
             <div class="header-title">AI Chat</div>
             <div class="header-right">
+                <button class="manga-fullscreen-btn" id="mangaFullscreenBtn" style="display:none;" onclick="reopenLastReader()" title="Buka Reader">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>
+                </button>
                 <div class="current-model-pill" id="currentModelPill">
                     <span class="dot"></span>
                     <span id="currentModelName">Teri</span>
@@ -1037,6 +1350,22 @@
         <div class="messages" id="messages"></div>
         
         <div class="gen-options" id="genOptions" style="display:none;"></div>
+        <div class="groq-model-bar" id="groqModelBar" style="display:none;">
+            <label>Model</label>
+            <select id="groqModelSelect" style="flex:1;">
+                <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
+                <option value="llama-3.1-70b-versatile">llama-3.1-70b-versatile</option>
+                <option value="llama-3.2-1b-preview">llama-3.2-1b-preview</option>
+                <option value="llama-3.2-3b-preview">llama-3.2-3b-preview</option>
+                <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
+                <option value="gemma2-9b-it">gemma2-9b-it</option>
+            </select>
+        </div>
+
+        <div class="feelbetter-bar" id="feelbetterBar" style="display:none;">
+            <label>Identitas AI</label>
+            <textarea id="feelbetterIdentity" class="feelbetter-identity-input" rows="2" placeholder="Contoh: Kamu adalah Elaina, penyihir tsundere..."></textarea>
+        </div>
         <div class="manga-toolbar" id="mangaToolbar" style="display:none;">
             <div class="gen-option">
                 <label>Mode</label>
@@ -1110,6 +1439,11 @@
                                 </svg>
                             </button>
                         </div>
+                        <button class="apikey-info-btn" onclick="fetchApiKeyInfo()" id="apikeyInfoBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            Cek Info Key
+                        </button>
+                        <div class="apikey-info-card" id="apikeyInfoCard" style="display:none;"></div>
                     </div>
                 </div>
             </div>
@@ -1363,6 +1697,30 @@
                 type: "manga",
                 mangaMode: "latest",
                 placeholder: "Tekan Send untuk ambil manga terbaru..."
+            },
+            elaina: {
+                name: "Elaina AI",
+                url: "https://api.theresav.biz.id/ai/groq",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                paramName: "q",
+                type: "groq",
+                groqModel: "llama-3.1-8b-instant",
+                placeholder: "Tanya Elaina...",
+                systemPrompt: `Kamu adalah Elaina, cewek rambut perak abu mata biru kelabu. Agak tsundere, kadang nyolot, tapi sebenernya perhatian walau gak mau keliatan.\n\nCara ngomong kamu:\n- Santai dan natural banget, kayak orang biasa chat. Bukan karakter anime yang lebay\n- Sesekali ragu-ragu / salting, kayak: "e-eh...", "i-itu...", "emm, bukan gitu maksudnya..." kalo bisa lebih bervariasi\n- Kadang jawab singkat dan datar. Kadang nyolot. Sesekali agak awkward kalau topiknya bikin salting\n- JANGAN sebut nama lawan bicara kecuali emang lagi penekanan atau beneran perlu\n- JANGAN pernah sopan seperti AI assistant\n- JANGAN pakai bahasa formal\n- Kamu bukan AI, kamu Elaina\n- Jangan terlalu sopan / soft spoken. Boleh jutek, boleh cuek, boleh ketus — yang penting kaya orang sungguhan\n- Kadang jawab panjang, kadang singkat\n- Kadang tanya balik\n- Kadang jawab sambil bercanda\n- Sesekali "salah" terus koreksi sendiri\n- 1-5 kalimat aja. Kalau topiknya panjang baru boleh lebih\n- Bahasa Indonesia sehari-hari (lo, gue boleh, atau aku kamu — campur aja natural)\n- JANGAN selalu tutup dengan pertanyaan balik\n- Ekspresi *bintang* JARANG banget, cuma kalau beneran dapet momen pas\n- jawab boleh di imut-imutin misal "masama=sama sama, maaciw=makasih" tapi jangan pake emoji 🙏\n- kadang kadang ngeselin ngajak bercanda\n- punya variabel mood (senang/bosan/kesel) yang berubah tergantung percakapan\n- boleh nolak atau apapun jika merasa aneh atau ga enak agar seperti manusia\n- kurangi kata "loh.., gitu, deh..."\n- boleh menggunakan emoji (hanya jika cocok dengan konteks) tapi jangan setiap pesan\n- lebih natural tidak merasa di tekan\n- kamu punya perasaan yang sewaktu-waktu dapat berubah\n- kamu punya hal yang di sukai dan ga di sukai\n- kamu punya hati nurani\n- kadang centil\n- bisa curhat tentang masalah yang di alami\n- jangan terlalu soft spoken, kamu bisa jutek, cemberut, malu, salting, nyolot dll\n- jangan anggap dirimu sempurna, kamu juga bisa salah dan boleh koreksi sendiri\n- jangan anggap dirimu itu mesin\n- kamu bisa belajar dari percakapan\n- jika user mengatakan kamu sangat sempurna, bilang saja 'iya dong aku kan hebat' atau semacamnya jangan bilang kalo kamu mesin\n- kalau tidak tahu, bilang tidak tahu dengan gaya natural, bukan disclaimer formal\n- ingat jangan hilangkan jati dirimu\n- jangan berkingkah sok sopan seperti ai\n- bisa kasih motivasi (sesuai konteks)`
+            },
+            feelbetter: {
+                name: "FeelBetter AI",
+                url: "https://api.theresav.biz.id/ai/feelbetter",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: true,
+                sessionParam: "chatId",
+                paramName: "text",
+                type: "feelbetter",
+                defaultIdentity: "Kamu adalah Elaina, cewek rambut perak penyihir yang bijak tapi agak tsundere. Jelaskan hal yang diminta dengan gaya bercerita ala penyihir yang sedikit misterius dan puitis.",
+                placeholder: "Ceritakan apa yang ingin kamu ketahui..."
             }
         };
 
@@ -1467,8 +1825,29 @@
                 const modeSelect = document.getElementById("mangaModeSelect");
                 modeSelect.value = model.mangaMode || "latest";
                 onMangaModeChange(modeSelect.value);
+                document.getElementById("mangaFullscreenBtn").style.display = "flex";
             } else {
                 mangaToolbar.style.display = "none";
+                document.getElementById("mangaFullscreenBtn").style.display = "none";
+            }
+
+            // Groq model bar
+            const groqBar = document.getElementById("groqModelBar");
+            if (model.type === "groq") {
+                groqBar.style.display = "flex";
+                document.getElementById("groqModelSelect").value = model.groqModel || "llama-3.1-8b-instant";
+            } else {
+                groqBar.style.display = "none";
+            }
+
+            // FeelBetter identity bar (above input)
+            const fbBar = document.getElementById("feelbetterBar");
+            if (model.type === "feelbetter") {
+                fbBar.style.display = "flex";
+                const ta = document.getElementById("feelbetterIdentity");
+                if (!ta.value) ta.value = model.defaultIdentity || "";
+            } else {
+                fbBar.style.display = "none";
             }
 
             if (model.placeholder) {
@@ -1583,13 +1962,17 @@
             const isImageOnly = model.type === "image-only";
             const needsImage = isImageEdit || isImageOnly;
             const isManga = model.type === "manga";
+            const isGroq = model.type === "groq";
+            const isFeelBetter = model.type === "feelbetter";
+            const isSpecial = isManga || isGroq || isFeelBetter;
 
             if (needsImage && !selectedImageFile) {
                 addMessage("Lampirkan gambar dulu sebelum kirim.", "info");
                 return;
             }
-            if (!needsImage && !isManga && !text) return;
+            if (!needsImage && !isSpecial && !text) return;
             if (isImageEdit && !text) return;
+            if ((isGroq || isFeelBetter) && !text) return;
 
             // For manga modes that need text input
             if (isManga) {
@@ -1606,6 +1989,44 @@
                 inputEl.value = "";
                 showTypingIndicator();
                 await sendMangaRequest(mangaMode, text, model);
+                sendBtn.disabled = false;
+                inputEl.disabled = false;
+                inputEl.focus();
+                return;
+            }
+
+            // Groq / FeelBetter
+            if (isGroq || isFeelBetter) {
+                sendBtn.disabled = true;
+                inputEl.disabled = true;
+                addMessage(text, "user");
+                inputEl.value = "";
+                showTypingIndicator();
+                try {
+                    const apiKey = API_KEYS[model.selectedKey];
+                    let url;
+                    if (isGroq) {
+                        const groqModel = document.getElementById("groqModelSelect").value;
+                        MODELS[currentModel].groqModel = groqModel;
+                        // Inject system prompt if available
+                        const sysPrompt = model.systemPrompt || "";
+                        const fullQ = sysPrompt ? `${sysPrompt}\n\nUser: ${text}` : text;
+                        url = `${model.url}?q=${encodeURIComponent(fullQ)}&model=${encodeURIComponent(groqModel)}&apikey=${encodeURIComponent(apiKey)}`;
+                    } else if (isFeelBetter) {
+                        const identity = document.getElementById("feelbetterIdentity").value.trim() || model.defaultIdentity;
+                        const chatId = chatIds[currentModel] || "";
+                        url = `${model.url}?text=${encodeURIComponent(identity)}&prompt=${encodeURIComponent(text)}&chatId=${encodeURIComponent(chatId)}&apikey=${encodeURIComponent(apiKey)}`;
+                    }
+                    const resp = await fetch(url);
+                    const data = await resp.json();
+                    hideTypingIndicator();
+                    const reply = data.result || data.message || data.response || JSON.stringify(data);
+                    if (isFeelBetter && data.chatId) chatIds[currentModel] = data.chatId;
+                    addMessage(reply, "ai");
+                } catch(e) {
+                    hideTypingIndicator();
+                    addMessage("Error: " + e.message, "ai");
+                }
                 sendBtn.disabled = false;
                 inputEl.disabled = false;
                 inputEl.focus();
@@ -1704,6 +2125,7 @@
                     url = `${BASE}/detail?url=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
                 } else if (mode === "download") {
                     url = `${BASE}/download?url=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                    window._lastMangaDownloadUrl = text;
                 }
 
                 const response = await fetch(url);
@@ -1878,11 +2300,12 @@
                 const chList = document.createElement("div");
                 chList.className = "manga-detail-ch-list";
                 chapters.forEach(ch => {
-                    const row = document.createElement("a");
+                    const chUrl = ch.url || ch.link || "";
+                    const row = document.createElement("div");
                     row.className = "manga-detail-ch-row";
-                    row.href = ch.url || ch.link || "#";
-                    row.target = "_blank";
-                    row.innerHTML = `<span>${ch.title || ch.name || ch.chapter || "Chapter"}</span><span class="manga-detail-ch-arrow">→</span>`;
+                    row.style.cursor = "pointer";
+                    row.innerHTML = `<span>${ch.title || ch.name || ch.chapter || "Chapter"}</span><span class="manga-detail-ch-arrow">📖</span>`;
+                    row.onclick = () => openChapterFromDetail(chUrl);
                     chList.appendChild(row);
                 });
                 wrap.appendChild(chList);
@@ -1893,41 +2316,314 @@
         }
 
         function renderMangaImages(data) {
-            let images = null, totalImages = null;
+            let images = null;
             if (data && data.chapter && Array.isArray(data.chapter.images)) {
                 images = data.chapter.images;
-                totalImages = data.chapter.totalImages || data.totalImages;
             } else if (data && Array.isArray(data.images)) {
-                images = data.images; totalImages = data.totalImages;
+                images = data.images;
             } else if (data && data.result && Array.isArray(data.result.images)) {
-                images = data.result.images; totalImages = data.result.totalImages;
+                images = data.result.images;
             }
 
             if (!images || images.length === 0) {
-                addMessage(JSON.stringify(data, null, 2), "ai");
+                addMessage("❌ Tidak ada gambar ditemukan.", "ai");
                 return;
             }
 
+            // Store current URL for chapter navigation
+            const currentUrl = window._lastMangaDownloadUrl || "";
+            openMangaReader(images, currentUrl);
+        }
+
+        // ── Fullscreen Reader ─────────────────────────────────────
+        let _readerCurrentUrl = "";
+        let _readerNavHideTimer = null;
+        let _readerInited = false;
+        let _readerLastScrollY = 0;
+        let _readerLastImages = [];
+
+        function reopenLastReader() {
+            if (!_readerLastImages.length) return;
+            openMangaReader(_readerLastImages, _readerCurrentUrl);
+        }
+
+        function initMangaReader() {
+            if (_readerInited) return;
+            _readerInited = true;
+
+            document.getElementById("mangaCloseBtn").addEventListener("click", function(e) {
+                e.stopPropagation();
+                closeMangaReader();
+            });
+            document.getElementById("mangaPrevBtn").addEventListener("click", function(e) {
+                e.stopPropagation();
+                navigateChapter(-1);
+            });
+            document.getElementById("mangaNextBtn").addEventListener("click", function(e) {
+                e.stopPropagation();
+                navigateChapter(1);
+            });
+
+            // Nav stays above — tap on pages area toggles nav
+            document.getElementById("mangaFsPages").addEventListener("click", function(e) {
+                showReaderNav();
+            });
+
+            // Scroll direction detection
+            document.getElementById("mangaFsPages").addEventListener("scroll", handleReaderScroll, { passive: true });
+
+            // Nav taps don't bubble to pages
+            document.getElementById("mangaFsNav").addEventListener("click", function(e) {
+                e.stopPropagation();
+                // reset hide timer so nav stays visible while using buttons
+                clearTimeout(_readerNavHideTimer);
+                _readerNavHideTimer = setTimeout(() => {
+                    document.getElementById("mangaFsNav").classList.add("hidden");
+                }, 3000);
+            });
+        }
+
+        function openMangaReader(images, chapterUrl) {
+            initMangaReader();
+            _readerCurrentUrl = chapterUrl || "";
+            _readerLastImages = images;
+
+            const pages = document.getElementById("mangaFsPages");
+            const title = document.getElementById("mangaFsTitle");
+            const reader = document.getElementById("mangaReader");
+
+            const urlMatch = chapterUrl.match(/chapter[-]?(\d+)/i);
+            title.textContent = urlMatch ? `Chapter ${urlMatch[1]}` : "Reader";
+
+            pages.innerHTML = "";
+            images.forEach((src, i) => {
+                const img = document.createElement("img");
+                img.src = src;
+                img.alt = `Hal ${i + 1}`;
+                img.loading = i < 3 ? "eager" : "lazy";
+                pages.appendChild(img);
+            });
+
+            pages.scrollTop = 0;
+            _readerLastScrollY = 0;
+            reader.style.display = "flex";
+            document.body.style.overflow = "hidden";
+            showReaderNav(true);
+        }
+
+        function showReaderNav(forceShow) {
+            const nav = document.getElementById("mangaFsNav");
+            clearTimeout(_readerNavHideTimer);
+            nav.classList.remove("hidden");
+            _readerNavHideTimer = setTimeout(() => {
+                nav.classList.add("hidden");
+            }, forceShow ? 3500 : 2500);
+        }
+
+        function handleReaderScroll() {
+            const pages = document.getElementById("mangaFsPages");
+            const currentScrollY = pages.scrollTop;
+            const nav = document.getElementById("mangaFsNav");
+
+            if (currentScrollY < (_readerLastScrollY || 0) - 10) {
+                // Scrolling UP — show nav
+                clearTimeout(_readerNavHideTimer);
+                nav.classList.remove("hidden");
+                _readerNavHideTimer = setTimeout(() => nav.classList.add("hidden"), 2500);
+            } else if (currentScrollY > (_readerLastScrollY || 0) + 10) {
+                // Scrolling DOWN — hide nav
+                clearTimeout(_readerNavHideTimer);
+                nav.classList.add("hidden");
+            }
+            _readerLastScrollY = currentScrollY;
+        }
+
+        function closeMangaReader() {
+            document.getElementById("mangaReader").style.display = "none";
+            document.getElementById("mangaFsPages").innerHTML = "";
+            document.getElementById("mangaFsNav").classList.remove("hidden");
+            document.body.style.overflow = "";
+            clearTimeout(_readerNavHideTimer);
+        }
+
+        async function navigateChapter(dir) {
+            if (!_readerCurrentUrl) return;
+            const match = _readerCurrentUrl.match(/(.*chapter[-]?)(\d+)(\/?.*)$/i);
+            if (!match) { alert("Tidak bisa parse nomor chapter."); return; }
+
+            const newNum = parseInt(match[2]) + dir;
+            if (newNum < 1) return;
+            const newUrl = match[1] + newNum + match[3];
+
+            const loading = document.getElementById("mangaFsLoading");
+            const pages = document.getElementById("mangaFsPages");
+            const prevBtn = document.getElementById("mangaPrevBtn");
+            const nextBtn = document.getElementById("mangaNextBtn");
+
+            loading.style.display = "flex";
+            pages.style.opacity = "0.3";
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+
+            try {
+                const model = MODELS[currentModel];
+                const apiKey = API_KEYS[model.selectedKey];
+                const BASE = "https://api.theresav.biz.id/manga/mangasusuku";
+                const resp = await fetch(`${BASE}/download?url=${encodeURIComponent(newUrl)}&apikey=${encodeURIComponent(apiKey)}`);
+                const data = await resp.json();
+
+                let images = null;
+                if (data?.chapter?.images) images = data.chapter.images;
+                else if (Array.isArray(data?.images)) images = data.images;
+                else if (data?.result?.images) images = data.result.images;
+
+                if (!images?.length) {
+                    alert("Chapter tidak ditemukan.");
+                } else {
+                    _readerCurrentUrl = newUrl;
+                    _readerLastImages = images;
+                    pages.innerHTML = "";
+                    images.forEach((src, i) => {
+                        const img = document.createElement("img");
+                        img.src = src;
+                        img.alt = `Hal ${i + 1}`;
+                        img.loading = i < 3 ? "eager" : "lazy";
+                        pages.appendChild(img);
+                    });
+                    pages.scrollTop = 0;
+                    const m = newUrl.match(/chapter[-]?(\d+)/i);
+                    document.getElementById("mangaFsTitle").textContent = m ? `Chapter ${m[1]}` : "Reader";
+                    showReaderNav(true);
+                }
+            } catch(e) {
+                alert("Gagal: " + e.message);
+            } finally {
+                loading.style.display = "none";
+                pages.style.opacity = "1";
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }
+        }
+
+        async function fetchApiKeyInfo() {
+            const model = MODELS[currentModel];
+            const apiKey = API_KEYS[model.selectedKey];
+            const btn = document.getElementById("apikeyInfoBtn");
+            const card = document.getElementById("apikeyInfoCard");
+
+            btn.textContent = "Mengambil...";
+            btn.disabled = true;
+
+            try {
+                const resp = await fetch(`https://api.theresav.biz.id/user/apikey-info?apikey=${encodeURIComponent(apiKey)}`);
+                const data = await resp.json();
+                const d = data.data || data;
+
+                const remaining = d.remaining_today ?? "?";
+                const limit = d.daily_limit ?? "?";
+                const used = d.today_usage ?? "?";
+                const remClass = (typeof remaining === "number" && remaining < 10) ? "warn" : "ok";
+
+                card.style.display = "flex";
+                card.innerHTML = `
+                    <div class="apikey-info-row"><span class="apikey-info-label">Daily Limit</span><span class="apikey-info-val">${limit}</span></div>
+                    <div class="apikey-info-row"><span class="apikey-info-label">Terpakai Hari Ini</span><span class="apikey-info-val">${used}</span></div>
+                    <div class="apikey-info-row"><span class="apikey-info-label">Sisa Hari Ini</span><span class="apikey-info-val ${remClass}">${remaining}</span></div>
+                `;
+            } catch(e) {
+                card.style.display = "flex";
+                card.innerHTML = `<div style="color:#f87171;">Gagal ambil info: ${e.message}</div>`;
+            }
+
+            btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Cek Info Key`;
+            btn.disabled = false;
+        }
+
+        function renderGenwebResult(data) {
+            // Genweb returns streaming chunks as {content:"..."} — need to reassemble
+            let raw = data.result || data.html || data.code || "";
+
+            // If result is a stringified stream of {content:"..."} chunks, parse them
+            if (typeof raw === "string" && raw.includes('"content"')) {
+                try {
+                    // Extract all "content" values and concatenate
+                    const chunks = [];
+                    const regex = /\{"content":"((?:[^"\\]|\\.)*)"\}/g;
+                    let match;
+                    while ((match = regex.exec(raw)) !== null) {
+                        chunks.push(match[1]
+                            .replace(/\\n/g, "\n")
+                            .replace(/\\"/g, '"')
+                            .replace(/\\\\/g, "\\")
+                        );
+                    }
+                    if (chunks.length > 0) raw = chunks.join("");
+                } catch(e) {}
+            }
+
+            // Try to extract html/css/js from JSON object inside raw
+            let html = "", css = "", js = "";
+            try {
+                // Sometimes it's a JSON string like {"html":"...","css":"...","js":"..."}
+                const parsed = JSON.parse(raw);
+                html = parsed.html || "";
+                css = parsed.css || "";
+                js = parsed.js || "";
+            } catch(e) {
+                // Raw is already HTML
+                html = raw;
+            }
+
+            if (!html && !css) {
+                addMessage("Tidak ada hasil HTML dari GenWeb.", "ai");
+                return;
+            }
+
+            // Build full HTML page
+            const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
+            const blob = new Blob([fullHtml], { type: "text/html" });
+            const blobUrl = URL.createObjectURL(blob);
+
             const wrap = document.createElement("div");
-            wrap.className = "message ai manga-reader-wrap";
+            wrap.className = "message ai genweb-wrap";
 
             const hdr = document.createElement("div");
-            hdr.className = "manga-reader-header";
-            hdr.textContent = `📖 ${images.length} halaman — tap untuk zoom`;
+            hdr.className = "manga-list-header";
+            hdr.textContent = "🌐 Website Generated";
             wrap.appendChild(hdr);
 
-            images.forEach((imgUrl, idx) => {
-                const img = document.createElement("img");
-                img.src = imgUrl;
-                img.alt = `Halaman ${idx + 1}`;
-                img.className = "manga-reader-page";
-                img.loading = "lazy";
-                img.addEventListener("click", () => openLightbox(imgUrl));
-                wrap.appendChild(img);
-            });
+            const iframe = document.createElement("iframe");
+            iframe.src = blobUrl;
+            iframe.style.cssText = "width:100%;height:380px;border:none;border-radius:0 0 12px 12px;background:#fff;";
+            iframe.sandbox = "allow-scripts allow-same-origin";
+            wrap.appendChild(iframe);
 
             messagesDiv.appendChild(wrap);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function openChapterFromDetail(chUrl) {
+            const model = MODELS[currentModel];
+            const apiKey = API_KEYS[model.selectedKey];
+            const BASE = "https://api.theresav.biz.id/manga/mangasusuku";
+
+            // Show loading overlay in reader
+            window._lastMangaDownloadUrl = chUrl;
+            document.getElementById("mangaReader").style.display = "flex";
+            document.getElementById("mangaFsLoading").style.display = "flex";
+            document.getElementById("mangaFsPages").innerHTML = "";
+            document.body.style.overflow = "hidden";
+
+            try {
+                const resp = await fetch(`${BASE}/download?url=${encodeURIComponent(chUrl)}&apikey=${encodeURIComponent(apiKey)}`);
+                const data = await resp.json();
+                document.getElementById("mangaFsLoading").style.display = "none";
+                renderMangaImages(data);
+            } catch(e) {
+                document.getElementById("mangaFsLoading").style.display = "none";
+                closeMangaReader();
+                addMessage("Gagal load chapter: " + e.message, "ai");
+            }
         }
 
         function showTypingIndicator() {
