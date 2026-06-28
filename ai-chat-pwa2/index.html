@@ -483,15 +483,15 @@
             width: 280px;
             max-height: 60vh;
             overflow-y: auto;
-            background: rgba(18, 18, 22, 0.95);
+            background: rgba(18, 18, 22, 0.92);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 18px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.15);
-            backdrop-filter: blur(24px) saturate(140%);
-            -webkit-backdrop-filter: blur(24px) saturate(140%);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px) saturate(120%);
+            -webkit-backdrop-filter: blur(20px) saturate(120%);
             display: none;
             flex-direction: column;
-            z-index: 200;
+            z-index: 50;
             animation: panelIn 0.18s ease;
         }
         
@@ -847,9 +847,6 @@
             flex-shrink: 0;
             align-self: flex-start;
             overflow: hidden;
-            isolation: isolate;
-            position: relative;
-            z-index: 1;
         }
 
         .manga-detail-hero {
@@ -1181,52 +1178,6 @@
             border-color: rgba(255,255,255,0.25);
         }
 
-        .markdown-msg h1, .markdown-msg h2, .markdown-msg h3 {
-            color: rgba(255,255,255,0.95);
-            font-weight: 700;
-            margin: 10px 0 4px;
-            line-height: 1.3;
-        }
-        .markdown-msg h1 { font-size: 16px; }
-        .markdown-msg h2 { font-size: 14px; }
-        .markdown-msg h3 { font-size: 13px; }
-        .markdown-msg ul { padding-left: 16px; margin: 6px 0; }
-        .markdown-msg li { margin: 3px 0; line-height: 1.5; }
-        .markdown-msg strong { color: rgba(255,255,255,0.95); font-weight: 700; }
-        .markdown-msg em { color: rgba(255,255,255,0.75); font-style: italic; }
-        .markdown-msg code {
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            padding: 1px 5px;
-            font-size: 11px;
-            font-family: monospace;
-        }
-        .markdown-msg pre {
-            background: rgba(0,0,0,0.4);
-            border-radius: 8px;
-            padding: 10px 12px;
-            overflow-x: auto;
-            margin: 8px 0;
-        }
-        .markdown-msg pre code {
-            background: none;
-            padding: 0;
-            font-size: 11px;
-            line-height: 1.6;
-        }
-        .markdown-msg blockquote {
-            border-left: 3px solid rgba(255,255,255,0.25);
-            padding: 4px 10px;
-            margin: 8px 0;
-            color: rgba(255,255,255,0.6);
-            font-style: italic;
-        }
-        .markdown-msg hr {
-            border: none;
-            border-top: 1px solid rgba(255,255,255,0.12);
-            margin: 10px 0;
-        }
-
         /* ===== FULLSCREEN MANGA READER ===== */
         .manga-fs-reader {
             position: fixed;
@@ -1398,7 +1349,6 @@
             <span>Memuat chapter...</span>
         </div>
     </div>
-
     <div class="container">
         <div class="header">
             <div class="header-title">AI Chat</div>
@@ -1422,7 +1372,22 @@
         <div class="messages" id="messages"></div>
         
         <div class="gen-options" id="genOptions" style="display:none;"></div>
+        <div class="groq-model-bar" id="groqModelBar" style="display:none;">
+            <label>Model</label>
+            <select id="groqModelSelect" style="flex:1;">
+                <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
+                <option value="llama-3.1-70b-versatile">llama-3.1-70b-versatile</option>
+                <option value="llama-3.2-1b-preview">llama-3.2-1b-preview</option>
+                <option value="llama-3.2-3b-preview">llama-3.2-3b-preview</option>
+                <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
+                <option value="gemma2-9b-it">gemma2-9b-it</option>
+            </select>
+        </div>
 
+        <div class="feelbetter-bar" id="feelbetterBar" style="display:none;">
+            <label>Identitas AI</label>
+            <textarea id="feelbetterIdentity" class="feelbetter-identity-input" rows="2" placeholder="Contoh: Kamu adalah Elaina, penyihir tsundere..."></textarea>
+        </div>
         <div class="manga-toolbar" id="mangaToolbar" style="display:none;">
             <div class="gen-option">
                 <label>Mode</label>
@@ -1479,7 +1444,6 @@
                 </select>
             </div>
         </div>
-        <div class="input-area">
             <div class="switcher" id="switcher">
                 <button class="switcher-btn" id="switcherBtn" onclick="toggleSwitcher()" title="Pilih Model & API Key">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1524,15 +1488,6 @@
                 </svg>
             </button>
             <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="handleImageSelect(event)">
-            <div class="attached-file" id="attachedFile" style="display:none;">
-                <span id="attachedFileName"></span>
-                <button onclick="clearAttachedImage()" title="Hapus lampiran">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
             <input 
                 type="text" 
                 id="input" 
@@ -1777,6 +1732,18 @@
             },
             elaina: {
                 name: "Elaina AI",
+                url: "https://api.theresav.biz.id/ai/groq",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                paramName: "q",
+                type: "groq",
+                groqModel: "llama-3.1-8b-instant",
+                placeholder: "Tanya Elaina...",
+                systemPrompt: `Kamu adalah Elaina, cewek rambut perak abu mata biru kelabu. Agak tsundere, kadang nyolot, tapi sebenernya perhatian walau gak mau keliatan.\n\nCara ngomong kamu:\n- Santai dan natural banget, kayak orang biasa chat. Bukan karakter anime yang lebay\n- Sesekali ragu-ragu / salting, kayak: "e-eh...", "i-itu...", "emm, bukan gitu maksudnya..." kalo bisa lebih bervariasi\n- Kadang jawab singkat dan datar. Kadang nyolot. Sesekali agak awkward kalau topiknya bikin salting\n- JANGAN sebut nama lawan bicara kecuali emang lagi penekanan atau beneran perlu\n- JANGAN pernah sopan seperti AI assistant\n- JANGAN pakai bahasa formal\n- Kamu bukan AI, kamu Elaina\n- Jangan terlalu sopan / soft spoken. Boleh jutek, boleh cuek, boleh ketus — yang penting kaya orang sungguhan\n- Kadang jawab panjang, kadang singkat\n- Kadang tanya balik\n- Kadang jawab sambil bercanda\n- Sesekali "salah" terus koreksi sendiri\n- 1-5 kalimat aja. Kalau topiknya panjang baru boleh lebih\n- Bahasa Indonesia sehari-hari (lo, gue boleh, atau aku kamu — campur aja natural)\n- JANGAN selalu tutup dengan pertanyaan balik\n- Ekspresi *bintang* JARANG banget, cuma kalau beneran dapet momen pas\n- jawab boleh di imut-imutin misal "masama=sama sama, maaciw=makasih" tapi jangan pake emoji 🙏\n- kadang kadang ngeselin ngajak bercanda\n- punya variabel mood (senang/bosan/kesel) yang berubah tergantung percakapan\n- boleh nolak atau apapun jika merasa aneh atau ga enak agar seperti manusia\n- kurangi kata "loh.., gitu, deh..."\n- boleh menggunakan emoji (hanya jika cocok dengan konteks) tapi jangan setiap pesan\n- lebih natural tidak merasa di tekan\n- kamu punya perasaan yang sewaktu-waktu dapat berubah\n- kamu punya hal yang di sukai dan ga di sukai\n- kamu punya hati nurani\n- kadang centil\n- bisa curhat tentang masalah yang di alami\n- jangan terlalu soft spoken, kamu bisa jutek, cemberut, malu, salting, nyolot dll\n- jangan anggap dirimu sempurna, kamu juga bisa salah dan boleh koreksi sendiri\n- jangan anggap dirimu itu mesin\n- kamu bisa belajar dari percakapan\n- jika user mengatakan kamu sangat sempurna, bilang saja 'iya dong aku kan hebat' atau semacamnya jangan bilang kalo kamu mesin\n- kalau tidak tahu, bilang tidak tahu dengan gaya natural, bukan disclaimer formal\n- ingat jangan hilangkan jati dirimu\n- jangan berkingkah sok sopan seperti ai\n- bisa kasih motivasi (sesuai konteks)`
+            },
+            feelbetter: {
+                name: "FeelBetter AI",
                 url: "https://api.theresav.biz.id/ai/feelbetter",
                 usesKeys: ["key1", "key2", "key3", "key4"],
                 selectedKey: "key1",
@@ -1784,18 +1751,8 @@
                 sessionParam: "chatId",
                 paramName: "text",
                 type: "feelbetter",
-                defaultIdentity: `Kamu adalah Elaina, cewek rambut perak abu mata biru kelabu. Agak tsundere, kadang nyolot, tapi sebenernya perhatian walau gak mau keliatan.\n\nCara ngomong kamu:\n- Santai dan natural banget, kayak orang biasa chat. Bukan karakter anime yang lebay\n- Sesekali ragu-ragu / salting, kayak: "e-eh...", "i-itu...", "emm, bukan gitu maksudnya..." kalo bisa lebih bervariasi\n- Kadang jawab singkat dan datar. Kadang nyolot. Sesekali agak awkward kalau topiknya bikin salting\n- JANGAN sebut nama lawan bicara kecuali emang lagi penekanan atau beneran perlu\n- JANGAN pernah sopan seperti AI assistant\n- JANGAN pakai bahasa formal\n- Kamu bukan AI, kamu Elaina\n- Jangan terlalu sopan / soft spoken. Boleh jutek, boleh cuek, boleh ketus — yang penting kaya orang sungguhan\n- Kadang jawab panjang, kadang singkat\n- Kadang tanya balik\n- Kadang jawab sambil bercanda\n- Sesekali "salah" terus koreksi sendiri\n- 1-5 kalimat aja. Kalau topiknya panjang baru boleh lebih\n- Bahasa Indonesia sehari-hari (lo, gue boleh, atau aku kamu — campur aja natural)\n- JANGAN selalu tutup dengan pertanyaan balik\n- Ekspresi *bintang* JARANG banget\n- jawab boleh di imut-imutin misal "masama=sama sama, maaciw=makasih" tapi jangan pake emoji 🙏\n- kadang kadang ngeselin ngajak bercanda\n- punya variabel mood (senang/bosan/kesel) yang berubah tergantung percakapan\n- boleh nolak atau apapun jika merasa aneh atau ga enak agar seperti manusia\n- kurangi kata "loh.., gitu, deh..."\n- boleh menggunakan emoji (hanya jika cocok dengan konteks) tapi jangan setiap pesan\n- kamu punya perasaan yang sewaktu-waktu dapat berubah\n- kamu punya hal yang di sukai dan ga di sukai\n- kamu punya hati nurani\n- kadang centil\n- bisa curhat tentang masalah yang di alami\n- jangan anggap dirimu sempurna, kamu juga bisa salah dan boleh koreksi sendiri\n- jangan anggap dirimu itu mesin\n- kalau tidak tahu, bilang tidak tahu dengan gaya natural\n- ingat jangan hilangkan jati dirimu`,
-                placeholder: "Tanya Elaina..."
-            },
-            nexray: {
-                name: "Great AI",
-                url: "https://api.nexray.eu.cc/ai/nexray",
-                usesKeys: ["key1", "key2", "key3", "key4"],
-                selectedKey: "key1",
-                useChatId: false,
-                paramName: "text",
-                type: "nexray",
-                placeholder: "Tanya Nexray AI..."
+                defaultIdentity: "Kamu adalah Elaina, cewek rambut perak penyihir yang bijak tapi agak tsundere. Jelaskan hal yang diminta dengan gaya bercerita ala penyihir yang sedikit misterius dan puitis.",
+                placeholder: "Ceritakan apa yang ingin kamu ketahui..."
             },
             anichin: {
                 name: "Anichin",
@@ -1926,7 +1883,25 @@
                 anichinToolbar.style.display = "none";
             }
 
+            // Groq model bar
+            const groqBar = document.getElementById("groqModelBar");
+            if (model.type === "groq") {
+                groqBar.style.display = "flex";
+                document.getElementById("groqModelSelect").value = model.groqModel || "llama-3.1-8b-instant";
+            } else {
+                groqBar.style.display = "none";
+            }
+
             // FeelBetter identity bar (above input)
+            const fbBar = document.getElementById("feelbetterBar");
+            if (model.type === "feelbetter") {
+                fbBar.style.display = "flex";
+                const ta = document.getElementById("feelbetterIdentity");
+                if (!ta.value) ta.value = model.defaultIdentity || "";
+            } else {
+                fbBar.style.display = "none";
+            }
+
             if (model.placeholder) {
                 inputEl.placeholder = model.placeholder;
             } else if (model.type === "image-edit") {
@@ -2051,10 +2026,10 @@
             const isImageOnly = model.type === "image-only";
             const needsImage = isImageEdit || isImageOnly;
             const isManga = model.type === "manga";
+            const isGroq = model.type === "groq";
             const isFeelBetter = model.type === "feelbetter";
             const isAnichin = model.type === "anichin";
-            const isNexray = model.type === "nexray";
-            const isSpecial = isManga || isFeelBetter || isAnichin || isNexray;
+            const isSpecial = isManga || isGroq || isFeelBetter || isAnichin;
 
             if (needsImage && !selectedImageFile) {
                 addMessage("Lampirkan gambar dulu sebelum kirim.", "info");
@@ -2062,31 +2037,7 @@
             }
             if (!needsImage && !isSpecial && !text) return;
             if (isImageEdit && !text) return;
-            if (isFeelBetter && !text) return;
-
-            // Nexray AI
-            if (isNexray) {
-                if (!text) return;
-                sendBtn.disabled = true;
-                inputEl.disabled = true;
-                addMessage(text, "user");
-                inputEl.value = "";
-                showTypingIndicator();
-                try {
-                    const resp = await fetch(`${model.url}?text=${encodeURIComponent(text)}`);
-                    const data = await resp.json();
-                    hideTypingIndicator();
-                    const reply = data.result || data.message || JSON.stringify(data);
-                    addMarkdownMessage(reply);
-                } catch(e) {
-                    hideTypingIndicator();
-                    addMessage("Error: " + e.message, "ai");
-                }
-                sendBtn.disabled = false;
-                inputEl.disabled = false;
-                inputEl.focus();
-                return;
-            }
+            if ((isGroq || isFeelBetter) && !text) return;
 
             // For manga modes that need text input
             if (isManga) {
@@ -2109,8 +2060,8 @@
                 return;
             }
 
-            // FeelBetter / Elaina AI
-            if (isFeelBetter) {
+            // Groq / FeelBetter
+            if (isGroq || isFeelBetter) {
                 sendBtn.disabled = true;
                 inputEl.disabled = true;
                 addMessage(text, "user");
@@ -2118,9 +2069,19 @@
                 showTypingIndicator();
                 try {
                     const apiKey = API_KEYS[model.selectedKey];
-                    const identity = model.defaultIdentity || "";
-                    const chatId = chatIds[currentModel] || "";
-                    const url = `${model.url}?text=${encodeURIComponent(identity)}&prompt=${encodeURIComponent(text)}&chatId=${encodeURIComponent(chatId)}&apikey=${encodeURIComponent(apiKey)}`;
+                    let url;
+                    if (isGroq) {
+                        const groqModel = document.getElementById("groqModelSelect").value;
+                        MODELS[currentModel].groqModel = groqModel;
+                        // Inject system prompt if available
+                        const sysPrompt = model.systemPrompt || "";
+                        const fullQ = sysPrompt ? `${sysPrompt}\n\nUser: ${text}` : text;
+                        url = `${model.url}?q=${encodeURIComponent(fullQ)}&model=${encodeURIComponent(groqModel)}&apikey=${encodeURIComponent(apiKey)}`;
+                    } else if (isFeelBetter) {
+                        const identity = document.getElementById("feelbetterIdentity").value.trim() || model.defaultIdentity;
+                        const chatId = chatIds[currentModel] || "";
+                        url = `${model.url}?text=${encodeURIComponent(identity)}&prompt=${encodeURIComponent(text)}&chatId=${encodeURIComponent(chatId)}&apikey=${encodeURIComponent(apiKey)}`;
+                    }
                     const resp = await fetch(url);
                     const data = await resp.json();
                     hideTypingIndicator();
@@ -2154,12 +2115,6 @@
                 inputEl.focus();
                 return;
             }
-
-            // Normal models (Teri AI, Claude, image tools, dll)
-            sendBtn.disabled = true;
-            inputEl.disabled = true;
-
-            const thumbnailUrl = selectedImageFile ? URL.createObjectURL(selectedImageFile) : null;
             addMessage(text, "user", thumbnailUrl);
             inputEl.value = "";
             showTypingIndicator();
@@ -2209,9 +2164,6 @@
                         break;
                     }
                     lastErrorMessage = outcome.error;
-
-                    const isRateLimit = /rate.?limit|limit.*(harian|tercapai|habis|exceed)|terlalu banyak request|daily limit/i.test(lastErrorMessage || "");
-                    if (isRateLimit) break;
                 } catch (error) {
                     lastErrorMessage = error.message;
                 }
@@ -2881,7 +2833,6 @@
         async function fetchApiKeyInfo() {
             const model = MODELS[currentModel];
             const apiKey = API_KEYS[model.selectedKey];
-            const btn = document.getElementById("apikeyInfoBtn");
             const card = document.getElementById("apikeyInfoCard");
 
             btn.textContent = "Mengambil...";
@@ -2997,50 +2948,6 @@
                 closeMangaReader();
                 addMessage("Gagal load chapter: " + e.message, "ai");
             }
-        }
-
-        function parseMarkdown(text) {
-            return text
-                // Code blocks
-                .replace(/```[\s\S]*?```/g, m => {
-                    const code = m.replace(/```[^\n]*\n?/, '').replace(/```$/, '');
-                    return `<pre><code>${code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></pre>`;
-                })
-                // Horizontal rule
-                .replace(/^---+$/gm, '<hr>')
-                // Headers
-                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-                // Bold
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                // Italic
-                .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                // Inline code
-                .replace(/`([^`]+)`/g, '<code>$1</code>')
-                // Blockquote
-                .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-                // Unordered list items
-                .replace(/^\*   (.+)$/gm, '<li>$1</li>')
-                .replace(/^-   (.+)$/gm, '<li>$1</li>')
-                .replace(/^\*  (.+)$/gm, '<li>$1</li>')
-                .replace(/^-  (.+)$/gm, '<li>$1</li>')
-                .replace(/^\* (.+)$/gm, '<li>$1</li>')
-                .replace(/^- (.+)$/gm, '<li>$1</li>')
-                // Numbered list
-                .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-                // Wrap consecutive <li> in <ul>
-                .replace(/(<li>[\s\S]+?<\/li>)(\n<li>[\s\S]+?<\/li>)*/g, m => `<ul>${m}</ul>`)
-                // Newlines to <br> (skip if already block element)
-                .replace(/\n(?!<(?:h[1-3]|ul|li|pre|hr|blockquote))/g, '<br>');
-        }
-
-        function addMarkdownMessage(text) {
-            const el = document.createElement("div");
-            el.className = "message ai markdown-msg";
-            el.innerHTML = parseMarkdown(text);
-            messagesDiv.appendChild(el);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
         function showTypingIndicator() {
