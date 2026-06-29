@@ -2133,7 +2133,6 @@
                 }
                 sendBtn.disabled = false;
                 inputEl.disabled = false;
-                inputEl.focus();
                 return;
             }
 
@@ -2154,7 +2153,6 @@
                 await sendMangaRequest(mangaMode, text, model);
                 sendBtn.disabled = false;
                 inputEl.disabled = false;
-                inputEl.focus();
                 return;
             }
 
@@ -2182,7 +2180,6 @@
                 }
                 sendBtn.disabled = false;
                 inputEl.disabled = false;
-                inputEl.focus();
                 return;
             }
 
@@ -2200,7 +2197,6 @@
                 await sendDonghubRequest(mode, text);
                 sendBtn.disabled = false;
                 inputEl.disabled = false;
-                inputEl.focus();
                 return;
             }
 
@@ -2218,7 +2214,6 @@
                 await sendAnichinRequest(anichinMode, text, model);
                 sendBtn.disabled = false;
                 inputEl.disabled = false;
-                inputEl.focus();
                 return;
             }
 
@@ -2298,7 +2293,6 @@
 
             sendBtn.disabled = false;
             inputEl.disabled = false;
-            inputEl.focus();
         }
 
         async function sendMangaRequest(mode, text, model) {

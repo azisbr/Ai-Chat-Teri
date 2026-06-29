@@ -1,4 +1,4 @@
-const CACHE_NAME = "ai-chat-cache-v19";
+const CACHE_NAME = "ai-chat-cache-v21";
 const APP_SHELL = [
   "./",
   "./index.html",
