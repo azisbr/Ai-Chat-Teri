@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>AI Chat </title>
+    <title>Zyy Asistance </title>
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b0b0e">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="AI Chat">
+    <meta name="apple-mobile-web-app-title" content="Zyy Asistance">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" href="icon-192.png">
 
@@ -143,6 +143,8 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            position: relative;
+            z-index: 1;
         }
         
         .message {
@@ -442,6 +444,7 @@
             backdrop-filter: blur(16px) saturate(140%);
             -webkit-backdrop-filter: blur(16px) saturate(140%);
             position: relative;
+            z-index: 10;
             align-items: center;
         }
         
@@ -900,10 +903,8 @@
             line-height: 1.6;
             padding: 10px 12px;
             border-bottom: 1px solid rgba(255,255,255,0.07);
-            display: -webkit-box;
-            -webkit-line-clamp: 5;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            max-height: 130px;
+            overflow-y: auto;
         }
 
         .manga-detail-ch-header {
@@ -1413,7 +1414,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="header-title">AI Chat</div>
+            <div class="header-title">Zyy Asistance</div>
             <div class="header-right">
                 <button class="manga-fullscreen-btn" id="mangaFullscreenBtn" style="display:none;" onclick="reopenLastReader()" title="Buka Reader">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">

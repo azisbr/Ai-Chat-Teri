@@ -1,6 +1,6 @@
 {
-  "name": "AI Chat",
-  "short_name": "AI Chat",
+  "name": "Zyy Asistance",
+  "short_name": "Zyy Asistance",
   "description": "Chat dengan berbagai model AI, edit & generate gambar.",
   "start_url": "./index.html",
   "scope": "./",
