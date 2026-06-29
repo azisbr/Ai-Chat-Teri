@@ -2985,6 +2985,14 @@
             }
         }
 
+        function donghubShowSlug(url) {
+            let slug = url.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
+            // url di list (home/ongoing/completed/schedule) suka nunjuk ke episode terbaru,
+            // bukan ke halaman series-nya. Potong suffix episode-nya biar dapet slug series asli.
+            slug = slug.replace(/-episode-\d+(-subtitle-indonesia)?$/i, '');
+            return slug;
+        }
+
         function renderDonghubList(data, mode) {
             const items = data.items || [];
             if (!items.length) { addMessage("❌ Tidak ada hasil.", "ai"); return; }
@@ -3013,7 +3021,7 @@
                 meta.textContent = [item.type, item.status, item.episode].filter(Boolean).join(" · ");
                 info.appendChild(t); info.appendChild(meta);
                 if (item.url) {
-                    const slug = item.url.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
+                    const slug = donghubShowSlug(item.url);
                     const a = document.createElement("div"); a.className = "manga-card-link";
                     a.style.cursor = "pointer"; a.textContent = "Detail →";
                     a.onclick = () => openDonghubDetail(slug);
@@ -3050,7 +3058,7 @@
                     row.style.cursor = "pointer";
                     row.innerHTML = `<span>${item.title || item.name || "—"}</span><span class="manga-detail-ch-arrow">→</span>`;
                     if (item.url) {
-                        const slug = item.url.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
+                        const slug = donghubShowSlug(item.url);
                         row.onclick = () => openDonghubDetail(slug);
                     }
                     scroll.appendChild(row);
@@ -3100,7 +3108,7 @@
                 eps.forEach(ep => {
                     const row = document.createElement("div"); row.className = "manga-detail-ch-row";
                     row.style.cursor = "pointer";
-                    row.innerHTML = `<span>${ep.title || "Episode " + ep.episode}</span><span class="manga-detail-ch-arrow">▶</span>`;
+                    row.innerHTML = `<span>Episode ${ep.episode || "?"}</span><span class="manga-detail-ch-arrow">▶</span>`;
                     if (ep.url) {
                         const slug = ep.url.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
                         row.onclick = () => openDonghubEpisode(slug);
