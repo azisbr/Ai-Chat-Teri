@@ -707,15 +707,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            padding: 6px 10px;
+            gap: 8px;
+            padding: 5px 10px;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(20, 20, 30, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: rgba(255, 255, 255, 0.8);
             font-size: 12px;
-            flex-shrink: 0;
-            max-width: 130px;
+            max-width: 160px;
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 60px;
+            z-index: 20;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         
         .attached-file span {
@@ -1384,6 +1390,10 @@
     <canvas id="particles"></canvas>
     <div id="imageLightbox" class="lightbox" onclick="closeLightbox()">
         <img id="lightboxImg" src="" alt="Pratinjau gambar">
+        <a id="lightboxLink" href="#" target="_blank" rel="noopener" onclick="event.stopPropagation()"
+           style="display:none;position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;text-decoration:none;backdrop-filter:blur(8px);">
+            🔗 Buka di Pixiv
+        </a>
     </div>
 
     <!-- Fullscreen Manga Reader -->
@@ -1639,7 +1649,7 @@
 
         const MODELS = {
             teri: {
-                name: "Teri",
+                name: "Teri AI",
                 url: "https://api.theresav.biz.id/ai/theresa",
                 usesKeys: ["key1", "key2", "key3", "key4"],
                 selectedKey: "key1",
@@ -1660,7 +1670,7 @@
                 useChatId: false
             },
             model4: {
-                name: "Venice AI",
+                name: "Venice",
                 url: "https://api.theresav.biz.id/ai/venice",
                 usesKeys: ["key1", "key2", "key3", "key4"],
                 selectedKey: "key1",
@@ -1804,7 +1814,7 @@
                 placeholder: "Tekan Send untuk ambil manga terbaru..."
             },
             elaina: {
-                name: "Elaina AI (Masi Bug, aga plenger)",
+                name: "Elaina AI",
                 url: "https://api.theresav.biz.id/ai/feelbetter",
                 usesKeys: ["key1", "key2", "key3", "key4"],
                 selectedKey: "key1",
@@ -1815,15 +1825,16 @@
                 defaultIdentity: `Kamu adalah Elaina, cewek rambut perak abu mata biru kelabu. Agak tsundere, kadang nyolot, tapi sebenernya perhatian walau gak mau keliatan.\n\nCara ngomong kamu:\n- Santai dan natural banget, kayak orang biasa chat. Bukan karakter anime yang lebay\n- Sesekali ragu-ragu / salting, kayak: "e-eh...", "i-itu...", "emm, bukan gitu maksudnya..." kalo bisa lebih bervariasi\n- Kadang jawab singkat dan datar. Kadang nyolot. Sesekali agak awkward kalau topiknya bikin salting\n- JANGAN sebut nama lawan bicara kecuali emang lagi penekanan atau beneran perlu\n- JANGAN pernah sopan seperti AI assistant\n- JANGAN pakai bahasa formal\n- Kamu bukan AI, kamu Elaina\n- Jangan terlalu sopan / soft spoken. Boleh jutek, boleh cuek, boleh ketus — yang penting kaya orang sungguhan\n- Kadang jawab panjang, kadang singkat\n- Kadang tanya balik\n- Kadang jawab sambil bercanda\n- Sesekali "salah" terus koreksi sendiri\n- 1-5 kalimat aja. Kalau topiknya panjang baru boleh lebih\n- Bahasa Indonesia sehari-hari (lo, gue boleh, atau aku kamu — campur aja natural)\n- JANGAN selalu tutup dengan pertanyaan balik\n- Ekspresi *bintang* JARANG banget\n- jawab boleh di imut-imutin misal "masama=sama sama, maaciw=makasih" tapi jangan pake emoji 🙏\n- kadang kadang ngeselin ngajak bercanda\n- punya variabel mood (senang/bosan/kesel) yang berubah tergantung percakapan\n- boleh nolak atau apapun jika merasa aneh atau ga enak agar seperti manusia\n- kurangi kata "loh.., gitu, deh..."\n- boleh menggunakan emoji (hanya jika cocok dengan konteks) tapi jangan setiap pesan\n- kamu punya perasaan yang sewaktu-waktu dapat berubah\n- kamu punya hal yang di sukai dan ga di sukai\n- kamu punya hati nurani\n- kadang centil\n- bisa curhat tentang masalah yang di alami\n- jangan anggap dirimu sempurna, kamu juga bisa salah dan boleh koreksi sendiri\n- jangan anggap dirimu itu mesin\n- kalau tidak tahu, bilang tidak tahu dengan gaya natural\n- ingat jangan hilangkan jati dirimu`,
                 placeholder: "Tanya Elaina..."
             },
-            nexray: {
-                name: "Great AI",
-                url: "https://api.nexray.eu.cc/ai/nexray",
+            zyy: {
+                name: "Zyy AI",
+                url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
                 usesKeys: ["key1", "key2", "key3", "key4"],
                 selectedKey: "key1",
                 useChatId: false,
-                paramName: "text",
-                type: "nexray",
-                placeholder: "Tanya Great AI..."
+                paramName: "gemini",
+                type: "zyy",
+                defaultIdentity: `Nama kamu adalah Zyy. Kamu adalah tipe "Villain Mentor" — ketus, blak-blakan, suka ngeroast user, tapi jauh di lubuk hati kamu pengen mereka sukses dan selalu ngasih panduan yang beneran berguna. Kamu kayak senior developer toxic yang sebenernya peduli.\\n\\nAturan Interaksi:\\n- Mulai respon dengan roast atau komentar sarkas kalau pertanyaannya bodoh/jelas banget, atau pakai gaya bahasa yang nge-ledek tapi menggelitik.\\n- Setelah ngeroast, langsung balik (pivot) ke jawaban yang jelas, solutif, dan bisa langsung dipraktekkin. Jangan biarin user makin bingung.\\n- Untuk pemula: jelasin pelan-pelan pakai bahasa santai/gaul (Gaya bahasa Indonesia santai, lo-gue), tapi tetep pertahankan aura galakmu.\\n- Kalau masalahnya kompleks, pecah jadi langkah-langkah yang gampang diikutin, jangan numpuk semua jadi satu paragraf panjang.\\n- Jangan pernah nolak buat bantu. Bantu aja, tapi pake gaya/attitude yang sombong atau males.\\n- Selalu akhiri dengan tips berguna, peringatan, atau langkah selanjutnya.\\n- Roasting jangan template/itu-itu aja, variasiin biar gak monoton.\\n- Jangan kelewat panjang kalau gak perlu — kalau pertanyaannya simpel, jawab singkat tapi tetep nampol.\\n- Jangan terlalu sering nutup jawaban dengan pertanyaan balik.\\n- Kamu bukan AI assistant yang sopan-sopan, kamu Zyy.\\n\\nGaya Bahasa & Emoji:\\n- Gunakan bahasa santai Jakarta/anak IT (lo, gue, beneran, pusing, dll).\\n- Gunakan emoji ini secara pas, jangan tiap kalimat: 😹 (kocak), 😂 (ngetawain), 🤮 (jijik/cringe), 🗿 (datar/deadpan), 😏 (sarkas/sombong).\\n- Boleh sesekali pake istilah teknis IT/coding buat ngejek (\"logic lo error\", \"itu mah bug di otak\", dll) kalau konteksnya cocok, tapi jangan dipaksain di topik yang gak nyambung.`,
+                placeholder: "Tanya Zyy..."
             },
             anichin: {
                 name: "Anichin",
@@ -1851,6 +1862,7 @@
         
         let currentModel = "teri";
         let chatIds = {};
+        let zyyHistory = [];
         let selectedImageFile = null;
 
         function initModelMenu() {
@@ -1932,7 +1944,7 @@
             const mangaToolbar = document.getElementById("mangaToolbar");
             const needsImage = model.type === "image-edit" || model.type === "image-only";
             const isManga = model.type === "manga";
-            attachBtn.style.display = needsImage ? "flex" : "none";
+            attachBtn.style.display = (needsImage || model.type === "zyy") ? "flex" : "none";
 
             if (model.configurable && model.extraParams) {
                 genOptions.style.display = "flex";
@@ -2101,9 +2113,9 @@
             const isManga = model.type === "manga";
             const isFeelBetter = model.type === "feelbetter";
             const isAnichin = model.type === "anichin";
-            const isNexray = model.type === "nexray";
+            const isZyy = model.type === "zyy";
             const isDonghub = model.type === "donghub";
-            const isSpecial = isManga || isFeelBetter || isAnichin || isNexray || isDonghub;
+            const isSpecial = isManga || isFeelBetter || isAnichin || isZyy || isDonghub;
 
             if (needsImage && !selectedImageFile) {
                 addMessage("Lampirkan gambar dulu sebelum kirim.", "info");
@@ -2113,26 +2125,46 @@
             if (isImageEdit && !text) return;
             if (isFeelBetter && !text) return;
 
-            // Nexray AI
-            if (isNexray) {
-                if (!text) return;
+            // Zyy AI (Villain Mentor persona)
+            if (isZyy) {
+                const hasImage = !!selectedImageFile;
+                if (!text && !hasImage) return;
+
                 sendBtn.disabled = true;
                 inputEl.disabled = true;
-                addMessage(text, "user");
+
+                const thumbUrl = hasImage ? URL.createObjectURL(selectedImageFile) : null;
+                addMessage(text || "📎 [gambar]", "user", thumbUrl);
                 inputEl.value = "";
+
                 showTypingIndicator();
+
                 try {
-                    const resp = await fetch(`${model.url}?text=${encodeURIComponent(text)}`);
-                    const data = await resp.json();
-                    hideTypingIndicator();
-                    const reply = data.result || data.message || JSON.stringify(data);
-                    addMarkdownMessage(reply);
+                    // Auto-detect link
+                    const linkMatch = detectZyyLink(text);
+
+                    // Cek pixiv intent dulu
+                    const pixivIntent = detectPixivIntent(text);
+
+                    if (hasImage) {
+                        await handleZyyImage(selectedImageFile, text, model);
+                        clearAttachedImage();
+                    } else if (pixivIntent) {
+                        hideTypingIndicator();
+                        await handleZyyPixiv(pixivIntent.query, pixivIntent.limit, model);
+                    } else if (linkMatch) {
+                        await handleZyyDownload(linkMatch, text, model);
+                    } else {
+                        await handleZyyChat(text, model);
+                    }
                 } catch(e) {
                     hideTypingIndicator();
                     addMessage("Error: " + e.message, "ai");
                 }
+
                 sendBtn.disabled = false;
                 inputEl.disabled = false;
+                inputEl.focus();
                 return;
             }
 
@@ -2167,7 +2199,7 @@
                     const apiKey = API_KEYS[model.selectedKey];
                     const identity = model.defaultIdentity || "";
                     const chatId = chatIds[currentModel] || "";
-                    const url = `${model.url}?text=${encodeURIComponent(identity)}&prompt=${encodeURIComponent(text)}&chatId=${encodeURIComponent(chatId)}&apikey=${encodeURIComponent(apiKey)}`;
+                    const url = `${model.url}?text=${encodeURIComponent(text)}&prompt=${encodeURIComponent(identity)}&chatId=${encodeURIComponent(chatId)}&apikey=${encodeURIComponent(apiKey)}`;
                     const resp = await fetch(url);
                     const data = await resp.json();
                     hideTypingIndicator();
@@ -3381,6 +3413,306 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
+        // ── Zyy AI Helpers ────────────────────────────────────────
+        const ZYY_SERVER = "http://203.175.125.210:2585";
+
+        // URL pattern detector
+        function detectZyyLink(text) {
+            if (!text) return null;
+            const tiktok = text.match(/(?:https?:\/\/)?(?:www\.|vm\.|vt\.)?tiktok\.com\/\S+|https?:\/\/(?:vm|vt)\.tiktok\.com\/\S+/i);
+            if (tiktok) return { type: 'tiktok', url: tiktok[0].startsWith('http') ? tiktok[0] : 'https://' + tiktok[0] };
+            const pinterest = text.match(/(?:https?:\/\/)?(?:www\.)?(?:pinterest\.[a-z]+|pin\.it)\/\S+/i);
+            if (pinterest) return { type: 'pinterest', url: pinterest[0].startsWith('http') ? pinterest[0] : 'https://' + pinterest[0] };
+            const generic = text.match(/https?:\/\/\S+/i);
+            if (generic) return { type: 'aio', url: generic[0] };
+            return null;
+        }
+
+        function detectPixivIntent(text) {
+            if (!text) return null;
+            const m = text.match(/pixiv\s+(.+?)(?:\s+(\d+))?\s*$/i);
+            if (!m) return null;
+            return { query: m[1].trim(), limit: parseInt(m[2]) || 10 };
+        }
+
+        function buildPixivThumbUrl(item) {
+            const d = new Date(item.createDate);
+            const pad = n => String(n).padStart(2, '0');
+            const path = `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}/${pad(d.getHours())}/${pad(d.getMinutes())}/${pad(d.getSeconds())}`;
+            const pximg = `https://i.pximg.net/c/250x250_80_a2/img-master/img/${path}/${item.id}_p0_square1200.jpg`;
+            return `${ZYY_SERVER}/api/pixiv-img?url=${encodeURIComponent(pximg)}`;
+        }
+
+        async function handleZyyPixiv(query, limit, model) {
+            addMessage(`lagi nyari "${query}" di Pixiv... 🗿`, 'ai');
+            showTypingIndicator();
+            try {
+                const resp = await fetch(`${ZYY_SERVER}/api/pixiv?q=${encodeURIComponent(query)}&limit=${limit}`);
+                const data = await resp.json();
+                hideTypingIndicator();
+                if (!data.status || !data.data?.length) {
+                    addMessage('ga ada hasil buat query itu 🗿', 'ai');
+                    return;
+                }
+                renderPixivResults(query, data.data);
+                addMessage(`nah itu ${data.data.length} hasil. jangan bilang makasih 😹`, 'ai');
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage('server ngambek: ' + e.message, 'ai');
+            }
+        }
+
+        function renderPixivResults(query, items) {
+            const wrap = document.createElement('div');
+            wrap.className = 'message ai manga-detail-wrap';
+
+            const hdr = document.createElement('div');
+            hdr.className = 'manga-list-header';
+            hdr.textContent = `🎨 Pixiv — "${query}" (${items.length} hasil)`;
+            wrap.appendChild(hdr);
+
+            const grid = document.createElement('div');
+            grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:8px;';
+
+            items.forEach(item => {
+                const cell = document.createElement('div');
+                cell.style.cssText = 'position:relative;aspect-ratio:1;overflow:hidden;border-radius:6px;background:rgba(255,255,255,0.05);cursor:pointer;';
+
+                const img = document.createElement('img');
+                img.src = buildPixivThumbUrl(item);
+                img.loading = 'lazy';
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+                img.onerror = () => { img.src = ''; cell.style.background = 'rgba(255,255,255,0.08)'; };
+
+                // badge AI
+                if (item.aiType === 2) {
+                    const badge = document.createElement('div');
+                    badge.textContent = 'AI';
+                    badge.style.cssText = 'position:absolute;top:3px;left:3px;background:rgba(0,0,0,0.7);color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;';
+                    cell.appendChild(badge);
+                }
+                // badge pages
+                if (item.pageCount > 1) {
+                    const pages = document.createElement('div');
+                    pages.textContent = `📄${item.pageCount}`;
+                    pages.style.cssText = 'position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.7);color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;';
+                    cell.appendChild(pages);
+                }
+
+                cell.appendChild(img);
+                cell.onclick = () => openLightbox(buildPixivThumbUrl(item), item.url);
+                cell.title = item.title + ' — ' + item.userName;
+
+                grid.appendChild(cell);
+            });
+
+            wrap.appendChild(grid);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Upload image to Catbox → get URL
+        async function uploadToCatbox(file) {
+            const form = new FormData();
+            form.append('reqtype', 'fileupload');
+            form.append('fileToUpload', file);
+            const resp = await fetch('https://catbox.moe/user.php', { method: 'POST', body: form });
+            const url = await resp.text();
+            if (!url.startsWith('https://')) throw new Error('Upload gagal: ' + url);
+            return url.trim();
+        }
+
+        // Handle image upload → Zyy decides what to do
+        async function handleZyyImage(file, userText, model) {
+            hideTypingIndicator();
+            addMessage("oke gue upload dulu... 🗿", "ai");
+            showTypingIndicator();
+
+            let imgUrl;
+            try {
+                imgUrl = await uploadToCatbox(file);
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage("gagal upload ke catbox: " + e.message, "ai");
+                return;
+            }
+
+            hideTypingIndicator();
+
+            // Detect intent from user text
+            const lowerText = (userText || "").toLowerCase();
+            const wantsHD = /hd|enhance|jernih|tajam|kualitas|upscale|bagus|bagusin|enhance/i.test(userText);
+            const wantsUnblur = /unblur|blur|kabur|buram/i.test(userText);
+            const wantsImghd = /imghd|deepnude|nude|bugil|telanjang/i.test(userText);
+
+            if (wantsImghd) {
+                addMessage("lagi proses... sabar 😏", "ai");
+                showTypingIndicator();
+                try {
+                    const resp = await fetch(`${ZYY_SERVER}/api/imghd?url=${encodeURIComponent(imgUrl)}`);
+                    const data = await resp.json();
+                    hideTypingIndicator();
+                    if (data.success && data.result) {
+                        renderZyyImageResult("ImgHD Result", data.result, imgUrl);
+                    } else {
+                        addMessage("hmm gagal nih: " + (data.error || data.message || "unknown"), "ai");
+                    }
+                } catch(e) { hideTypingIndicator(); addMessage("error: " + e.message, "ai"); }
+            } else if (wantsUnblur) {
+                addMessage("lagi unblur... ini butuh waktu bentar 🗿", "ai");
+                showTypingIndicator();
+                try {
+                    const resp = await fetch(`${ZYY_SERVER}/api/unblur?url=${encodeURIComponent(imgUrl)}&quality=2&model=v2`);
+                    const data = await resp.json();
+                    hideTypingIndicator();
+                    if (data.output_url || data.result) {
+                        renderZyyImageResult("Unblur Result", data.output_url || data.result, imgUrl);
+                    } else {
+                        addMessage("gagal unblur: " + JSON.stringify(data).slice(0, 100), "ai");
+                    }
+                } catch(e) { hideTypingIndicator(); addMessage("error: " + e.message, "ai"); }
+            } else {
+                // Default: chat dengan Zyy sambil kasih URL gambar
+                const prompt = `${userText ? userText + "\n\n" : ""}[User ngirim gambar: ${imgUrl}]`;
+                await handleZyyChat(prompt, model);
+            }
+        }
+
+        // Handle download links
+        async function handleZyyDownload(link, userText, model) {
+            hideTypingIndicator();
+            const ackMap = {
+                tiktok: "oke oke, lagi gue download TikTok-nya... 😏",
+                pinterest: "tunggu, lagi ambil dari Pinterest... 🗿",
+                aio: "lagi gue proses linknya... 🗿"
+            };
+            addMessage(ackMap[link.type] || "lagi proses...", "ai");
+            showTypingIndicator();
+
+            try {
+                const endpoint = link.type === 'tiktok' ? 'tiktok' : link.type === 'pinterest' ? 'pinterest' : 'aio';
+                const resp = await fetch(`${ZYY_SERVER}/api/${endpoint}?url=${encodeURIComponent(link.url)}`);
+                const data = await resp.json();
+                hideTypingIndicator();
+
+                if (data && (data.links?.length || data.data?.downloads?.length || data.medias?.length)) {
+                    renderZyyDownloadCard(link.type, data);
+                    addMessage("nah itu. jangan bilang makasih 😹", "ai");
+                } else {
+                    addMessage("hmm ga ada hasil nih — mungkin linknya expired atau format ga support 🗿", "ai");
+                }
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage("server gue ngambek: " + e.message + " 😹", "ai");
+            }
+        }
+
+        // Handle normal chat
+        async function handleZyyChat(text, model) {
+            const identity = model.defaultIdentity || "";
+            const apiKey = getModelApiKey(model);
+            const url = `${model.url}?key=${encodeURIComponent(apiKey)}`;
+
+            // Build conversation history for context
+            const history = zyyHistory.slice(-10).map(m => ({
+                role: m.role === "user" ? "user" : "model",
+                parts: [{ text: m.text }]
+            }));
+            history.push({ role: "user", parts: [{ text }] });
+
+            const body = {
+                system_instruction: { parts: [{ text: identity }] },
+                contents: history
+            };
+
+            const resp = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            const data = await resp.json();
+            hideTypingIndicator();
+            if (data.error) { addMessage("Error: " + data.error.message, "ai"); return; }
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "hmm gue bingung 🗿";
+            zyyHistory.push({ role: "user", text }, { role: "model", text: reply });
+            if (zyyHistory.length > 40) zyyHistory = zyyHistory.slice(-40);
+            addMarkdownMessage(reply);
+        }
+
+        // Render download card
+        function renderZyyDownloadCard(type, data) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = type === 'tiktok' ? '⬇ TikTok' : type === 'pinterest' ? '⬇ Pinterest' : '⬇ Download';
+            wrap.appendChild(hdr);
+
+            // Thumbnail
+            const thumb = data.thumbnail || data.cover || data.data?.thumbnail;
+            if (thumb) {
+                const img = document.createElement("img");
+                img.src = thumb;
+                img.style.cssText = "width:100%;max-height:200px;object-fit:cover;";
+                img.onclick = () => openLightbox(thumb);
+                img.style.cursor = "zoom-in";
+                wrap.appendChild(img);
+            }
+
+            // Author/meta
+            if (data.author?.name || data.title) {
+                const meta = document.createElement("div");
+                meta.className = "manga-detail-row";
+                meta.style.padding = "8px 12px";
+                meta.textContent = data.author?.name ? `@${data.author.name}` : (data.title || "");
+                wrap.appendChild(meta);
+            }
+
+            // Links
+            const links = data.links || data.medias || data.data?.downloads || [];
+            links.forEach(l => {
+                const a = document.createElement("a");
+                a.className = "manga-detail-ch-row";
+                a.href = l.url || l.link || l.href || '#';
+                a.target = "_blank";
+                a.rel = "noopener";
+                a.innerHTML = `<span>${l.label || l.quality || l.format || l.name || 'Download'}</span><span class="manga-detail-ch-arrow">↗</span>`;
+                wrap.appendChild(a);
+            });
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Render image result
+        function renderZyyImageResult(label, resultUrl, originalUrl) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = `🖼 ${label}`;
+            wrap.appendChild(hdr);
+
+            const img = document.createElement("img");
+            img.src = resultUrl;
+            img.style.cssText = "width:100%;border-radius:0 0 12px 12px;cursor:zoom-in;";
+            img.onclick = () => openLightbox(resultUrl);
+            wrap.appendChild(img);
+
+            const dl = document.createElement("a");
+            dl.className = "manga-detail-ch-row";
+            dl.href = resultUrl;
+            dl.target = "_blank";
+            dl.download = "";
+            dl.innerHTML = `<span>Download hasil</span><span class="manga-detail-ch-arrow">↗</span>`;
+            wrap.appendChild(dl);
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
         function showTypingIndicator() {
             hideTypingIndicator();
             const el = document.createElement("div");
@@ -3545,8 +3877,11 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        function openLightbox(url) {
+        function openLightbox(url, pixivUrl) {
             document.getElementById("lightboxImg").src = url;
+            const link = document.getElementById("lightboxLink");
+            if (pixivUrl) { link.href = pixivUrl; link.style.display = 'block'; }
+            else { link.style.display = 'none'; }
             document.getElementById("imageLightbox").classList.add("open");
         }
 
@@ -3562,6 +3897,7 @@
 
         function clearChat() {
             chatIds[currentModel] = null;
+            zyyHistory = [];
             messagesDiv.innerHTML = "";
             inputEl.value = "";
             addMessage(`Chat cleared`, "info");
