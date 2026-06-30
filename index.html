@@ -3414,7 +3414,7 @@
         }
 
         // ── Zyy AI Helpers ────────────────────────────────────────
-        const ZYY_SERVER = "http://203.175.125.210:2585";
+        const ZYY_SERVER = "https://zyy-ai-one.vercel.app/api/proxy";
 
         // URL pattern detector
         function detectZyyLink(text) {
@@ -3440,14 +3440,14 @@
             const pad = n => String(n).padStart(2, '0');
             const path = `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}/${pad(d.getHours())}/${pad(d.getMinutes())}/${pad(d.getSeconds())}`;
             const pximg = `https://i.pximg.net/c/250x250_80_a2/img-master/img/${path}/${item.id}_p0_square1200.jpg`;
-            return `${ZYY_SERVER}/api/pixiv-img?url=${encodeURIComponent(pximg)}`;
+            return `${ZYY_SERVER}?path=api/pixiv-img&url=${encodeURIComponent(pximg)}`;
         }
 
         async function handleZyyPixiv(query, limit, model) {
             addMessage(`lagi nyari "${query}" di Pixiv... 🗿`, 'ai');
             showTypingIndicator();
             try {
-                const resp = await fetch(`${ZYY_SERVER}/api/pixiv?q=${encodeURIComponent(query)}&limit=${limit}`);
+                const resp = await fetch(`${ZYY_SERVER}?path=api/pixiv&q=${encodeURIComponent(query)}&limit=${limit}`);
                 const data = await resp.json();
                 hideTypingIndicator();
                 if (!data.status || !data.data?.length) {
@@ -3549,7 +3549,7 @@
                 addMessage("lagi proses... sabar 😏", "ai");
                 showTypingIndicator();
                 try {
-                    const resp = await fetch(`${ZYY_SERVER}/api/imghd?url=${encodeURIComponent(imgUrl)}`);
+                    const resp = await fetch(`${ZYY_SERVER}?path=api/imghd&url=${encodeURIComponent(imgUrl)}`);
                     const data = await resp.json();
                     hideTypingIndicator();
                     if (data.success && data.result) {
@@ -3562,7 +3562,7 @@
                 addMessage("lagi unblur... ini butuh waktu bentar 🗿", "ai");
                 showTypingIndicator();
                 try {
-                    const resp = await fetch(`${ZYY_SERVER}/api/unblur?url=${encodeURIComponent(imgUrl)}&quality=2&model=v2`);
+                    const resp = await fetch(`${ZYY_SERVER}?path=api/unblur&url=${encodeURIComponent(imgUrl)}&quality=2&model=v2`);
                     const data = await resp.json();
                     hideTypingIndicator();
                     if (data.output_url || data.result) {
@@ -3591,7 +3591,7 @@
 
             try {
                 const endpoint = link.type === 'tiktok' ? 'tiktok' : link.type === 'pinterest' ? 'pinterest' : 'aio';
-                const resp = await fetch(`${ZYY_SERVER}/api/${endpoint}?url=${encodeURIComponent(link.url)}`);
+                const resp = await fetch(`${ZYY_SERVER}?path=api/${endpoint}&url=${encodeURIComponent(link.url)}`);
                 const data = await resp.json();
                 hideTypingIndicator();
 

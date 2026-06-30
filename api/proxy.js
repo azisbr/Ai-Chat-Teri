@@ -10,8 +10,17 @@ export default async function handler(req, res) {
 
     try {
         const response = await fetch(url);
-        const data = await response.json();
-        res.status(200).json(data);
+        const contentType = response.headers.get('content-type') || '';
+        // kalau gambar (pixiv-img proxy), forward as-is
+        if (contentType.startsWith('image/')) {
+            const buffer = await response.arrayBuffer();
+            res.setHeader('Content-Type', contentType);
+            res.setHeader('Cache-Control', 'public, max-age=86400');
+            res.status(response.status).send(Buffer.from(buffer));
+        } else {
+            const data = await response.json();
+            res.status(200).json(data);
+        }
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
