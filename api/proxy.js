@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const { path, ...query } = req.query;
     const endpoint = path || '';
     const params = new URLSearchParams(query).toString();
-    const url = `http://203.175.125.210:2585/${endpoint}${params ? '?' + params : ''}`;
+    const url = `http://203.175.125.210:2485/${endpoint}${params ? '?' + params : ''}`;
 
     try {
         const fetchOpts = { method: req.method };

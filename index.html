@@ -1640,6 +1640,8 @@
             });
         })();
 
+        const GEMINI_API_KEY = "AIzaSyAGw1YDBwJxZ-inex0bIp2ZcUgxzAomgEA";
+
         const API_KEYS = {
             key1: "0Y89G",
             key2: "AAq2u",
@@ -3613,7 +3615,7 @@
         // Handle normal chat
         async function handleZyyChat(text, model) {
             const identity = model.defaultIdentity || "";
-            const apiKey = getModelApiKey(model);
+            const apiKey = GEMINI_API_KEY;
             const url = `${model.url}?key=${encodeURIComponent(apiKey)}`;
 
             // Build conversation history for context
