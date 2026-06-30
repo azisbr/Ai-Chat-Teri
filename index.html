@@ -3514,12 +3514,15 @@
         // Upload image to Catbox → get URL
         async function uploadToCatbox(file) {
             const form = new FormData();
-            form.append('reqtype', 'fileupload');
-            form.append('fileToUpload', file);
-            const resp = await fetch('https://catbox.moe/user.php', { method: 'POST', body: form });
-            const url = await resp.text();
-            if (!url.startsWith('https://')) throw new Error('Upload gagal: ' + url);
-            return url.trim();
+            form.append('file', file);
+            // upload lewat server proxy biar gak kena CORS block catbox
+            const resp = await fetch(`${ZYY_SERVER}?path=api/upload`, {
+                method: 'POST',
+                body: form
+            });
+            const data = await resp.json();
+            if (!data.url) throw new Error(data.error || 'Upload gagal');
+            return data.url;
         }
 
         // Handle image upload → Zyy decides what to do
