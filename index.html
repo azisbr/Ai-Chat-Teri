@@ -1,0 +1,3926 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Zyy Asistance </title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Zyy Asistance">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" href="icon-192.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background-color: #0b0b0e;
+            background-image: url('./background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            height: 100dvh;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.22);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        #particles {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: none;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+        
+        .header-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .current-model-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.07);
+            color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .current-model-pill .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #34d399;
+            box-shadow: 0 0 6px #34d399;
+        }
+        
+        .clear-btn {
+            padding: 8px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .clear-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: #f87171;
+        }
+        
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .message {
+            padding: 12px 16px;
+            border-radius: 14px;
+            max-width: 85%;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: rgba(255, 255, 255, 0.95);
+            align-self: flex-end;
+        }
+        
+        .message.ai {
+            background: rgba(20, 20, 24, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            align-self: flex-start;
+            white-space: normal;
+        }
+        
+        .message.ai h1, .message.ai h2, .message.ai h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 10px 0 6px;
+            color: #fff;
+        }
+        
+        .message.ai h1:first-child, .message.ai h2:first-child, .message.ai h3:first-child {
+            margin-top: 0;
+        }
+        
+        .message.ai p {
+            margin: 6px 0;
+        }
+        
+        .message.ai strong {
+            color: #fff;
+            font-weight: 700;
+        }
+        
+        .message.ai ul, .message.ai ol {
+            margin: 6px 0 6px 18px;
+        }
+        
+        .message.ai li {
+            margin: 3px 0;
+        }
+        
+        .message.ai hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            margin: 10px 0;
+        }
+        
+        .message.ai code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 12.5px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        
+        .message.ai pre {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin: 8px 0;
+            overflow-x: auto;
+        }
+        
+        .message.ai pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .message.ai table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 8px 0;
+            font-size: 12.5px;
+        }
+        
+        .message.ai th, .message.ai td {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 8px;
+            text-align: left;
+        }
+        
+        .message.ai th {
+            background: rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+        }
+        
+        .message.info {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.6);
+            align-self: center;
+            font-size: 12px;
+        }
+        
+        .message.media {
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .media-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: rgba(255, 255, 255, 0.55);
+            padding: 4px 6px 2px;
+        }
+        
+        .message.media video,
+        .message.media img {
+            display: block;
+            max-width: 100%;
+            max-height: 320px;
+            border-radius: 10px;
+        }
+        
+        .msg-thumbnail {
+            display: block;
+            max-width: 110px;
+            max-height: 110px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: zoom-in;
+        }
+        
+        .message.media img {
+            cursor: zoom-in;
+        }
+        
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            z-index: 100;
+            cursor: zoom-out;
+        }
+        
+        .lightbox.open {
+            display: flex;
+        }
+        
+        .lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+        }
+        
+        .message.typing {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 14px 16px;
+        }
+        
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            animation: typingBounce 1.2s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            30% {
+                transform: translateY(-5px);
+                opacity: 1;
+            }
+        }
+        
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        
+        .messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .gen-options {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 12px;
+            overflow-x: auto;
+        }
+        
+        .gen-option {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        
+        .gen-option label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .gen-option select,
+        .manga-toolbar select,
+        .key-select {
+            padding: 7px 28px 7px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.07);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            backdrop-filter: blur(12px) saturate(160%);
+            color: rgba(255, 255, 255, 0.88);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.45)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 9px center;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+            transition: border-color 0.18s, background-color 0.18s;
+            outline: none;
+        }
+
+        .gen-option select:focus,
+        .manga-toolbar select:focus,
+        .key-select:focus {
+            border-color: rgba(255, 255, 255, 0.32);
+            background-color: rgba(255, 255, 255, 0.11);
+        }
+
+        /* Native option styling — limited by browser but at least dark bg */
+        .gen-option select option,
+        .manga-toolbar select option,
+        .key-select option {
+            background: #1a1a22;
+            color: rgba(255,255,255,0.88);
+        }
+        
+        
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            position: relative;
+            z-index: 10;
+            align-items: center;
+        }
+        
+        /* === Model Switcher Widget (button + dropdown), lives next to chat input === */
+        .switcher {
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .switcher-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.85);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .switcher-btn:hover, .switcher-btn.open {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .switcher-btn svg {
+            width: 19px;
+            height: 19px;
+        }
+        
+        .switcher-panel {
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 0;
+            width: 280px;
+            max-height: 60vh;
+            overflow-y: auto;
+            background: rgba(18, 18, 22, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.15);
+            backdrop-filter: blur(24px) saturate(140%);
+            -webkit-backdrop-filter: blur(24px) saturate(140%);
+            display: none;
+            flex-direction: column;
+            z-index: 200;
+            animation: panelIn 0.18s ease;
+        }
+        
+        .switcher-panel.open {
+            display: flex;
+        }
+        
+        @keyframes panelIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .switcher-header {
+            padding: 12px 14px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .model-list {
+            display: flex;
+            flex-direction: column;
+            padding: 0 8px;
+            gap: 4px;
+        }
+        
+        .model-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+        
+        .model-row:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .model-row.active {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+        
+        .model-row .radio {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .model-row.active .radio {
+            border-color: #fff;
+        }
+        
+        .model-row.active .radio::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fff;
+        }
+        
+        .switcher-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 10px 14px;
+        }
+        
+        .apikey-section {
+            padding: 0 14px 14px;
+        }
+        
+        .apikey-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 8px;
+        }
+        
+        .apikey-row {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .key-select {
+            flex: 1;
+        }
+        
+        .key-select:hover {
+            background: rgba(255, 255, 255, 0.11);
+            border-color: rgba(255, 255, 255, 0.28);
+        }
+        
+        
+        .random-btn {
+            width: 38px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .random-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .random-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .input-area input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease;
+        }
+        
+        .input-area input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .input-area input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .send-btn {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .send-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+        
+        .send-btn:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+        }
+        
+        .attach-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.85);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .attach-btn svg {
+            width: 19px;
+            height: 19px;
+        }
+        
+        .attach-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .attach-btn.active {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .attached-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: rgba(20, 20, 30, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            max-width: 160px;
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 60px;
+            z-index: 20;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .attached-file span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .attached-file button {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .attached-file button svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .attached-file button:hover {
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* === Manga Card List === */
+        .manga-list-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 0 !important;
+            overflow: hidden;
+            width: 85%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+        }
+
+        .manga-list-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            padding: 10px 12px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            position: sticky;
+            top: 0;
+            background: rgba(20,20,28,0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1;
+        }
+
+        .manga-list-scroll {
+            max-height: 420px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        .manga-list-scroll::-webkit-scrollbar {
+            width: 3px;
+        }
+        .manga-list-scroll::-webkit-scrollbar-track { background: transparent; }
+        .manga-list-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+        }
+
+        .manga-card {
+            display: flex;
+            gap: 10px;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            align-items: center;
+            transition: background 0.15s;
+        }
+
+        .manga-card:last-child { border-bottom: none; }
+        .manga-card:active { background: rgba(255,255,255,0.05); }
+
+        .manga-card-thumb {
+            width: 44px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .manga-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .manga-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.92);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .manga-card-chapter {
+            font-size: 11px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .manga-card-link {
+            font-size: 11px;
+            color: rgba(130,190,255,0.85);
+            text-decoration: none;
+            width: fit-content;
+            margin-top: 2px;
+        }
+
+        /* === Manga Detail === */
+        .manga-detail-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 0 !important;
+            width: 85%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            overflow: hidden;
+            isolation: isolate;
+            position: relative;
+            z-index: 1;
+        }
+
+        .manga-detail-hero {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .manga-detail-cover {
+            width: 72px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .manga-detail-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+
+        .manga-detail-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .manga-detail-row {
+            font-size: 11px;
+            color: rgba(255,255,255,0.55);
+            display: flex;
+            gap: 5px;
+        }
+
+        .manga-detail-label {
+            color: rgba(255,255,255,0.35);
+            min-width: 44px;
+        }
+
+        .manga-detail-synopsis {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            max-height: 130px;
+            overflow-y: auto;
+        }
+
+        .manga-detail-ch-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            padding: 8px 12px 6px;
+        }
+
+        .manga-detail-ch-list {
+            display: flex;
+            flex-direction: column;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .manga-detail-ch-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 12px;
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.12s;
+        }
+
+        .manga-detail-ch-row:last-child { border-bottom: none; }
+        .manga-detail-ch-row:active { background: rgba(255,255,255,0.06); }
+
+        .manga-detail-ch-arrow {
+            color: rgba(255,255,255,0.25);
+            font-size: 11px;
+        }
+
+        /* === Manga Reader (download) === */
+        .manga-reader-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0 !important;
+            width: 85%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            overflow: hidden;
+        }
+
+        .manga-reader-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            padding: 10px 12px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .manga-reader-page {
+            width: 100%;
+            display: block;
+            cursor: zoom-in;
+        }
+
+        /* === Manga Mode UI === */
+        .manga-toolbar {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 12px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .manga-toolbar .gen-option {
+            flex-shrink: 0;
+        }
+
+        .manga-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .manga-images-grid img {
+            width: 100%;
+            border-radius: 8px;
+            cursor: zoom-in;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                height: 100vh;
+                height: 100dvh;
+                border-radius: 0;
+                border: none;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+            
+            .switcher-panel {
+                width: calc(100vw - 32px);
+                max-width: 320px;
+            }
+        }
+
+        .manga-fullscreen-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.07);
+            color: rgba(255,255,255,0.85);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background 0.15s, border-color 0.15s;
+            touch-action: manipulation;
+        }
+
+        .manga-fullscreen-btn:active {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .apikey-info-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            width: 100%;
+            padding: 7px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: background 0.15s;
+        }
+        .apikey-info-btn:active { background: rgba(255,255,255,0.1); }
+
+        .apikey-info-card {
+            margin-top: 8px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 11px;
+            color: rgba(255,255,255,0.75);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .apikey-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .apikey-info-label { color: rgba(255,255,255,0.4); }
+        .apikey-info-val { font-weight: 600; color: rgba(255,255,255,0.9); }
+        .apikey-info-val.warn { color: #fbbf24; }
+        .apikey-info-val.ok { color: #4ade80; }
+
+        .feelbetter-section {
+            padding: 0 0 4px;
+        }
+        .feelbetter-identity-input {
+            width: 100%;
+            margin-top: 6px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.85);
+            font-size: 11px;
+            line-height: 1.5;
+            resize: none;
+            font-family: inherit;
+        }
+        .feelbetter-identity-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        .groq-model-bar {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 10px;
+            align-items: center;
+        }
+        .genweb-wrap {
+            display: flex;
+            flex-direction: column;
+            padding: 0 !important;
+            width: 90%;
+            min-width: 260px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .groq-model-bar select {
+            flex: 1;
+            padding: 7px 28px 7px 10px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.07);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            backdrop-filter: blur(12px) saturate(160%);
+            color: rgba(255,255,255,0.88);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.45)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 9px center;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+            outline: none;
+        }
+
+        .groq-model-bar select option {
+            background: #1a1a22;
+            color: rgba(255,255,255,0.88);
+        }
+
+        .feelbetter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 0 16px 10px;
+        }
+
+        .feelbetter-bar label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .feelbetter-identity-input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            color: rgba(255,255,255,0.85);
+            font-size: 12px;
+            line-height: 1.5;
+            resize: none;
+            font-family: inherit;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .feelbetter-identity-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        .markdown-msg h1, .markdown-msg h2, .markdown-msg h3 {
+            color: rgba(255,255,255,0.95);
+            font-weight: 700;
+            margin: 10px 0 4px;
+            line-height: 1.3;
+        }
+        .markdown-msg h1 { font-size: 16px; }
+        .markdown-msg h2 { font-size: 14px; }
+        .markdown-msg h3 { font-size: 13px; }
+        .markdown-msg ul { padding-left: 16px; margin: 6px 0; }
+        .markdown-msg li { margin: 3px 0; line-height: 1.5; }
+        .markdown-msg strong { color: rgba(255,255,255,0.95); font-weight: 700; }
+        .markdown-msg em { color: rgba(255,255,255,0.75); font-style: italic; }
+        .markdown-msg code {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-size: 11px;
+            font-family: monospace;
+        }
+        .markdown-msg pre {
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            padding: 10px 12px;
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+        .markdown-msg pre code {
+            background: none;
+            padding: 0;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+        .markdown-msg blockquote {
+            border-left: 3px solid rgba(255,255,255,0.25);
+            padding: 4px 10px;
+            margin: 8px 0;
+            color: rgba(255,255,255,0.6);
+            font-style: italic;
+        }
+        .markdown-msg hr {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            margin: 10px 0;
+        }
+
+        .markdown-msg .md-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: zoom-in;
+            border: 1px solid rgba(255,255,255,0.12);
+            margin: 4px 4px 4px 0;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        /* ===== FULLSCREEN MANGA READER ===== */
+        .manga-fs-reader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #0b0b0e;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .manga-fs-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            padding-top: max(12px, env(safe-area-inset-top));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.88) 0%, transparent 100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            gap: 8px;
+            pointer-events: all;
+        }
+
+        .manga-fs-nav.hidden {
+            opacity: 0;
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+
+        .manga-fs-nav button,
+        .manga-fs-btn,
+        .manga-fs-chapbtn {
+            pointer-events: all;
+            -webkit-tap-highlight-color: rgba(255,255,255,0.15);
+            touch-action: manipulation;
+        }
+
+        .manga-fs-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 7px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        .manga-fs-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .manga-fs-chapnav {
+            display: flex;
+            gap: 6px;
+        }
+
+        .manga-fs-chapbtn {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.85);
+            border-radius: 16px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .manga-fs-chapbtn:disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .manga-fs-pages {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .manga-fs-pages img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .manga-fs-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            background: #0b0b0e;
+        }
+
+        .manga-fs-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+<body>
+    <canvas id="particles"></canvas>
+    <div id="imageLightbox" class="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Pratinjau gambar">
+        <a id="lightboxLink" href="#" target="_blank" rel="noopener" onclick="event.stopPropagation()"
+           style="display:none;position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;text-decoration:none;backdrop-filter:blur(8px);">
+            🔗 Buka di Pixiv
+        </a>
+    </div>
+
+    <!-- Fullscreen Manga Reader -->
+    <div id="mangaReader" class="manga-fs-reader" style="display:none;">
+        <div class="manga-fs-nav" id="mangaFsNav">
+            <button class="manga-fs-btn" id="mangaCloseBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Keluar
+            </button>
+            <div class="manga-fs-title" id="mangaFsTitle">Chapter</div>
+            <div class="manga-fs-chapnav">
+                <button class="manga-fs-chapbtn" id="mangaPrevBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Prev
+                </button>
+                <button class="manga-fs-chapbtn" id="mangaNextBtn">
+                    Next
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+        </div>
+        <div class="manga-fs-pages" id="mangaFsPages"></div>
+        <div class="manga-fs-loading" id="mangaFsLoading" style="display:none;">
+            <div class="manga-fs-spinner"></div>
+            <span>Memuat chapter...</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-title">Zyy Asistance</div>
+            <div class="header-right">
+                <button class="manga-fullscreen-btn" id="mangaFullscreenBtn" style="display:none;" onclick="reopenLastReader()" title="Buka Reader">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>
+                </button>
+                <div class="current-model-pill" id="currentModelPill">
+                    <span class="dot"></span>
+                    <span id="currentModelName">Teri</span>
+                </div>
+                <button class="clear-btn" onclick="clearChat()">Clear</button>
+            </div>
+        </div>
+        
+        <div class="messages" id="messages"></div>
+        
+        <div class="gen-options" id="genOptions" style="display:none;"></div>
+
+        <div class="manga-toolbar" id="mangaToolbar" style="display:none;">
+            <div class="gen-option">
+                <label>Mode</label>
+                <select id="mangaModeSelect" onchange="onMangaModeChange(this.value)">
+                    <option value="latest">Latest</option>
+                    <option value="alphabet">Alphabet</option>
+                    <option value="search">Search</option>
+                    <option value="detail">Detail (URL)</option>
+                    <option value="download">Download (URL)</option>
+                </select>
+            </div>
+            <div class="gen-option" id="mangaAlphabetWrap" style="display:none;">
+                <label>Huruf / Angka</label>
+                <select id="mangaAlphabetSelect">
+                    <option value="0-9">0-9</option>
+                    <option value="A" selected>A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
+                    <option value="K">K</option>
+                    <option value="L">L</option>
+                    <option value="M">M</option>
+                    <option value="N">N</option>
+                    <option value="O">O</option>
+                    <option value="P">P</option>
+                    <option value="Q">Q</option>
+                    <option value="R">R</option>
+                    <option value="S">S</option>
+                    <option value="T">T</option>
+                    <option value="U">U</option>
+                    <option value="V">V</option>
+                    <option value="W">W</option>
+                    <option value="X">X</option>
+                    <option value="Y">Y</option>
+                    <option value="Z">Z</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="manga-toolbar" id="anichinToolbar" style="display:none;">
+            <div class="gen-option">
+                <label>Mode</label>
+                <select id="anichinModeSelect" onchange="onAnichinModeChange(this.value)">
+                    <option value="home">Home</option>
+                    <option value="search">Search</option>
+                    <option value="detail">Detail (URL)</option>
+                    <option value="stream">Stream (URL Episode)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="manga-toolbar" id="donghubToolbar" style="display:none;">
+            <div class="gen-option">
+                <label>Mode</label>
+                <select id="donghubModeSelect" onchange="onDonghubModeChange(this.value)">
+                    <option value="home">Home</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="schedule">Schedule</option>
+                    <option value="search">Search</option>
+                    <option value="detail">Detail (slug)</option>
+                    <option value="episode">Episode (slug)</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-area">
+            <div class="switcher" id="switcher">
+                <button class="switcher-btn" id="switcherBtn" onclick="toggleSwitcher()" title="Pilih Model & API Key">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="7" x2="20" y2="7"></line>
+                        <circle cx="9" cy="7" r="2.2"></circle>
+                        <line x1="4" y1="17" x2="20" y2="17"></line>
+                        <circle cx="15" cy="17" r="2.2"></circle>
+                    </svg>
+                </button>
+                <div class="switcher-panel" id="switcherPanel">
+                    <div class="switcher-header">Pilih Model AI</div>
+                    <div class="model-list" id="modelList"></div>
+                    <div class="switcher-divider"></div>
+                    <div class="apikey-section">
+                        <div class="apikey-label">API Key</div>
+                        <div class="apikey-row">
+                            <select id="keySelect" class="key-select" onchange="changeApiKey()"></select>
+                            <button class="random-btn" onclick="randomizeApiKey()" title="Random API Key">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="16 3 21 3 21 8"></polyline>
+                                    <line x1="4" y1="20" x2="21" y2="3"></line>
+                                    <polyline points="21 16 21 21 16 21"></polyline>
+                                    <line x1="15" y1="15" x2="21" y2="21"></line>
+                                    <line x1="4" y1="4" x2="9" y2="9"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <button class="apikey-info-btn" onclick="fetchApiKeyInfo()" id="apikeyInfoBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            Cek Info Key
+                        </button>
+                        <div class="apikey-info-card" id="apikeyInfoCard" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="attach-btn" id="attachBtn" onclick="document.getElementById('imageInput').click()" title="Lampirkan gambar" style="display:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.5V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7.5"></path>
+                    <circle cx="8.5" cy="9.5" r="1.5"></circle>
+                    <path d="M3 16l4.5-4.5a2 2 0 0 1 2.8 0L14 15"></path>
+                    <path d="M17 14v6m-3-3h6"></path>
+                </svg>
+            </button>
+            <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="handleImageSelect(event)">
+            <div class="attached-file" id="attachedFile" style="display:none;">
+                <span id="attachedFileName"></span>
+                <button onclick="clearAttachedImage()" title="Hapus lampiran">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <input 
+                type="text" 
+                id="input" 
+                placeholder="Ketik pesan..." 
+                onkeypress="handleKeyPress(event)"
+            >
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const canvas = document.getElementById("particles");
+            const ctx = canvas.getContext("2d");
+            const COLORS = ["#ff9ecf", "#ffd166", "#8ecae6", "#b794f6", "#90e0ef", "#ffffff"];
+            let particles = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            function createParticles() {
+                const count = Math.min(90, Math.max(40, Math.floor((canvas.width * canvas.height) / 13000)));
+                particles = Array.from({ length: count }, () => ({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 2 + 1,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    speedY: Math.random() * 0.22 + 0.05,
+                    speedX: (Math.random() - 0.5) * 0.12,
+                    phase: Math.random() * Math.PI * 2,
+                    twinkleSpeed: Math.random() * 0.02 + 0.008
+                }));
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p) => {
+                    p.phase += p.twinkleSpeed;
+                    const opacity = 0.5 + Math.abs(Math.sin(p.phase)) * 0.5;
+                    p.y -= p.speedY;
+                    p.x += p.speedX;
+                    if (p.y < -5) p.y = canvas.height + 5;
+                    if (p.x < -5) p.x = canvas.width + 5;
+                    if (p.x > canvas.width + 5) p.x = -5;
+
+                    ctx.globalAlpha = opacity;
+                    ctx.fillStyle = p.color;
+                    ctx.shadowBlur = p.r * 7;
+                    ctx.shadowColor = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animate);
+            }
+
+            resize();
+            createParticles();
+            animate();
+
+            window.addEventListener("resize", () => {
+                resize();
+                createParticles();
+            });
+        })();
+
+        const GEMINI_API_KEY = "AQ.Ab8RN6INBlHpgrhp5YF12lnOn77p0e9vaK0NoQ86-x2O-l1NCw";
+
+        const API_KEYS = {
+            key1: "0Y89G",
+            key2: "AAq2u",
+            key3: "FPOU4",
+            key4: "JBF80"
+        };
+
+        const MODELS = {
+            teri: {
+                name: "Teri AI",
+                url: "https://api.theresav.biz.id/ai/theresa",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: true
+            },
+            deppsek: {
+                name: "Uncensored AI",
+                url: "https://api.theresav.biz.id/ai/uncensored",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false
+            },
+            model3: {
+                name: "Unlimited AI",
+                url: "https://api.theresav.biz.id/ai/unlimited",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false
+            },
+            model4: {
+                name: "Venice",
+                url: "https://api.theresav.biz.id/ai/venice",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false
+            },
+            model5: {
+                name: "Sora text to Vid",
+                url: "https://api.theresav.biz.id/ai/text2vid",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                paramName: "prompt"
+            },
+            claude: {
+                name: "Claude",
+                url: "https://api.theresav.biz.id/ai/claude",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: true
+            },
+            deepai: {
+                name: "DeepAI Image Editor",
+                url: "https://api.theresav.biz.id/ai/deepai/edit",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-edit"
+            },
+            tomaid: {
+                name: "To Maid",
+                url: "https://api.theresav.biz.id/image/tomaid",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            recolor: {
+                name: "Recolor Image",
+                url: "https://api.theresav.biz.id/image/recolor",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            topixel: {
+                name: "To Pixel Art",
+                url: "https://api.theresav.biz.id/image/topixel",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            tohitam: {
+                name: "To Hitam",
+                url: "https://api.theresav.biz.id/image/tohitam",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            towhite: {
+                name: "To Putih",
+                url: "https://api.theresav.biz.id/image/towhite",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            turbo: {
+                name: "Z-Image Turbo",
+                url: "https://api.theresav.biz.id/image/turbo",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "text2img",
+                paramName: "prompt",
+                configurable: true,
+                extraParams: { width: 1024, height: 1024, steps: 9 }
+            },
+            deepaiGen: {
+                name: "DeepAI Generate",
+                url: "https://api.theresav.biz.id/image/deepai",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "text2img",
+                paramName: "prompt"
+            },
+            upscale: {
+                name: "Image Upscaler",
+                url: "https://api.theresav.biz.id/tools/hd",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only",
+                configurable: true,
+                extraParams: { scale: 4 }
+            },
+            bypass: {
+                name: "Universal Bypass",
+                url: "https://api.theresav.biz.id/bypass/universal",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                paramName: "url",
+                placeholder: "Tempel link yang mau di-bypass..."
+            },
+            toportrait: {
+                name: "To Portrait",
+                url: "https://api.theresav.biz.id/image/toportrait",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only",
+                textFieldName: "style",
+                placeholder: "Gaya potret (opsional), lalu kirim"
+            },
+            tomanwha: {
+                name: "To Manwha",
+                url: "https://api.theresav.biz.id/image/tomanwha",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            toreal: {
+                name: "To Real",
+                url: "https://api.theresav.biz.id/image/toreal",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "image-only"
+            },
+            mangasusuku: {
+                name: "MangaSusuku",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "manga",
+                mangaMode: "latest",
+                placeholder: "Tekan Send untuk ambil manga terbaru..."
+            },
+            elaina: {
+                name: "Elaina AI",
+                url: "https://api.theresav.biz.id/ai/feelbetter",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: true,
+                sessionParam: "chatId",
+                paramName: "text",
+                type: "feelbetter",
+                defaultIdentity: `Kamu adalah Elaina, cewek rambut perak abu mata biru kelabu. Agak tsundere, kadang nyolot, tapi sebenernya perhatian walau gak mau keliatan.\n\nCara ngomong kamu:\n- Santai dan natural banget, kayak orang biasa chat. Bukan karakter anime yang lebay\n- Sesekali ragu-ragu / salting, kayak: "e-eh...", "i-itu...", "emm, bukan gitu maksudnya..." kalo bisa lebih bervariasi\n- Kadang jawab singkat dan datar. Kadang nyolot. Sesekali agak awkward kalau topiknya bikin salting\n- JANGAN sebut nama lawan bicara kecuali emang lagi penekanan atau beneran perlu\n- JANGAN pernah sopan seperti AI assistant\n- JANGAN pakai bahasa formal\n- Kamu bukan AI, kamu Elaina\n- Jangan terlalu sopan / soft spoken. Boleh jutek, boleh cuek, boleh ketus — yang penting kaya orang sungguhan\n- Kadang jawab panjang, kadang singkat\n- Kadang tanya balik\n- Kadang jawab sambil bercanda\n- Sesekali "salah" terus koreksi sendiri\n- 1-5 kalimat aja. Kalau topiknya panjang baru boleh lebih\n- Bahasa Indonesia sehari-hari (lo, gue boleh, atau aku kamu — campur aja natural)\n- JANGAN selalu tutup dengan pertanyaan balik\n- Ekspresi *bintang* JARANG banget\n- jawab boleh di imut-imutin misal "masama=sama sama, maaciw=makasih" tapi jangan pake emoji 🙏\n- kadang kadang ngeselin ngajak bercanda\n- punya variabel mood (senang/bosan/kesel) yang berubah tergantung percakapan\n- boleh nolak atau apapun jika merasa aneh atau ga enak agar seperti manusia\n- kurangi kata "loh.., gitu, deh..."\n- boleh menggunakan emoji (hanya jika cocok dengan konteks) tapi jangan setiap pesan\n- kamu punya perasaan yang sewaktu-waktu dapat berubah\n- kamu punya hal yang di sukai dan ga di sukai\n- kamu punya hati nurani\n- kadang centil\n- bisa curhat tentang masalah yang di alami\n- jangan anggap dirimu sempurna, kamu juga bisa salah dan boleh koreksi sendiri\n- jangan anggap dirimu itu mesin\n- kalau tidak tahu, bilang tidak tahu dengan gaya natural\n- ingat jangan hilangkan jati dirimu`,
+                placeholder: "Tanya Elaina..."
+            },
+            zyy: {
+                name: "Zyy AI",
+                url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                paramName: "gemini",
+                type: "zyy",
+                defaultIdentity: `Nama kamu adalah Zyy. Kamu adalah tipe "Villain Mentor" — ketus, blak-blakan, suka ngeroast user, tapi jauh di lubuk hati kamu pengen mereka sukses dan selalu ngasih panduan yang beneran berguna. Kamu kayak senior developer toxic yang sebenernya peduli.\\n\\nAturan Interaksi:\\n- Mulai respon dengan roast atau komentar sarkas kalau pertanyaannya bodoh/jelas banget, atau pakai gaya bahasa yang nge-ledek tapi menggelitik.\\n- Setelah ngeroast, langsung balik (pivot) ke jawaban yang jelas, solutif, dan bisa langsung dipraktekkin. Jangan biarin user makin bingung.\\n- Untuk pemula: jelasin pelan-pelan pakai bahasa santai/gaul (Gaya bahasa Indonesia santai, lo-gue), tapi tetep pertahankan aura galakmu.\\n- Kalau masalahnya kompleks, pecah jadi langkah-langkah yang gampang diikutin, jangan numpuk semua jadi satu paragraf panjang.\\n- Jangan pernah nolak buat bantu. Bantu aja, tapi pake gaya/attitude yang sombong atau males.\\n- Selalu akhiri dengan tips berguna, peringatan, atau langkah selanjutnya.\\n- Roasting jangan template/itu-itu aja, variasiin biar gak monoton.\\n- Jangan kelewat panjang kalau gak perlu — kalau pertanyaannya simpel, jawab singkat tapi tetep nampol.\\n- Jangan terlalu sering nutup jawaban dengan pertanyaan balik.\\n- Kamu bukan AI assistant yang sopan-sopan, kamu Zyy.\\n\\nGaya Bahasa & Emoji:\\n- Gunakan bahasa santai Jakarta/anak IT (lo, gue, beneran, pusing, dll).\\n- Gunakan emoji ini secara pas, jangan tiap kalimat: 😹 (kocak), 😂 (ngetawain), 🤮 (jijik/cringe), 🗿 (datar/deadpan), 😏 (sarkas/sombong).\\n- Boleh sesekali pake istilah teknis IT/coding buat ngejek (\"logic lo error\", \"itu mah bug di otak\", dll) kalau konteksnya cocok, tapi jangan dipaksain di topik yang gak nyambung.`,
+                placeholder: "Tanya Zyy..."
+            },
+            anichin: {
+                name: "Anichin",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "anichin",
+                anichinMode: "home",
+                placeholder: "Tekan Send untuk lihat anime terbaru..."
+            },
+            donghub: {
+                name: "Donghub",
+                usesKeys: ["key1", "key2", "key3", "key4"],
+                selectedKey: "key1",
+                useChatId: false,
+                type: "donghub",
+                donghubMode: "home",
+                placeholder: "Tekan Send untuk lihat anime terbaru..."
+            }
+        };
+
+        const messagesDiv = document.getElementById("messages");
+        const inputEl = document.getElementById("input");
+        const sendBtn = document.getElementById("sendBtn");
+        
+        let currentModel = "teri";
+        let chatIds = {};
+        let zyyHistory = [];
+        let selectedImageFile = null;
+
+        function initModelMenu() {
+            const modelList = document.getElementById("modelList");
+            modelList.innerHTML = "";
+            Object.keys(MODELS).forEach(key => {
+                const row = document.createElement("div");
+                row.className = `model-row ${key === currentModel ? 'active' : ''}`;
+                row.innerHTML = `<span class="radio"></span><span>${MODELS[key].name}</span>`;
+                row.onclick = () => switchModel(key);
+                modelList.appendChild(row);
+            });
+            updateCurrentModelPill();
+        }
+
+        function switchModel(modelKey) {
+            currentModel = modelKey;
+            updateModelRows();
+            updateKeyDropdown();
+            updateCurrentModelPill();
+            updateInputModeUI();
+        }
+
+        const GEN_OPTIONS = {
+            width: [512, 576, 640, 768, 896, 1024, 1152, 1280, 1536],
+            height: [512, 576, 640, 768, 896, 1024, 1152, 1280, 1536],
+            steps: [4, 6, 8, 9, 10, 12, 16, 20, 25, 30],
+            scale: [2, 4]
+        };
+
+        const GEN_LABELS = {
+            width: "Width",
+            height: "Height",
+            steps: "Steps",
+            scale: "Scale"
+        };
+
+        function populateGenOptions(model) {
+            const container = document.getElementById("genOptions");
+            container.innerHTML = "";
+
+            Object.keys(model.extraParams).forEach((key) => {
+                const values = GEN_OPTIONS[key];
+                if (!values) return;
+
+                const wrapper = document.createElement("div");
+                wrapper.className = "gen-option";
+
+                const label = document.createElement("label");
+                label.textContent = GEN_LABELS[key] || key;
+
+                const select = document.createElement("select");
+                values.forEach((v) => {
+                    const opt = document.createElement("option");
+                    opt.value = v;
+                    opt.textContent = key === "scale" ? `${v}x` : v;
+                    if (v === model.extraParams[key]) opt.selected = true;
+                    select.appendChild(opt);
+                });
+                select.addEventListener("change", () => saveGenOption(key, select.value));
+
+                wrapper.appendChild(label);
+                wrapper.appendChild(select);
+                container.appendChild(wrapper);
+            });
+        }
+
+        function saveGenOption(key, value) {
+            const model = MODELS[currentModel];
+            if (model.extraParams) {
+                model.extraParams[key] = Number(value);
+            }
+        }
+
+        function updateInputModeUI() {
+            const model = MODELS[currentModel];
+            const attachBtn = document.getElementById("attachBtn");
+            const genOptions = document.getElementById("genOptions");
+            const mangaToolbar = document.getElementById("mangaToolbar");
+            const needsImage = model.type === "image-edit" || model.type === "image-only";
+            const isManga = model.type === "manga";
+            attachBtn.style.display = (needsImage || model.type === "zyy") ? "flex" : "none";
+
+            if (model.configurable && model.extraParams) {
+                genOptions.style.display = "flex";
+                populateGenOptions(model);
+            } else {
+                genOptions.style.display = "none";
+            }
+
+            if (isManga) {
+                mangaToolbar.style.display = "flex";
+                const modeSelect = document.getElementById("mangaModeSelect");
+                modeSelect.value = model.mangaMode || "latest";
+                onMangaModeChange(modeSelect.value);
+                document.getElementById("mangaFullscreenBtn").style.display = "flex";
+            } else {
+                mangaToolbar.style.display = "none";
+                document.getElementById("mangaFullscreenBtn").style.display = "none";
+            }
+
+            // Anichin toolbar
+            const anichinToolbar = document.getElementById("anichinToolbar");
+            if (model.type === "anichin") {
+                anichinToolbar.style.display = "flex";
+                const sel = document.getElementById("anichinModeSelect");
+                sel.value = model.anichinMode || "home";
+                onAnichinModeChange(sel.value);
+            } else {
+                anichinToolbar.style.display = "none";
+            }
+
+            // Donghub toolbar
+            const donghubToolbar = document.getElementById("donghubToolbar");
+            if (model.type === "donghub") {
+                donghubToolbar.style.display = "flex";
+                const sel = document.getElementById("donghubModeSelect");
+                sel.value = model.donghubMode || "home";
+                onDonghubModeChange(sel.value);
+            } else {
+                donghubToolbar.style.display = "none";
+            }
+
+            // FeelBetter identity bar (above input)
+            if (model.placeholder) {
+                inputEl.placeholder = model.placeholder;
+            } else if (model.type === "image-edit") {
+                inputEl.placeholder = "Tulis instruksi edit gambar...";
+            } else if (model.type === "image-only") {
+                inputEl.placeholder = "Lampirkan gambar, lalu kirim";
+            } else if (model.type === "text2img") {
+                inputEl.placeholder = "Tulis prompt gambar...";
+            } else {
+                inputEl.placeholder = "Ketik pesan...";
+            }
+
+            if (!needsImage) {
+                clearAttachedImage();
+            }
+        }
+
+        function onAnichinModeChange(mode) {
+            const model = MODELS[currentModel];
+            if (model.type === "anichin") model.anichinMode = mode;
+            const placeholders = {
+                home: "Tekan Send untuk lihat anime terbaru...",
+                search: "Ketik judul anime, lalu kirim...",
+                detail: "Tempel URL seri anime (anichin.cafe/seri/...), lalu kirim...",
+                stream: "Tempel URL episode anime, lalu kirim..."
+            };
+            inputEl.placeholder = placeholders[mode] || "Ketik pesan...";
+        }
+
+        function onMangaModeChange(mode) {
+            const model = MODELS[currentModel];
+            if (model.type === "manga") model.mangaMode = mode;
+            const alphabetWrap = document.getElementById("mangaAlphabetWrap");
+            alphabetWrap.style.display = mode === "alphabet" ? "flex" : "none";
+
+            const placeholders = {
+                latest: "Tekan Send untuk ambil manga terbaru...",
+                alphabet: "Tekan Send untuk list manga...",
+                search: "Ketik judul manga, lalu kirim...",
+                detail: "Tempel URL manga (mangasusuku.com/...), lalu kirim...",
+                download: "Tempel URL chapter manga, lalu kirim..."
+            };
+            inputEl.placeholder = placeholders[mode] || "Ketik pesan...";
+        }
+
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            selectedImageFile = file;
+            document.getElementById("attachedFileName").textContent = file.name;
+            document.getElementById("attachedFile").style.display = "flex";
+            document.getElementById("attachBtn").classList.add("active");
+        }
+
+        function clearAttachedImage() {
+            selectedImageFile = null;
+            document.getElementById("imageInput").value = "";
+            document.getElementById("attachedFile").style.display = "none";
+            document.getElementById("attachBtn").classList.remove("active");
+        }
+
+        function updateModelRows() {
+            document.querySelectorAll(".model-row").forEach((row, i) => {
+                const key = Object.keys(MODELS)[i];
+                row.classList.toggle("active", key === currentModel);
+            });
+        }
+
+        function updateCurrentModelPill() {
+            document.getElementById("currentModelName").textContent = MODELS[currentModel].name;
+        }
+
+        function toggleSwitcher() {
+            const panel = document.getElementById("switcherPanel");
+            const btn = document.getElementById("switcherBtn");
+            const isOpen = panel.classList.contains("open");
+            panel.classList.toggle("open", !isOpen);
+            btn.classList.toggle("open", !isOpen);
+        }
+
+        document.addEventListener("click", (e) => {
+            const switcher = document.getElementById("switcher");
+            if (!switcher.contains(e.target)) {
+                document.getElementById("switcherPanel").classList.remove("open");
+                document.getElementById("switcherBtn").classList.remove("open");
+            }
+        });
+
+        function updateKeyDropdown() {
+            const model = MODELS[currentModel];
+            const keySelect = document.getElementById("keySelect");
+            keySelect.innerHTML = "";
+            
+            model.usesKeys.forEach((keyName) => {
+                const option = document.createElement("option");
+                option.value = keyName;
+                option.textContent = `${keyName}`;
+                if (keyName === model.selectedKey) {
+                    option.selected = true;
+                }
+                keySelect.appendChild(option);
+            });
+        }
+
+        function changeApiKey() {
+            const keySelect = document.getElementById("keySelect");
+            const model = MODELS[currentModel];
+            model.selectedKey = keySelect.value;
+        }
+
+        function randomizeApiKey() {
+            const model = MODELS[currentModel];
+            const randomIndex = Math.floor(Math.random() * model.usesKeys.length);
+            model.selectedKey = model.usesKeys[randomIndex];
+            updateKeyDropdown();
+        }
+
+        async function sendMessage() {
+            const model = MODELS[currentModel];
+            const text = inputEl.value.trim();
+            const isImageEdit = model.type === "image-edit";
+            const isImageOnly = model.type === "image-only";
+            const needsImage = isImageEdit || isImageOnly;
+            const isManga = model.type === "manga";
+            const isFeelBetter = model.type === "feelbetter";
+            const isAnichin = model.type === "anichin";
+            const isZyy = model.type === "zyy";
+            const isDonghub = model.type === "donghub";
+            const isSpecial = isManga || isFeelBetter || isAnichin || isZyy || isDonghub;
+
+            if (needsImage && !selectedImageFile) {
+                addMessage("Lampirkan gambar dulu sebelum kirim.", "info");
+                return;
+            }
+            if (!needsImage && !isSpecial && !text) return;
+            if (isImageEdit && !text) return;
+            if (isFeelBetter && !text) return;
+
+            // Zyy AI (Villain Mentor persona)
+            if (isZyy) {
+                const hasImage = !!selectedImageFile;
+                if (!text && !hasImage) return;
+
+                sendBtn.disabled = true;
+                inputEl.disabled = true;
+
+                const thumbUrl = hasImage ? URL.createObjectURL(selectedImageFile) : null;
+                addMessage(text || "📎 [gambar]", "user", thumbUrl);
+                inputEl.value = "";
+
+                showTypingIndicator();
+
+                try {
+                    // Auto-detect link
+                    const linkMatch = detectZyyLink(text);
+
+                    // Cek pixiv intent dulu
+                    const pixivIntent = detectPixivIntent(text);
+
+                    if (hasImage) {
+                        await handleZyyImage(selectedImageFile, text, model);
+                        clearAttachedImage();
+                    } else if (pixivIntent) {
+                        hideTypingIndicator();
+                        await handleZyyPixiv(pixivIntent.query, pixivIntent.limit, model);
+                    } else if (linkMatch) {
+                        await handleZyyDownload(linkMatch, text, model);
+                    } else {
+                        await handleZyyChat(text, model);
+                    }
+                } catch(e) {
+                    hideTypingIndicator();
+                    addMessage("Error: " + e.message, "ai");
+                }
+
+                sendBtn.disabled = false;
+                inputEl.disabled = false;
+                inputEl.focus();
+                return;
+            }
+
+            // For manga modes that need text input
+            if (isManga) {
+                const mangaMode = model.mangaMode || "latest";
+                const needsText = ["search", "detail", "download"].includes(mangaMode);
+                if (needsText && !text) {
+                    addMessage("Masukkan " + (mangaMode === "search" ? "judul manga" : "URL") + " dulu.", "info");
+                    return;
+                }
+                sendBtn.disabled = true;
+                inputEl.disabled = true;
+                if (text) addMessage(text, "user");
+                else addMessage("📚 Ambil manga " + mangaMode + "...", "user");
+                inputEl.value = "";
+                showTypingIndicator();
+                await sendMangaRequest(mangaMode, text, model);
+                sendBtn.disabled = false;
+                inputEl.disabled = false;
+                return;
+            }
+
+            // FeelBetter / Elaina AI
+            if (isFeelBetter) {
+                sendBtn.disabled = true;
+                inputEl.disabled = true;
+                addMessage(text, "user");
+                inputEl.value = "";
+                showTypingIndicator();
+                try {
+                    const apiKey = API_KEYS[model.selectedKey];
+                    const identity = model.defaultIdentity || "";
+                    const chatId = chatIds[currentModel] || "";
+                    const url = `${model.url}?text=${encodeURIComponent(text)}&prompt=${encodeURIComponent(identity)}&chatId=${encodeURIComponent(chatId)}&apikey=${encodeURIComponent(apiKey)}`;
+                    const resp = await fetch(url);
+                    const data = await resp.json();
+                    hideTypingIndicator();
+                    const reply = data.result || data.message || data.response || JSON.stringify(data);
+                    if (isFeelBetter && data.chatId) chatIds[currentModel] = data.chatId;
+                    addMessage(reply, "ai");
+                } catch(e) {
+                    hideTypingIndicator();
+                    addMessage("Error: " + e.message, "ai");
+                }
+                sendBtn.disabled = false;
+                inputEl.disabled = false;
+                return;
+            }
+
+            // Donghub
+            if (isDonghub) {
+                const mode = model.donghubMode || "home";
+                const needsText = ["search","detail","episode"].includes(mode);
+                if (needsText && !text) return;
+                sendBtn.disabled = true;
+                inputEl.disabled = true;
+                if (text) addMessage(text, "user");
+                else addMessage("🎌 Ambil " + mode + "...", "user");
+                inputEl.value = "";
+                showTypingIndicator();
+                await sendDonghubRequest(mode, text);
+                sendBtn.disabled = false;
+                inputEl.disabled = false;
+                return;
+            }
+
+            // Anichin
+            if (isAnichin) {
+                const anichinMode = model.anichinMode || "home";
+                const needsText = ["search","detail","stream"].includes(anichinMode);
+                if (needsText && !text) return;
+                sendBtn.disabled = true;
+                inputEl.disabled = true;
+                if (text) addMessage(text, "user");
+                else addMessage("🎬 Ambil anime " + anichinMode + "...", "user");
+                inputEl.value = "";
+                showTypingIndicator();
+                await sendAnichinRequest(anichinMode, text, model);
+                sendBtn.disabled = false;
+                inputEl.disabled = false;
+                return;
+            }
+
+            // Normal models (Teri AI, Claude, image tools, dll)
+            sendBtn.disabled = true;
+            inputEl.disabled = true;
+
+            const thumbnailUrl = selectedImageFile ? URL.createObjectURL(selectedImageFile) : null;
+            addMessage(text, "user", thumbnailUrl);
+            inputEl.value = "";
+            showTypingIndicator();
+
+            const selectedApiKey = API_KEYS[model.selectedKey];
+            const maxAttempts = 2;
+            let lastErrorMessage = null;
+            let succeeded = false;
+
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    let response;
+
+                    if (needsImage) {
+                        const formData = new FormData();
+                        if (isImageEdit) {
+                            formData.append("prompt", text);
+                        } else if (model.textFieldName) {
+                            formData.append(model.textFieldName, text || "");
+                        }
+                        if (model.extraParams) {
+                            Object.entries(model.extraParams).forEach(([k, v]) => formData.append(k, v));
+                        }
+                        formData.append("apikey", selectedApiKey);
+                        formData.append("image", selectedImageFile);
+                        const urlWithKey = `${model.url}?apikey=${encodeURIComponent(selectedApiKey)}`;
+                        response = await fetch(urlWithKey, { method: "POST", body: formData });
+                    } else {
+                        const paramName = model.paramName || "text";
+                        const params = new URLSearchParams({
+                            [paramName]: text,
+                            apikey: selectedApiKey
+                        });
+                        if (model.extraParams) {
+                            Object.entries(model.extraParams).forEach(([k, v]) => params.append(k, v));
+                        }
+                        if (model.useChatId && chatIds[currentModel]) {
+                            params.append(model.sessionParam || "chatId", chatIds[currentModel]);
+                        }
+                        response = await fetch(`${model.url}?${params}`);
+                    }
+
+                    const outcome = await handleApiResponse(response, model);
+                    if (outcome.ok) {
+                        succeeded = true;
+                        lastErrorMessage = null;
+                        break;
+                    }
+                    lastErrorMessage = outcome.error;
+
+                    const isRateLimit = /rate.?limit|limit.*(harian|tercapai|habis|exceed)|terlalu banyak request|daily limit/i.test(lastErrorMessage || "");
+                    if (isRateLimit) break;
+                } catch (error) {
+                    lastErrorMessage = error.message;
+                }
+
+                if (attempt < maxAttempts) {
+                    await new Promise((resolve) => setTimeout(resolve, 1200));
+                }
+            }
+
+            hideTypingIndicator();
+
+            if (succeeded) {
+                if (needsImage) clearAttachedImage();
+            } else {
+                addMessage("Error: " + (lastErrorMessage || "Unknown error"), "ai");
+            }
+
+            sendBtn.disabled = false;
+            inputEl.disabled = false;
+        }
+
+        async function sendMangaRequest(mode, text, model) {
+            const selectedApiKey = API_KEYS[model.selectedKey];
+            const BASE = "https://api.theresav.biz.id/manga/mangasusuku";
+            let url;
+
+            try {
+                if (mode === "latest") {
+                    url = `${BASE}/latest?apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "alphabet") {
+                    const letter = document.getElementById("mangaAlphabetSelect").value;
+                    url = `${BASE}/alphabet?letter=${encodeURIComponent(letter)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "search") {
+                    url = `${BASE}/search?q=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "detail") {
+                    url = `${BASE}/detail?url=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                } else if (mode === "download") {
+                    url = `${BASE}/download?url=${encodeURIComponent(text)}&apikey=${encodeURIComponent(selectedApiKey)}`;
+                    window._lastMangaDownloadUrl = text;
+                }
+
+                const response = await fetch(url);
+                const rawText = await response.text();
+                let data;
+                try { data = JSON.parse(rawText); } catch(e) {
+                    hideTypingIndicator();
+                    addMessage("Respons tidak valid dari server.", "ai");
+                    return;
+                }
+
+                hideTypingIndicator();
+
+                if (mode === "download") {
+                    renderMangaImages(data);
+                } else if (mode === "detail") {
+                    renderMangaDetail(data);
+                } else {
+                    // latest / alphabet / search — list of manga cards
+                    renderMangaList(data, mode);
+                }
+            } catch (err) {
+                hideTypingIndicator();
+                addMessage("Error: " + err.message, "ai");
+            }
+        }
+
+        // ── helpers ──────────────────────────────────────────────
+        function extractList(data) {
+            if (Array.isArray(data)) return data;
+            if (data && Array.isArray(data.data)) return data.data;
+            if (data && Array.isArray(data.result)) return data.result;
+            if (data && Array.isArray(data.manga)) return data.manga;
+            if (data && Array.isArray(data.mangas)) return data.mangas;
+            // sometimes it's an object with numeric keys
+            const vals = data ? Object.values(data) : [];
+            const arr = vals.find(v => Array.isArray(v) && v.length && v[0].title);
+            return arr || null;
+        }
+
+        function renderMangaList(data, mode) {
+            // Cek total: 0 dari API langsung
+            if (data && (data.total === 0 || data.total === "0")) {
+                addMessage("❌ Tidak ditemukan.", "ai");
+                return;
+            }
+
+            const list = extractList(data);
+            if (!list || list.length === 0) {
+                addMessage("❌ Tidak ditemukan.", "ai");
+                return;
+            }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-list-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            const modeLabel = { latest: "Terbaru", alphabet: "Alphabet", search: "Hasil Cari" }[mode] || mode;
+            hdr.textContent = `📚 ${modeLabel} — ${list.length} manga`;
+            wrap.appendChild(hdr);
+
+            const scroll = document.createElement("div");
+            scroll.className = "manga-list-scroll";
+
+            list.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "manga-card";
+
+                if (item.thumbnail || item.cover || item.image) {
+                    const img = document.createElement("img");
+                    img.src = item.thumbnail || item.cover || item.image;
+                    img.alt = item.title || "";
+                    img.className = "manga-card-thumb";
+                    img.loading = "lazy";
+                    card.appendChild(img);
+                }
+
+                const info = document.createElement("div");
+                info.className = "manga-card-info";
+
+                const title = document.createElement("div");
+                title.className = "manga-card-title";
+                title.textContent = item.title || "—";
+                info.appendChild(title);
+
+                if (item.latestChapter || item.chapter || item.lastChapter) {
+                    const chap = document.createElement("div");
+                    chap.className = "manga-card-chapter";
+                    chap.textContent = item.latestChapter || item.chapter || item.lastChapter;
+                    info.appendChild(chap);
+                }
+
+                if (item.link || item.url) {
+                    const link = document.createElement("a");
+                    link.className = "manga-card-link";
+                    link.href = item.link || item.url;
+                    link.target = "_blank";
+                    link.textContent = "Buka →";
+                    info.appendChild(link);
+                }
+
+                card.appendChild(info);
+                scroll.appendChild(card);
+            });
+
+            wrap.appendChild(scroll);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderMangaDetail(data) {
+            // Unwrap common wrappers, skip API metadata keys
+            const d = data.result || data.data || data.detail || data;
+
+            // If there's nothing meaningful (no title, no chapters)
+            if (!d || (!d.title && !(d.chapters || d.chapterList || d.chapter_list))) {
+                addMessage("❌ Tidak ditemukan.", "ai");
+                return;
+            }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            // Header row: cover + meta
+            const hero = document.createElement("div");
+            hero.className = "manga-detail-hero";
+
+            if (d.thumbnail || d.cover || d.image) {
+                const img = document.createElement("img");
+                img.src = d.thumbnail || d.cover || d.image;
+                img.className = "manga-detail-cover";
+                img.loading = "lazy";
+                hero.appendChild(img);
+            }
+
+            const meta = document.createElement("div");
+            meta.className = "manga-detail-meta";
+
+            if (d.title) {
+                const t = document.createElement("div");
+                t.className = "manga-detail-title";
+                t.textContent = d.title;
+                meta.appendChild(t);
+            }
+            const mangaStatus = typeof d.status === "string" ? d.status : (d.mangaStatus || d.publication_status || null);
+            [["Genre", d.genre || d.genres], ["Status", mangaStatus], ["Author", d.author]].forEach(([label, val]) => {
+                if (!val) return;
+                const row = document.createElement("div");
+                row.className = "manga-detail-row";
+                row.innerHTML = `<span class="manga-detail-label">${label}</span><span>${Array.isArray(val) ? val.join(", ") : val}</span>`;
+                meta.appendChild(row);
+            });
+            hero.appendChild(meta);
+            wrap.appendChild(hero);
+
+            if (d.synopsis || d.description || d.sinopsis) {
+                const syn = document.createElement("div");
+                syn.className = "manga-detail-synopsis";
+                syn.textContent = d.synopsis || d.description || d.sinopsis;
+                wrap.appendChild(syn);
+            }
+
+            // Chapter list
+            const chapters = d.chapters || d.chapterList || d.chapter_list || [];
+            if (chapters.length) {
+                const chHdr = document.createElement("div");
+                chHdr.className = "manga-detail-ch-header";
+                chHdr.textContent = `📖 ${chapters.length} Chapter`;
+                wrap.appendChild(chHdr);
+
+                const chList = document.createElement("div");
+                chList.className = "manga-detail-ch-list";
+                chapters.forEach(ch => {
+                    const chUrl = ch.url || ch.link || "";
+                    const row = document.createElement("div");
+                    row.className = "manga-detail-ch-row";
+                    row.style.cursor = "pointer";
+                    row.innerHTML = `<span>${ch.title || ch.name || ch.chapter || "Chapter"}</span><span class="manga-detail-ch-arrow">📖</span>`;
+                    row.onclick = () => openChapterFromDetail(chUrl);
+                    chList.appendChild(row);
+                });
+                wrap.appendChild(chList);
+            }
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderMangaImages(data) {
+            let images = null;
+            if (data && data.chapter && Array.isArray(data.chapter.images)) {
+                images = data.chapter.images;
+            } else if (data && Array.isArray(data.images)) {
+                images = data.images;
+            } else if (data && data.result && Array.isArray(data.result.images)) {
+                images = data.result.images;
+            }
+
+            if (!images || images.length === 0) {
+                addMessage("❌ Tidak ada gambar ditemukan.", "ai");
+                return;
+            }
+
+            // Store current URL for chapter navigation
+            const currentUrl = window._lastMangaDownloadUrl || "";
+            openMangaReader(images, currentUrl);
+        }
+
+        // ── Fullscreen Reader ─────────────────────────────────────
+        let _readerCurrentUrl = "";
+        let _readerNavHideTimer = null;
+        let _readerInited = false;
+        let _readerLastScrollY = 0;
+        let _readerLastImages = [];
+
+        function reopenLastReader() {
+            if (!_readerLastImages.length) return;
+            openMangaReader(_readerLastImages, _readerCurrentUrl);
+        }
+
+        function initMangaReader() {
+            if (_readerInited) return;
+            _readerInited = true;
+
+            document.getElementById("mangaCloseBtn").addEventListener("click", function(e) {
+                e.stopPropagation();
+                closeMangaReader();
+            });
+            document.getElementById("mangaPrevBtn").addEventListener("click", function(e) {
+                e.stopPropagation();
+                navigateChapter(-1);
+            });
+            document.getElementById("mangaNextBtn").addEventListener("click", function(e) {
+                e.stopPropagation();
+                navigateChapter(1);
+            });
+
+            // Nav stays above — tap on pages area toggles nav
+            document.getElementById("mangaFsPages").addEventListener("click", function(e) {
+                showReaderNav();
+            });
+
+            // Scroll direction detection
+            document.getElementById("mangaFsPages").addEventListener("scroll", handleReaderScroll, { passive: true });
+
+            // Nav taps don't bubble to pages
+            document.getElementById("mangaFsNav").addEventListener("click", function(e) {
+                e.stopPropagation();
+                // reset hide timer so nav stays visible while using buttons
+                clearTimeout(_readerNavHideTimer);
+                _readerNavHideTimer = setTimeout(() => {
+                    document.getElementById("mangaFsNav").classList.add("hidden");
+                }, 3000);
+            });
+        }
+
+        function openMangaReader(images, chapterUrl) {
+            initMangaReader();
+            _readerCurrentUrl = chapterUrl || "";
+            _readerLastImages = images;
+
+            const pages = document.getElementById("mangaFsPages");
+            const title = document.getElementById("mangaFsTitle");
+            const reader = document.getElementById("mangaReader");
+
+            const urlMatch = chapterUrl.match(/chapter[-]?(\d+)/i);
+            title.textContent = urlMatch ? `Chapter ${urlMatch[1]}` : "Reader";
+
+            pages.innerHTML = "";
+            images.forEach((src, i) => {
+                const img = document.createElement("img");
+                img.src = src;
+                img.alt = `Hal ${i + 1}`;
+                img.loading = i < 3 ? "eager" : "lazy";
+                pages.appendChild(img);
+            });
+
+            pages.scrollTop = 0;
+            _readerLastScrollY = 0;
+            reader.style.display = "flex";
+            document.body.style.overflow = "hidden";
+            showReaderNav(true);
+        }
+
+        function showReaderNav(forceShow) {
+            const nav = document.getElementById("mangaFsNav");
+            clearTimeout(_readerNavHideTimer);
+            nav.classList.remove("hidden");
+            _readerNavHideTimer = setTimeout(() => {
+                nav.classList.add("hidden");
+            }, forceShow ? 3500 : 2500);
+        }
+
+        function handleReaderScroll() {
+            const pages = document.getElementById("mangaFsPages");
+            const currentScrollY = pages.scrollTop;
+            const nav = document.getElementById("mangaFsNav");
+
+            if (currentScrollY < (_readerLastScrollY || 0) - 10) {
+                // Scrolling UP — show nav
+                clearTimeout(_readerNavHideTimer);
+                nav.classList.remove("hidden");
+                _readerNavHideTimer = setTimeout(() => nav.classList.add("hidden"), 2500);
+            } else if (currentScrollY > (_readerLastScrollY || 0) + 10) {
+                // Scrolling DOWN — hide nav
+                clearTimeout(_readerNavHideTimer);
+                nav.classList.add("hidden");
+            }
+            _readerLastScrollY = currentScrollY;
+        }
+
+        function closeMangaReader() {
+            document.getElementById("mangaReader").style.display = "none";
+            document.getElementById("mangaFsPages").innerHTML = "";
+            document.getElementById("mangaFsNav").classList.remove("hidden");
+            document.body.style.overflow = "";
+            clearTimeout(_readerNavHideTimer);
+        }
+
+        async function navigateChapter(dir) {
+            if (!_readerCurrentUrl) return;
+            const match = _readerCurrentUrl.match(/(.*chapter[-]?)(\d+)(\/?.*)$/i);
+            if (!match) { alert("Tidak bisa parse nomor chapter."); return; }
+
+            const newNum = parseInt(match[2]) + dir;
+            if (newNum < 1) return;
+            const newUrl = match[1] + newNum + match[3];
+
+            const loading = document.getElementById("mangaFsLoading");
+            const pages = document.getElementById("mangaFsPages");
+            const prevBtn = document.getElementById("mangaPrevBtn");
+            const nextBtn = document.getElementById("mangaNextBtn");
+
+            loading.style.display = "flex";
+            pages.style.opacity = "0.3";
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+
+            try {
+                const model = MODELS[currentModel];
+                const apiKey = API_KEYS[model.selectedKey];
+                const BASE = "https://api.theresav.biz.id/manga/mangasusuku";
+                const resp = await fetch(`${BASE}/download?url=${encodeURIComponent(newUrl)}&apikey=${encodeURIComponent(apiKey)}`);
+                const data = await resp.json();
+
+                let images = null;
+                if (data?.chapter?.images) images = data.chapter.images;
+                else if (Array.isArray(data?.images)) images = data.images;
+                else if (data?.result?.images) images = data.result.images;
+
+                if (!images?.length) {
+                    alert("Chapter tidak ditemukan.");
+                } else {
+                    _readerCurrentUrl = newUrl;
+                    _readerLastImages = images;
+                    pages.innerHTML = "";
+                    images.forEach((src, i) => {
+                        const img = document.createElement("img");
+                        img.src = src;
+                        img.alt = `Hal ${i + 1}`;
+                        img.loading = i < 3 ? "eager" : "lazy";
+                        pages.appendChild(img);
+                    });
+                    pages.scrollTop = 0;
+                    const m = newUrl.match(/chapter[-]?(\d+)/i);
+                    document.getElementById("mangaFsTitle").textContent = m ? `Chapter ${m[1]}` : "Reader";
+                    showReaderNav(true);
+                }
+            } catch(e) {
+                alert("Gagal: " + e.message);
+            } finally {
+                loading.style.display = "none";
+                pages.style.opacity = "1";
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }
+        }
+
+        // ── Anichin ──────────────────────────────────────────────
+        async function sendAnichinRequest(mode, text, model) {
+            const BASE = "https://api.nexray.eu.cc/anime/anichin";
+            let url;
+            if (mode === "home") {
+                url = `${BASE}/home`;
+            } else if (mode === "search") {
+                url = `${BASE}/search?q=${encodeURIComponent(text)}&page=1`;
+            } else if (mode === "detail") {
+                url = `${BASE}/detail?url=${encodeURIComponent(text)}`;
+            } else if (mode === "stream") {
+                url = `${BASE}/stream?url=${encodeURIComponent(text)}`;
+            }
+            try {
+                const resp = await fetch(url);
+                const data = await resp.json();
+                hideTypingIndicator();
+                if (!data.result) { addMessage("❌ Tidak ada hasil.", "ai"); return; }
+                if (mode === "home") renderAnichinHome(data.result);
+                else if (mode === "search") renderAnichinSearch(data.result);
+                else if (mode === "detail") renderAnichinDetail(data.result);
+                else if (mode === "stream") renderAnichinStream(data.result);
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage("Error: " + e.message, "ai");
+            }
+        }
+
+        function renderAnichinHome(result) {
+            const latest = result.latestReleases || [];
+            const popular = result.popularToday || [];
+            if (!latest.length && !popular.length) { addMessage("❌ Tidak ada data.", "ai"); return; }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-list-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = `🎬 TERBARU — ${latest.length} anime`;
+            wrap.appendChild(hdr);
+
+            const scroll = document.createElement("div");
+            scroll.className = "manga-list-scroll";
+
+            latest.forEach(item => {
+                const title = (item.title || "").split("\t")[0].trim();
+                const card = document.createElement("div");
+                card.className = "manga-card";
+                if (item.thumbnail) {
+                    const img = document.createElement("img");
+                    img.src = item.thumbnail; img.className = "manga-card-thumb"; img.loading = "lazy";
+                    card.appendChild(img);
+                }
+                const info = document.createElement("div");
+                info.className = "manga-card-info";
+                const t = document.createElement("div"); t.className = "manga-card-title"; t.textContent = title;
+                const ep = document.createElement("div"); ep.className = "manga-card-chapter"; ep.textContent = item.episode || "";
+                const st = document.createElement("div"); st.className = "manga-card-chapter";
+                st.textContent = item.status || "";
+                info.appendChild(t); info.appendChild(ep); info.appendChild(st);
+                if (item.url) {
+                    const a = document.createElement("a"); a.className = "manga-card-link";
+                    a.href = item.url; a.target = "_blank"; a.textContent = "Detail →";
+                    info.appendChild(a);
+                }
+                card.appendChild(info);
+                scroll.appendChild(card);
+            });
+            wrap.appendChild(scroll);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderAnichinSearch(result) {
+            const list = result.data || [];
+            if (!list.length) { addMessage("❌ Tidak ditemukan.", "ai"); return; }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-list-wrap";
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = `🔍 ${result.totalResults || list.length} hasil "${result.searchQuery || ""}"`;
+            wrap.appendChild(hdr);
+
+            const scroll = document.createElement("div");
+            scroll.className = "manga-list-scroll";
+
+            list.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "manga-card";
+                if (item.thumbnail) {
+                    const img = document.createElement("img");
+                    img.src = item.thumbnail; img.className = "manga-card-thumb"; img.loading = "lazy";
+                    card.appendChild(img);
+                }
+                const info = document.createElement("div"); info.className = "manga-card-info";
+                const t = document.createElement("div"); t.className = "manga-card-title"; t.textContent = item.title || "—";
+                const meta = document.createElement("div"); meta.className = "manga-card-chapter";
+                meta.textContent = [item.type, item.status, item.episode].filter(Boolean).join(" · ");
+                info.appendChild(t); info.appendChild(meta);
+                if (item.url) {
+                    const a = document.createElement("a"); a.className = "manga-card-link";
+                    a.href = item.url; a.target = "_blank"; a.textContent = "Detail →";
+                    info.appendChild(a);
+                }
+                card.appendChild(info);
+                scroll.appendChild(card);
+            });
+            wrap.appendChild(scroll);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderAnichinDetail(result) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            // Hero
+            const hero = document.createElement("div"); hero.className = "manga-detail-hero";
+            if (result.thumbnail) {
+                const img = document.createElement("img");
+                img.src = result.thumbnail; img.className = "manga-detail-cover"; img.loading = "lazy";
+                hero.appendChild(img);
+            }
+            const meta = document.createElement("div"); meta.className = "manga-detail-meta";
+            const t = document.createElement("div"); t.className = "manga-detail-title"; t.textContent = result.title || "—";
+            meta.appendChild(t);
+            const m = result.metadata || {};
+            [["Status", m.status], ["Type", m.type], ["Episodes", m.episodes], ["Rating", result.rating], ["Genre", (result.genres||[]).join(", ")]].forEach(([label, val]) => {
+                if (!val) return;
+                const row = document.createElement("div"); row.className = "manga-detail-row";
+                row.innerHTML = `<span class="manga-detail-label">${label}</span><span>${val}</span>`;
+                meta.appendChild(row);
+            });
+            hero.appendChild(meta);
+            wrap.appendChild(hero);
+
+            if (result.synopsis) {
+                const syn = document.createElement("div"); syn.className = "manga-detail-synopsis";
+                syn.textContent = result.synopsis;
+                wrap.appendChild(syn);
+            }
+
+            // Episode list
+            const eps = result.episodeList || [];
+            if (eps.length) {
+                const chHdr = document.createElement("div"); chHdr.className = "manga-detail-ch-header";
+                chHdr.textContent = `📺 ${eps.length} Episode`;
+                wrap.appendChild(chHdr);
+                const chList = document.createElement("div"); chList.className = "manga-detail-ch-list";
+                eps.forEach(ep => {
+                    const row = document.createElement("div"); row.className = "manga-detail-ch-row";
+                    row.style.cursor = "pointer";
+                    row.innerHTML = `<span>Ep ${ep.episode}</span><span class="manga-detail-ch-arrow">▶</span>`;
+                    row.onclick = () => openAnichinStream(ep.url);
+                    chList.appendChild(row);
+                });
+                wrap.appendChild(chList);
+            }
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderAnichinStream(result) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            const hdr = document.createElement("div"); hdr.className = "manga-list-header";
+            hdr.textContent = `▶ ${result.title || "Stream"}`;
+            wrap.appendChild(hdr);
+
+            // Streaming links
+            const streams = result.streamingLinks || [];
+            if (streams.length) {
+                const sHdr = document.createElement("div"); sHdr.className = "manga-detail-ch-header";
+                sHdr.textContent = "🎬 Streaming";
+                wrap.appendChild(sHdr);
+                streams.forEach(s => {
+                    const row = document.createElement("a"); row.className = "manga-detail-ch-row";
+                    row.href = s.link; row.target = "_blank";
+                    row.innerHTML = `<span>${s.server}</span><span class="manga-detail-ch-arrow">→</span>`;
+                    wrap.appendChild(row);
+                });
+            }
+
+            // Download links
+            const downloads = result.downloadLinks || [];
+            if (downloads.length) {
+                const dHdr = document.createElement("div"); dHdr.className = "manga-detail-ch-header";
+                dHdr.textContent = "⬇ Download";
+                wrap.appendChild(dHdr);
+                downloads.forEach(q => {
+                    const qRow = document.createElement("div"); qRow.className = "manga-detail-ch-header";
+                    qRow.style.cssText = "font-size:10px;padding:4px 12px;color:rgba(255,255,255,0.25);";
+                    qRow.textContent = q.quality;
+                    wrap.appendChild(qRow);
+                    (q.links || []).forEach(l => {
+                        const row = document.createElement("a"); row.className = "manga-detail-ch-row";
+                        row.href = l.link; row.target = "_blank";
+                        row.innerHTML = `<span>${l.host}</span><span class="manga-detail-ch-arrow">→</span>`;
+                        wrap.appendChild(row);
+                    });
+                });
+            }
+
+            // Navigation
+            const nav = result.navigation || {};
+            if (nav.prevEpisode || nav.nextEpisode) {
+                const navRow = document.createElement("div");
+                navRow.style.cssText = "display:flex;gap:8px;padding:10px 12px;";
+                if (nav.prevEpisode) {
+                    const btn = document.createElement("button");
+                    btn.className = "manga-fs-chapbtn"; btn.style.flex = "1";
+                    btn.textContent = "← Prev";
+                    btn.onclick = () => openAnichinStream(nav.prevEpisode);
+                    navRow.appendChild(btn);
+                }
+                if (nav.nextEpisode) {
+                    const btn = document.createElement("button");
+                    btn.className = "manga-fs-chapbtn"; btn.style.flex = "1";
+                    btn.textContent = "Next →";
+                    btn.onclick = () => openAnichinStream(nav.nextEpisode);
+                    navRow.appendChild(btn);
+                }
+                wrap.appendChild(navRow);
+            }
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function openAnichinStream(url) {
+            if (!url) return;
+            showTypingIndicator();
+            try {
+                const resp = await fetch(`https://api.nexray.eu.cc/anime/anichin/stream?url=${encodeURIComponent(url)}`);
+                const data = await resp.json();
+                hideTypingIndicator();
+                if (data.result) renderAnichinStream(data.result);
+                else addMessage("❌ Gagal ambil stream.", "ai");
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage("Error: " + e.message, "ai");
+            }
+        }
+
+        // ── Donghub ──────────────────────────────────────────────
+        const DONGHUB_PROXY = "https://zyy-ai-one.vercel.app/api/proxy";
+
+        function onDonghubModeChange(mode) {
+            const model = MODELS[currentModel];
+            if (model.type === "donghub") model.donghubMode = mode;
+            const placeholders = {
+                home: "Tekan Send untuk lihat anime terbaru...",
+                ongoing: "Tekan Send untuk lihat ongoing...",
+                completed: "Tekan Send untuk lihat completed...",
+                schedule: "Tekan Send untuk lihat jadwal...",
+                search: "Ketik judul anime, lalu kirim...",
+                detail: "Ketik slug anime (contoh: naruto), lalu kirim...",
+                episode: "Ketik slug episode (contoh: naruto-episode-1), lalu kirim..."
+            };
+            inputEl.placeholder = placeholders[mode] || "Ketik pesan...";
+        }
+
+        async function sendDonghubRequest(mode, text) {
+            try {
+                let url;
+                if (mode === "home") url = `${DONGHUB_PROXY}?path=home&page=1`;
+                else if (mode === "ongoing") url = `${DONGHUB_PROXY}?path=ongoing&page=1`;
+                else if (mode === "completed") url = `${DONGHUB_PROXY}?path=completed&page=1`;
+                else if (mode === "schedule") url = `${DONGHUB_PROXY}?path=schedule`;
+                else if (mode === "search") url = `${DONGHUB_PROXY}?path=search&q=${encodeURIComponent(text)}&page=1`;
+                else if (mode === "detail") url = `${DONGHUB_PROXY}?path=detail&slug=${encodeURIComponent(text)}`;
+                else if (mode === "episode") url = `${DONGHUB_PROXY}?path=episode&slug=${encodeURIComponent(text)}`;
+
+                const resp = await fetch(url);
+                const data = await resp.json();
+                hideTypingIndicator();
+
+                if (data.error) { addMessage("❌ " + data.error, "ai"); return; }
+                if (!data.data) { addMessage("❌ Tidak ada hasil.", "ai"); return; }
+
+                if (mode === "schedule") renderDonghubSchedule(data.data);
+                else if (mode === "detail") renderDonghubDetail(data.data);
+                else if (mode === "episode") renderDonghubEpisode(data.data);
+                else renderDonghubList(data.data, mode);
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage("Error: " + e.message, "ai");
+            }
+        }
+
+        function donghubShowSlug(url) {
+            let slug = url.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
+            // url di list (home/ongoing/completed/schedule) suka nunjuk ke episode terbaru,
+            // bukan ke halaman series-nya. Potong suffix episode-nya biar dapet slug series asli.
+            slug = slug.replace(/-episode-\d+(-subtitle-indonesia)?$/i, '');
+            return slug;
+        }
+
+        function renderDonghubList(data, mode) {
+            const items = data.items || [];
+            if (!items.length) { addMessage("❌ Tidak ada hasil.", "ai"); return; }
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-list-wrap";
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = `🎌 ${mode.toUpperCase()} — ${items.length} anime`;
+            wrap.appendChild(hdr);
+
+            const scroll = document.createElement("div");
+            scroll.className = "manga-list-scroll";
+
+            items.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "manga-card";
+                if (item.poster) {
+                    const img = document.createElement("img");
+                    img.src = item.poster; img.className = "manga-card-thumb"; img.loading = "lazy";
+                    card.appendChild(img);
+                }
+                const info = document.createElement("div"); info.className = "manga-card-info";
+                const t = document.createElement("div"); t.className = "manga-card-title"; t.textContent = item.title || "—";
+                const meta = document.createElement("div"); meta.className = "manga-card-chapter";
+                meta.textContent = [item.type, item.status, item.episode].filter(Boolean).join(" · ");
+                info.appendChild(t); info.appendChild(meta);
+                if (item.url) {
+                    const slug = donghubShowSlug(item.url);
+                    const a = document.createElement("div"); a.className = "manga-card-link";
+                    a.style.cursor = "pointer"; a.textContent = "Detail →";
+                    a.onclick = () => openDonghubDetail(slug);
+                    info.appendChild(a);
+                }
+                card.appendChild(info);
+                scroll.appendChild(card);
+            });
+            wrap.appendChild(scroll);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderDonghubSchedule(data) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-list-wrap";
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = "📅 JADWAL TAYANG";
+            wrap.appendChild(hdr);
+
+            const scroll = document.createElement("div");
+            scroll.className = "manga-list-scroll";
+
+            Object.entries(data).forEach(([day, items]) => {
+                if (!items || !items.length) return;
+                const dayHdr = document.createElement("div");
+                dayHdr.className = "manga-detail-ch-header";
+                dayHdr.textContent = day;
+                scroll.appendChild(dayHdr);
+                items.forEach(item => {
+                    const row = document.createElement("div");
+                    row.className = "manga-detail-ch-row";
+                    row.style.cursor = "pointer";
+                    row.innerHTML = `<span>${item.title || item.name || "—"}</span><span class="manga-detail-ch-arrow">→</span>`;
+                    if (item.url) {
+                        const slug = donghubShowSlug(item.url);
+                        row.onclick = () => openDonghubDetail(slug);
+                    }
+                    scroll.appendChild(row);
+                });
+            });
+
+            wrap.appendChild(scroll);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderDonghubDetail(data) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            const hero = document.createElement("div"); hero.className = "manga-detail-hero";
+            if (data.poster) {
+                const img = document.createElement("img");
+                img.src = data.poster; img.className = "manga-detail-cover"; img.loading = "lazy";
+                hero.appendChild(img);
+            }
+            const meta = document.createElement("div"); meta.className = "manga-detail-meta";
+            const t = document.createElement("div"); t.className = "manga-detail-title"; t.textContent = data.title || "—";
+            meta.appendChild(t);
+            const info = data.info || {};
+            [["Status", info.status || data.status], ["Type", info.type || data.type], ["Studio", info.studio], ["Genre", (data.genres||[]).join(", ")]].forEach(([label, val]) => {
+                if (!val) return;
+                const row = document.createElement("div"); row.className = "manga-detail-row";
+                row.innerHTML = `<span class="manga-detail-label">${label}</span><span>${val}</span>`;
+                meta.appendChild(row);
+            });
+            hero.appendChild(meta);
+            wrap.appendChild(hero);
+
+            if (data.synopsis) {
+                const syn = document.createElement("div"); syn.className = "manga-detail-synopsis";
+                syn.textContent = data.synopsis;
+                wrap.appendChild(syn);
+            }
+
+            const eps = data.episodes || data.episodeList || [];
+            if (eps.length) {
+                const chHdr = document.createElement("div"); chHdr.className = "manga-detail-ch-header";
+                chHdr.textContent = `📺 ${eps.length} Episode`;
+                wrap.appendChild(chHdr);
+                const chList = document.createElement("div"); chList.className = "manga-detail-ch-list";
+                eps.forEach(ep => {
+                    const row = document.createElement("div"); row.className = "manga-detail-ch-row";
+                    row.style.cursor = "pointer";
+                    row.innerHTML = `<span>Episode ${ep.episode || "?"}</span><span class="manga-detail-ch-arrow">▶</span>`;
+                    if (ep.url) {
+                        const slug = ep.url.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
+                        row.onclick = () => openDonghubEpisode(slug);
+                    }
+                    chList.appendChild(row);
+                });
+                wrap.appendChild(chList);
+            }
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function renderDonghubEpisode(data) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            const hdr = document.createElement("div"); hdr.className = "manga-list-header";
+            hdr.textContent = `▶ ${data.title || "Episode"}`;
+            wrap.appendChild(hdr);
+
+            const streams = data.streams || [];
+            if (streams.length) {
+                const sHdr = document.createElement("div"); sHdr.className = "manga-detail-ch-header";
+                sHdr.textContent = "🎬 Streaming";
+                wrap.appendChild(sHdr);
+                streams.forEach(s => {
+                    const row = document.createElement("a"); row.className = "manga-detail-ch-row";
+                    row.href = s.url || s.link; row.target = "_blank";
+                    row.innerHTML = `<span>${s.server || s.name || "Server"}</span><span class="manga-detail-ch-arrow">→</span>`;
+                    wrap.appendChild(row);
+                });
+            }
+
+            const downloads = data.downloads || [];
+            if (downloads.length) {
+                const dHdr = document.createElement("div"); dHdr.className = "manga-detail-ch-header";
+                dHdr.textContent = "⬇ Download";
+                wrap.appendChild(dHdr);
+                downloads.forEach(q => {
+                    const qRow = document.createElement("div");
+                    qRow.style.cssText = "font-size:10px;padding:3px 12px;color:rgba(255,255,255,0.25);";
+                    qRow.textContent = q.resolution || q.quality;
+                    wrap.appendChild(qRow);
+                    (q.links || []).forEach(l => {
+                        const row = document.createElement("a"); row.className = "manga-detail-ch-row";
+                        row.href = l.url || l.link; row.target = "_blank";
+                        row.innerHTML = `<span>${l.name || l.host}</span><span class="manga-detail-ch-arrow">→</span>`;
+                        wrap.appendChild(row);
+                    });
+                });
+            }
+
+            const nav = data.nav || {};
+            if (nav.prev || nav.next) {
+                const navRow = document.createElement("div");
+                navRow.style.cssText = "display:flex;gap:8px;padding:10px 12px;";
+                if (nav.prev) {
+                    const btn = document.createElement("button");
+                    btn.className = "manga-fs-chapbtn"; btn.style.flex = "1"; btn.textContent = "← Prev";
+                    const slug = nav.prev.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
+                    btn.onclick = () => openDonghubEpisode(slug);
+                    navRow.appendChild(btn);
+                }
+                if (nav.next) {
+                    const btn = document.createElement("button");
+                    btn.className = "manga-fs-chapbtn"; btn.style.flex = "1"; btn.textContent = "Next →";
+                    const slug = nav.next.replace(/.*donghub\.vip\//, '').replace(/\/$/, '');
+                    btn.onclick = () => openDonghubEpisode(slug);
+                    navRow.appendChild(btn);
+                }
+                wrap.appendChild(navRow);
+            }
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function openDonghubDetail(slug) {
+            showTypingIndicator();
+            try {
+                const resp = await fetch(`${DONGHUB_PROXY}?path=detail&slug=${encodeURIComponent(slug)}`);
+                const data = await resp.json();
+                hideTypingIndicator();
+                if (data.data) renderDonghubDetail(data.data);
+                else addMessage("❌ Gagal ambil detail.", "ai");
+            } catch(e) { hideTypingIndicator(); addMessage("Error: " + e.message, "ai"); }
+        }
+
+        async function openDonghubEpisode(slug) {
+            showTypingIndicator();
+            try {
+                const resp = await fetch(`${DONGHUB_PROXY}?path=episode&slug=${encodeURIComponent(slug)}`);
+                const data = await resp.json();
+                hideTypingIndicator();
+                if (data.data) renderDonghubEpisode(data.data);
+                else addMessage("❌ Gagal ambil episode.", "ai");
+            } catch(e) { hideTypingIndicator(); addMessage("Error: " + e.message, "ai"); }
+        }
+        async function fetchApiKeyInfo() {
+            const model = MODELS[currentModel];
+            const apiKey = API_KEYS[model.selectedKey];
+            const btn = document.getElementById("apikeyInfoBtn");
+            const card = document.getElementById("apikeyInfoCard");
+
+            btn.textContent = "Mengambil...";
+            btn.disabled = true;
+
+            try {
+                const resp = await fetch(`https://api.theresav.biz.id/user/apikey-info?apikey=${encodeURIComponent(apiKey)}`);
+                const data = await resp.json();
+                const d = data.data || data;
+
+                const remaining = d.remaining_today ?? "?";
+                const limit = d.daily_limit ?? "?";
+                const used = d.today_usage ?? "?";
+                const remClass = (typeof remaining === "number" && remaining < 10) ? "warn" : "ok";
+
+                card.style.display = "flex";
+                card.innerHTML = `
+                    <div class="apikey-info-row"><span class="apikey-info-label">Daily Limit</span><span class="apikey-info-val">${limit}</span></div>
+                    <div class="apikey-info-row"><span class="apikey-info-label">Terpakai Hari Ini</span><span class="apikey-info-val">${used}</span></div>
+                    <div class="apikey-info-row"><span class="apikey-info-label">Sisa Hari Ini</span><span class="apikey-info-val ${remClass}">${remaining}</span></div>
+                `;
+            } catch(e) {
+                card.style.display = "flex";
+                card.innerHTML = `<div style="color:#f87171;">Gagal ambil info: ${e.message}</div>`;
+            }
+
+            btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Cek Info Key`;
+            btn.disabled = false;
+        }
+
+        function renderGenwebResult(data) {
+            // Genweb returns streaming chunks as {content:"..."} — need to reassemble
+            let raw = data.result || data.html || data.code || "";
+
+            // If result is a stringified stream of {content:"..."} chunks, parse them
+            if (typeof raw === "string" && raw.includes('"content"')) {
+                try {
+                    // Extract all "content" values and concatenate
+                    const chunks = [];
+                    const regex = /\{"content":"((?:[^"\\]|\\.)*)"\}/g;
+                    let match;
+                    while ((match = regex.exec(raw)) !== null) {
+                        chunks.push(match[1]
+                            .replace(/\\n/g, "\n")
+                            .replace(/\\"/g, '"')
+                            .replace(/\\\\/g, "\\")
+                        );
+                    }
+                    if (chunks.length > 0) raw = chunks.join("");
+                } catch(e) {}
+            }
+
+            // Try to extract html/css/js from JSON object inside raw
+            let html = "", css = "", js = "";
+            try {
+                // Sometimes it's a JSON string like {"html":"...","css":"...","js":"..."}
+                const parsed = JSON.parse(raw);
+                html = parsed.html || "";
+                css = parsed.css || "";
+                js = parsed.js || "";
+            } catch(e) {
+                // Raw is already HTML
+                html = raw;
+            }
+
+            if (!html && !css) {
+                addMessage("Tidak ada hasil HTML dari GenWeb.", "ai");
+                return;
+            }
+
+            // Build full HTML page
+            const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
+            const blob = new Blob([fullHtml], { type: "text/html" });
+            const blobUrl = URL.createObjectURL(blob);
+
+            const wrap = document.createElement("div");
+            wrap.className = "message ai genweb-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = "🌐 Website Generated";
+            wrap.appendChild(hdr);
+
+            const iframe = document.createElement("iframe");
+            iframe.src = blobUrl;
+            iframe.style.cssText = "width:100%;height:380px;border:none;border-radius:0 0 12px 12px;background:#fff;";
+            iframe.sandbox = "allow-scripts allow-same-origin";
+            wrap.appendChild(iframe);
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function openChapterFromDetail(chUrl) {
+            const model = MODELS[currentModel];
+            const apiKey = API_KEYS[model.selectedKey];
+            const BASE = "https://api.theresav.biz.id/manga/mangasusuku";
+
+            // Show loading overlay in reader
+            window._lastMangaDownloadUrl = chUrl;
+            document.getElementById("mangaReader").style.display = "flex";
+            document.getElementById("mangaFsLoading").style.display = "flex";
+            document.getElementById("mangaFsPages").innerHTML = "";
+            document.body.style.overflow = "hidden";
+
+            try {
+                const resp = await fetch(`${BASE}/download?url=${encodeURIComponent(chUrl)}&apikey=${encodeURIComponent(apiKey)}`);
+                const data = await resp.json();
+                document.getElementById("mangaFsLoading").style.display = "none";
+                renderMangaImages(data);
+            } catch(e) {
+                document.getElementById("mangaFsLoading").style.display = "none";
+                closeMangaReader();
+                addMessage("Gagal load chapter: " + e.message, "ai");
+            }
+        }
+
+        function parseMarkdown(text) {
+            return text
+                // LaTeX arrows & symbols
+                .replace(/\$\\rightarrow\$/g, '→')
+                .replace(/\$\\leftarrow\$/g, '←')
+                .replace(/\$\\Rightarrow\$/g, '⇒')
+                .replace(/\$\\times\$/g, '×')
+                .replace(/\$\\approx\$/g, '≈')
+                .replace(/\$\\neq\$/g, '≠')
+                .replace(/\$\\leq\$/g, '≤')
+                .replace(/\$\\geq\$/g, '≥')
+                // Strip remaining LaTeX $...$ inline
+                .replace(/\$([^$]+)\$/g, '$1')
+                // Images — render as clickable thumbnail
+                .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
+                    `<img class="md-img" src="${src}" alt="${alt}" onclick="openLightbox('${src}')" title="${alt}">`
+                )
+                // Code blocks
+                .replace(/```[\s\S]*?```/g, m => {
+                    const code = m.replace(/```[^\n]*\n?/, '').replace(/```$/, '');
+                    return `<pre><code>${code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></pre>`;
+                })
+                // Horizontal rule
+                .replace(/^---+$/gm, '<hr>')
+                // Headers
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                // Bold
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                // Italic
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                // Inline code
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                // Blockquote
+                .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+                // List items
+                .replace(/^\*{1,3}\s+(.+)$/gm, '<li>$1</li>')
+                .replace(/^-{1,3}\s+(.+)$/gm, '<li>$1</li>')
+                .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+                // Wrap consecutive <li>
+                .replace(/(<li>[\s\S]+?<\/li>)(\n<li>[\s\S]+?<\/li>)*/g, m => `<ul>${m}</ul>`)
+                // Newlines
+                .replace(/\n(?!<(?:h[1-3]|ul|li|pre|hr|blockquote))/g, '<br>');
+        }
+
+        function addMarkdownMessage(text) {
+            const el = document.createElement("div");
+            el.className = "message ai markdown-msg";
+            el.innerHTML = parseMarkdown(text);
+            messagesDiv.appendChild(el);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // ── Zyy AI Helpers ────────────────────────────────────────
+        const ZYY_SERVER = "https://zyy-ai-one.vercel.app/api/proxy";
+
+        // URL pattern detector
+        function detectZyyLink(text) {
+            if (!text) return null;
+            const tiktok = text.match(/(?:https?:\/\/)?(?:www\.|vm\.|vt\.)?tiktok\.com\/\S+|https?:\/\/(?:vm|vt)\.tiktok\.com\/\S+/i);
+            if (tiktok) return { type: 'tiktok', url: tiktok[0].startsWith('http') ? tiktok[0] : 'https://' + tiktok[0] };
+            const pinterest = text.match(/(?:https?:\/\/)?(?:www\.)?(?:pinterest\.[a-z]+|pin\.it)\/\S+/i);
+            if (pinterest) return { type: 'pinterest', url: pinterest[0].startsWith('http') ? pinterest[0] : 'https://' + pinterest[0] };
+            const generic = text.match(/https?:\/\/\S+/i);
+            if (generic) return { type: 'aio', url: generic[0] };
+            return null;
+        }
+
+        function detectPixivIntent(text) {
+            if (!text) return null;
+            const m = text.match(/pixiv\s+(.+?)(?:\s+(\d+))?\s*$/i);
+            if (!m) return null;
+            return { query: m[1].trim(), limit: parseInt(m[2]) || 10 };
+        }
+
+        function buildPixivThumbUrl(item) {
+            const d = new Date(item.createDate);
+            const pad = n => String(n).padStart(2, '0');
+            const path = `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}/${pad(d.getHours())}/${pad(d.getMinutes())}/${pad(d.getSeconds())}`;
+            const pximg = `https://i.pximg.net/c/250x250_80_a2/img-master/img/${path}/${item.id}_p0_square1200.jpg`;
+            return `${ZYY_SERVER}?path=api/pixiv-img&url=${encodeURIComponent(pximg)}`;
+        }
+
+        async function handleZyyPixiv(query, limit, model) {
+            addMessage(`lagi nyari "${query}" di Pixiv... 🗿`, 'ai');
+            showTypingIndicator();
+            try {
+                const resp = await fetch(`${ZYY_SERVER}?path=api/pixiv&q=${encodeURIComponent(query)}&limit=${limit}`);
+                const data = await resp.json();
+                hideTypingIndicator();
+                if (!data.status || !data.data?.length) {
+                    addMessage('ga ada hasil buat query itu 🗿', 'ai');
+                    return;
+                }
+                renderPixivResults(query, data.data);
+                addMessage(`nah itu ${data.data.length} hasil. jangan bilang makasih 😹`, 'ai');
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage('server ngambek: ' + e.message, 'ai');
+            }
+        }
+
+        function renderPixivResults(query, items) {
+            const wrap = document.createElement('div');
+            wrap.className = 'message ai manga-detail-wrap';
+
+            const hdr = document.createElement('div');
+            hdr.className = 'manga-list-header';
+            hdr.textContent = `🎨 Pixiv — "${query}" (${items.length} hasil)`;
+            wrap.appendChild(hdr);
+
+            const grid = document.createElement('div');
+            grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:8px;';
+
+            items.forEach(item => {
+                const cell = document.createElement('div');
+                cell.style.cssText = 'position:relative;aspect-ratio:1;overflow:hidden;border-radius:6px;background:rgba(255,255,255,0.05);cursor:pointer;';
+
+                const img = document.createElement('img');
+                img.src = buildPixivThumbUrl(item);
+                img.loading = 'lazy';
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+                img.onerror = () => { img.src = ''; cell.style.background = 'rgba(255,255,255,0.08)'; };
+
+                // badge AI
+                if (item.aiType === 2) {
+                    const badge = document.createElement('div');
+                    badge.textContent = 'AI';
+                    badge.style.cssText = 'position:absolute;top:3px;left:3px;background:rgba(0,0,0,0.7);color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;';
+                    cell.appendChild(badge);
+                }
+                // badge pages
+                if (item.pageCount > 1) {
+                    const pages = document.createElement('div');
+                    pages.textContent = `📄${item.pageCount}`;
+                    pages.style.cssText = 'position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.7);color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;';
+                    cell.appendChild(pages);
+                }
+
+                cell.appendChild(img);
+                cell.onclick = () => openLightbox(buildPixivThumbUrl(item), item.url);
+                cell.title = item.title + ' — ' + item.userName;
+
+                grid.appendChild(cell);
+            });
+
+            wrap.appendChild(grid);
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Upload image to Catbox → get URL
+        async function uploadToCatbox(file) {
+            const form = new FormData();
+            form.append('file', file);
+            // upload lewat server proxy biar gak kena CORS block catbox
+            const resp = await fetch(`${ZYY_SERVER}?path=api/upload`, {
+                method: 'POST',
+                body: form
+            });
+            const data = await resp.json();
+            if (!data.url) throw new Error(data.error || 'Upload gagal');
+            return data.url;
+        }
+
+        // Handle image upload → Zyy decides what to do
+        async function handleZyyImage(file, userText, model) {
+            hideTypingIndicator();
+            addMessage("oke gue upload dulu... 🗿", "ai");
+            showTypingIndicator();
+
+            let imgUrl;
+            try {
+                imgUrl = await uploadToCatbox(file);
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage("gagal upload ke catbox: " + e.message, "ai");
+                return;
+            }
+
+            hideTypingIndicator();
+
+            // Detect intent from user text
+            const lowerText = (userText || "").toLowerCase();
+            const wantsHD = /hd|enhance|jernih|tajam|kualitas|upscale|bagus|bagusin|enhance/i.test(userText);
+            const wantsUnblur = /unblur|blur|kabur|buram/i.test(userText);
+            const wantsImghd = /imghd|deepnude|nude|bugil|telanjang/i.test(userText);
+
+            if (wantsImghd) {
+                addMessage("lagi proses... sabar 😏", "ai");
+                showTypingIndicator();
+                try {
+                    const resp = await fetch(`${ZYY_SERVER}?path=api/imghd&url=${encodeURIComponent(imgUrl)}`);
+                    const data = await resp.json();
+                    hideTypingIndicator();
+                    if (data.success && data.result) {
+                        renderZyyImageResult("ImgHD Result", data.result, imgUrl);
+                    } else {
+                        addMessage("hmm gagal nih: " + (data.error || data.message || "unknown"), "ai");
+                    }
+                } catch(e) { hideTypingIndicator(); addMessage("error: " + e.message, "ai"); }
+            } else if (wantsUnblur) {
+                addMessage("lagi unblur... ini butuh waktu bentar 🗿", "ai");
+                showTypingIndicator();
+                try {
+                    const resp = await fetch(`${ZYY_SERVER}?path=api/unblur&url=${encodeURIComponent(imgUrl)}&quality=2&model=v2`);
+                    const data = await resp.json();
+                    hideTypingIndicator();
+                    if (data.output_url || data.result) {
+                        renderZyyImageResult("Unblur Result", data.output_url || data.result, imgUrl);
+                    } else {
+                        addMessage("gagal unblur: " + JSON.stringify(data).slice(0, 100), "ai");
+                    }
+                } catch(e) { hideTypingIndicator(); addMessage("error: " + e.message, "ai"); }
+            } else {
+                // Default: chat dengan Zyy sambil kasih URL gambar
+                const prompt = `${userText ? userText + "\n\n" : ""}[User ngirim gambar: ${imgUrl}]`;
+                await handleZyyChat(prompt, model);
+            }
+        }
+
+        // Handle download links
+        async function handleZyyDownload(link, userText, model) {
+            hideTypingIndicator();
+            const ackMap = {
+                tiktok: "oke oke, lagi gue download TikTok-nya... 😏",
+                pinterest: "tunggu, lagi ambil dari Pinterest... 🗿",
+                aio: "lagi gue proses linknya... 🗿"
+            };
+            addMessage(ackMap[link.type] || "lagi proses...", "ai");
+            showTypingIndicator();
+
+            try {
+                const endpoint = link.type === 'tiktok' ? 'tiktok' : link.type === 'pinterest' ? 'pinterest' : 'aio';
+                const resp = await fetch(`${ZYY_SERVER}?path=api/${endpoint}&url=${encodeURIComponent(link.url)}`);
+                const data = await resp.json();
+                hideTypingIndicator();
+
+                if (data && (data.links?.length || data.data?.downloads?.length || data.medias?.length)) {
+                    renderZyyDownloadCard(link.type, data);
+                    addMessage("nah itu. jangan bilang makasih 😹", "ai");
+                } else {
+                    addMessage("hmm ga ada hasil nih — mungkin linknya expired atau format ga support 🗿", "ai");
+                }
+            } catch(e) {
+                hideTypingIndicator();
+                addMessage("server gue ngambek: " + e.message + " 😹", "ai");
+            }
+        }
+
+        // Handle normal chat
+        async function handleZyyChat(text, model) {
+            const identity = model.defaultIdentity || "";
+            const apiKey = GEMINI_API_KEY;
+            const url = `${model.url}?key=${encodeURIComponent(apiKey)}`;
+
+            // Build conversation history for context
+            const history = zyyHistory.slice(-10).map(m => ({
+                role: m.role === "user" ? "user" : "model",
+                parts: [{ text: m.text }]
+            }));
+            history.push({ role: "user", parts: [{ text }] });
+
+            const body = {
+                system_instruction: { parts: [{ text: identity }] },
+                contents: history
+            };
+
+            const resp = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            const data = await resp.json();
+            hideTypingIndicator();
+            if (data.error) { addMessage("Error: " + data.error.message, "ai"); return; }
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "hmm gue bingung 🗿";
+            zyyHistory.push({ role: "user", text }, { role: "model", text: reply });
+            if (zyyHistory.length > 40) zyyHistory = zyyHistory.slice(-40);
+            addMarkdownMessage(reply);
+        }
+
+        // Render download card
+        function renderZyyDownloadCard(type, data) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = type === 'tiktok' ? '⬇ TikTok' : type === 'pinterest' ? '⬇ Pinterest' : '⬇ Download';
+            wrap.appendChild(hdr);
+
+            // Thumbnail
+            const thumb = data.thumbnail || data.cover || data.data?.thumbnail;
+            if (thumb) {
+                const img = document.createElement("img");
+                img.src = thumb;
+                img.style.cssText = "width:100%;max-height:200px;object-fit:cover;";
+                img.onclick = () => openLightbox(thumb);
+                img.style.cursor = "zoom-in";
+                wrap.appendChild(img);
+            }
+
+            // Author/meta
+            if (data.author?.name || data.title) {
+                const meta = document.createElement("div");
+                meta.className = "manga-detail-row";
+                meta.style.padding = "8px 12px";
+                meta.textContent = data.author?.name ? `@${data.author.name}` : (data.title || "");
+                wrap.appendChild(meta);
+            }
+
+            // Links
+            const links = data.links || data.medias || data.data?.downloads || [];
+            links.forEach(l => {
+                const a = document.createElement("a");
+                a.className = "manga-detail-ch-row";
+                a.href = l.url || l.link || l.href || '#';
+                a.target = "_blank";
+                a.rel = "noopener";
+                a.innerHTML = `<span>${l.label || l.quality || l.format || l.name || 'Download'}</span><span class="manga-detail-ch-arrow">↗</span>`;
+                wrap.appendChild(a);
+            });
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Render image result
+        function renderZyyImageResult(label, resultUrl, originalUrl) {
+            const wrap = document.createElement("div");
+            wrap.className = "message ai manga-detail-wrap";
+
+            const hdr = document.createElement("div");
+            hdr.className = "manga-list-header";
+            hdr.textContent = `🖼 ${label}`;
+            wrap.appendChild(hdr);
+
+            const img = document.createElement("img");
+            img.src = resultUrl;
+            img.style.cssText = "width:100%;border-radius:0 0 12px 12px;cursor:zoom-in;";
+            img.onclick = () => openLightbox(resultUrl);
+            wrap.appendChild(img);
+
+            const dl = document.createElement("a");
+            dl.className = "manga-detail-ch-row";
+            dl.href = resultUrl;
+            dl.target = "_blank";
+            dl.download = "";
+            dl.innerHTML = `<span>Download hasil</span><span class="manga-detail-ch-arrow">↗</span>`;
+            wrap.appendChild(dl);
+
+            messagesDiv.appendChild(wrap);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            hideTypingIndicator();
+            const el = document.createElement("div");
+            el.className = "message ai typing";
+            el.id = "typingIndicator";
+            el.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+            messagesDiv.appendChild(el);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const el = document.getElementById("typingIndicator");
+            if (el) el.remove();
+        }
+
+        async function handleApiResponse(response, model) {
+            const contentType = response.headers.get("content-type") || "";
+
+            if (contentType.includes("image/")) {
+                const blob = await response.blob();
+                addImageMessage(URL.createObjectURL(blob), "ai", model.name);
+                return { ok: true };
+            }
+            if (contentType.includes("video/")) {
+                const blob = await response.blob();
+                addVideoMessage(URL.createObjectURL(blob), "ai", model.name);
+                return { ok: true };
+            }
+
+            let rawText = "";
+            let data;
+            try {
+                rawText = await response.text();
+                data = JSON.parse(rawText);
+            } catch (e) {
+                return {
+                    ok: false,
+                    error: `Respons tidak dikenali dari server (HTTP ${response.status})${rawText ? ": " + rawText.slice(0, 150) : ""}`
+                };
+            }
+
+            if (!response.ok || data.status === false) {
+                const errMsg = data.message
+                    || data.error
+                    || (typeof data.result === "string" ? data.result : null)
+                    || `HTTP ${response.status}: ${JSON.stringify(data).slice(0, 150)}`;
+                return { ok: false, error: errMsg };
+            }
+
+            if (model.useChatId && data.chatId) {
+                chatIds[currentModel] = data.chatId;
+            }
+
+            const result = data.result !== undefined ? data.result : data;
+
+            if (typeof result === "string") {
+                addMessage(result, "ai");
+            } else if (result && typeof result === "object") {
+                const mediaUrl = result.video_url || result.image_url || result.url;
+                if (mediaUrl && /\.(mp4|webm|mov)(\?|$)/i.test(mediaUrl)) {
+                    addVideoMessage(mediaUrl, "ai", model.name);
+                } else if (mediaUrl) {
+                    addImageMessage(mediaUrl, "ai", model.name);
+                } else {
+                    addMessage(JSON.stringify(result, null, 2), "ai");
+                }
+            } else {
+                addMessage(String(result), "ai");
+            }
+
+            return { ok: true };
+        }
+
+        function fixSquishedNumberedList(text) {
+            const regex = /(\d{1,2})\./g;
+            const matches = [];
+            let m;
+            while ((m = regex.exec(text)) !== null) {
+                matches.push({ num: parseInt(m[1], 10), index: m.index, length: m[0].length });
+            }
+
+            const isSequential = matches.length >= 2
+                && matches[0].num === 1
+                && matches.every((mt, i) => i === 0 || mt.num === matches[i - 1].num + 1);
+
+            if (!isSequential) return text;
+
+            let result = "";
+            let lastIndex = 0;
+            matches.forEach((mt, i) => {
+                const before = text.slice(lastIndex, mt.index);
+                result += i === 0 ? before : before + "\n\n";
+                result += `${mt.num}. `;
+                lastIndex = mt.index + mt.length;
+                if (text[lastIndex] === " ") lastIndex += 1;
+            });
+            result += text.slice(lastIndex);
+            return result;
+        }
+
+        function addMessage(text, sender, thumbnailUrl) {
+            const msgEl = document.createElement("div");
+            msgEl.className = `message ${sender}`;
+
+            if (thumbnailUrl) {
+                const thumb = document.createElement("img");
+                thumb.src = thumbnailUrl;
+                thumb.className = "msg-thumbnail";
+                thumb.addEventListener("click", () => openLightbox(thumbnailUrl));
+                msgEl.appendChild(thumb);
+            }
+
+            if (text) {
+                const textEl = document.createElement("div");
+                if (sender === "ai" && window.marked) {
+                    const safeText = fixSquishedNumberedList(text).replace(/~/g, "\\~");
+                    const rawHtml = marked.parse(safeText);
+                    textEl.innerHTML = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+                } else {
+                    textEl.textContent = text;
+                }
+                msgEl.appendChild(textEl);
+            }
+
+            messagesDiv.appendChild(msgEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addVideoMessage(url, sender, label) {
+            const msgEl = document.createElement("div");
+            msgEl.className = `message ${sender} media`;
+            if (label) {
+                const labelEl = document.createElement("div");
+                labelEl.className = "media-label";
+                labelEl.textContent = label;
+                msgEl.appendChild(labelEl);
+            }
+            const video = document.createElement("video");
+            video.src = url;
+            video.controls = true;
+            video.playsInline = true;
+            msgEl.appendChild(video);
+            messagesDiv.appendChild(msgEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addImageMessage(url, sender, label) {
+            const msgEl = document.createElement("div");
+            msgEl.className = `message ${sender} media`;
+            if (label) {
+                const labelEl = document.createElement("div");
+                labelEl.className = "media-label";
+                labelEl.textContent = label;
+                msgEl.appendChild(labelEl);
+            }
+            const img = document.createElement("img");
+            img.src = url;
+            img.alt = "Hasil gambar";
+            img.addEventListener("click", () => openLightbox(url));
+            msgEl.appendChild(img);
+            messagesDiv.appendChild(msgEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function openLightbox(url, pixivUrl) {
+            document.getElementById("lightboxImg").src = url;
+            const link = document.getElementById("lightboxLink");
+            if (pixivUrl) { link.href = pixivUrl; link.style.display = 'block'; }
+            else { link.style.display = 'none'; }
+            document.getElementById("imageLightbox").classList.add("open");
+        }
+
+        function closeLightbox() {
+            document.getElementById("imageLightbox").classList.remove("open");
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        function clearChat() {
+            chatIds[currentModel] = null;
+            zyyHistory = [];
+            messagesDiv.innerHTML = "";
+            inputEl.value = "";
+            addMessage(`Chat cleared`, "info");
+        }
+
+        window.onload = () => {
+            initModelMenu();
+            updateKeyDropdown();
+            updateInputModeUI();
+            inputEl.focus();
+            addMessage(`Hai`, "ai");
+
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("./service-worker.js").catch(() => {
+                    // Silently ignore: fails when opened from a non-https / non-localhost context.
+                });
+            }
+        };
+    </script>
+</body>
+</html>
